@@ -1,0 +1,517 @@
+/************************************************************************
+*************************************************************************
+@Name :       	Selectyze - jQuery Plugin CSS
+@Revison :    	1.0
+@Date : 		19/12/2011
+@Author:     	Mickael SURREL - ALPIXEL Agency - (www.myjqueryplugins.com - www.alpixel.fr) 
+@License :		 Open Source - MIT License : http://www.opensource.org/licenses/mit-license.php
+ 
+**************************************************************************
+*************************************************************************/
+
+/***************************/
+/** Common to every theme **/
+/***************************/
+@font-face {
+    font-family: 'lucida_sansdemibold_roman';
+    src: url('lsansd-webfont.eot');
+    src: url('lsansd-webfont.eot?#iefix') format('embedded-opentype'),
+         url('lsansd-webfont.woff') format('woff'),
+         url('lsansd-webfont.ttf') format('truetype'),
+         url('lsansd-webfont.svg#lucida_sansdemibold_roman') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'lucida_sans_typewriterregular';
+    src: url('ltype-webfont.eot');
+    src: url('ltype-webfont.eot?#iefix') format('embedded-opentype'),
+         url('ltype-webfont.woff') format('woff'),
+         url('ltype-webfont.ttf') format('truetype'),
+         url('ltype-webfont.svg#lucida_sans_typewriterregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+.DivSelectyze {
+	position:relative;
+	min-width:40px;
+	float:left;
+	margin-top:0px;
+}
+.DivSelectyze .selectyzeValue {
+	position:relative;
+	z-index:10;
+	display:block;
+	text-decoration:none;
+}
+.DivSelectyze ul {
+	list-style:none;
+}
+.DivSelectyze .UlSelectize {
+	position:absolute;
+	z-index:9999;
+	display:none;
+}
+.DivSelectyze li a {
+	display:block;
+	text-decoration:none;
+}
+.optgroupTitle {
+	display:block;
+}
+/*******************************/
+/** END COMMON TO EVERY THEME **/
+/*******************************/
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+
+
+
+/*----------------------------------
+ You can add your own theme below !!
+ To add your theme, be sure to have 5 CSS elements :
+ 
+ .your_theme .selectyzeValue {} 		-> Appearance of your select element
+ .your_theme .UlSelectize {} 			-> Appearance of the dropdown list
+ .your_theme li a {} 					-> Appearance of the items into the dropdown list
+ .your_theme li a:hover {} 				-> items on hover
+ .your_theme .optgroupTitle {} 			-> Appearance of the optgroup label !! only if you have <optgroup> element into your list 
+ 
+ 
+ that's all ! \o/
+----------------------------------*/
+	/****************/
+	/** GREY THEME **/
+	/*****************/
+	.select1 .selectyzeValue {
+	font:bold 12px Arial, Helvetica, sans-serif;
+	color:#453f3f;
+	width:115px;
+	height:27px;
+	background:url(../images/quater_select_box.png) no-repeat; background-position: center right;
+	line-height:27px;margin:0px 0px 0px 0px;
+	padding:0px 0px 0px 10px;
+}
+.select1 .UlSelectize {
+	top:25px;
+	left:0px;
+	min-width:125px;
+	height:auto;
+	overflow:hidden;
+	overflow-x:hidden;
+	
+	background-color:#c8c8c8;
+	margin:0px;
+	padding:0px;margin-left:0px;
+}
+.select1 li a {
+	height:25px;
+	font:normal 11px Verdana, Geneva, sans-serif;
+	color:#000000;
+	background-color:transparent;
+	padding-left:5px;
+	border:1px solid #fff;
+	line-height:27px;border-bottom:1px dotted #CCC;
+}
+.select1 li a:hover {
+	color:#fff;
+	background-color:#969191;/** gradient bgcolors */
+	
+}
+.select1 .optgroupTitle {
+	margin-top:15px;
+	font-size:20px;
+	padding-left:10px;
+	background-color:#7fb32d;
+	color:#fff;
+}
+
+
+.select2 .selectyzeValue {
+	font:bold 12px Arial, Helvetica, sans-serif;
+	color:#453f3f;
+	width:137px;
+	background:url(../images/process_select_box.png) no-repeat; background-position: center right;
+	line-height:27px;margin:10px 0px 10px 0px;
+	padding:0px 0px 0px 10px;
+}
+.select2 .UlSelectize {
+	top:37px;
+	left:0px;
+	min-width:174px;
+	height:auto;
+	overflow:hidden;
+	overflow-x:hidden;
+	background-color:#c8c8c8;
+	margin:0px;
+	padding:0px;margin-left:0px;
+}
+.select2 li a {
+	height:27px;
+	font:normal 11px Verdana, Geneva, sans-serif;
+	color:#000000;
+	background-color:transparent;
+	padding-left:5px;
+	border:1px solid #fff;
+	line-height:27px;border-bottom:1px dotted #CCC;
+}
+.select2 li a:hover {
+	color:#fff;
+	background-color:#969191;/** gradient bgcolors */
+	
+}
+.select2 .optgroupTitle {
+	margin-top:15px;
+	font-size:20px;
+	padding-left:10px;
+	background-color:#7fb32d;
+	color:#fff;
+}
+
+
+.select3 .selectyzeValue {
+	font:bold 12px Arial, Helvetica, sans-serif;
+	color:#453f3f;
+	width:190px;
+	background:url(../images/admin_select_box.png) no-repeat; background-position: center right;
+	line-height:27px;margin:20px 0px 0px 25px;
+	padding:0px 0px 0px 10px;
+}
+.select3 .UlSelectize {
+	top:47px;
+	left:27px;
+	min-width:190px;
+	height:auto;
+	overflow:hidden;
+	overflow-x:hidden;
+	background-color:#c8c8c8;
+	margin:0px;
+	padding:0px;margin-left:0px;
+}
+.select3 li a {
+	height:27px;
+	font:normal 11px Verdana, Geneva, sans-serif;
+	color:#000000;
+	background-color:transparent;
+	padding-left:10px;
+	border:1px solid #fff;
+	line-height:27px;border-bottom:1px dotted #CCC;
+}
+.select3 li a:hover {
+	color:#fff;
+	background-color:#969191;/** gradient bgcolors */
+	
+}
+.select3 .optgroupTitle {
+	margin-top:15px;
+	font-size:20px;
+	padding-left:10px;
+	background-color:#7fb32d;
+	color:#fff;
+}
+
+
+.select4 .selectyzeValue {
+	font:bold 12px Arial, Helvetica, sans-serif;
+	color:#453f3f;
+	width:190px;
+	background:url(../images/admin_select_box.png) no-repeat; background-position: center right;
+	line-height:27px;margin:0px 0px 0px 0px;
+	padding:0px 0px 0px 10px;
+}
+.select4 .UlSelectize {
+	top:25px;
+	left:0px;
+	min-width:200px;
+	height:auto;
+	overflow:hidden;
+	overflow-x:hidden;
+	
+	background-color:#c8c8c8;
+	margin:0px;
+	padding:0px;margin-left:0px;
+}
+.select4 li a {
+	height:27px;
+	font:normal 11px Verdana, Geneva, sans-serif;
+	color:#000000;
+	background-color:transparent;
+	padding-left:10px;
+	border:1px solid #fff;
+	line-height:27px;border-bottom:1px dotted #CCC;
+}
+.select4 li a:hover {
+	color:#fff;
+	background-color:#969191;/** gradient bgcolors */
+	
+}
+.select4 .optgroupTitle {
+	margin-top:15px;
+	font-size:20px;
+	padding-left:10px;
+	background-color:#7fb32d;
+	color:#fff;
+}
+
+
+.select5 .selectyzeValue {
+	
+	font:bold 12px Arial, Helvetica, sans-serif;
+	color:#453f3f;
+	width:190px;
+	background:url(../images/admin_select_box.png) no-repeat; background-position: center right;
+	line-height:27px;margin:0px 0px 0px 0px;
+	padding:0px 0px 0px 10px;
+	}
+	
+
+.select5 .UlSelectize {
+	top:27px;
+	left:0px;
+	min-width:190px;
+	height:auto;
+	overflow:hidden;
+	overflow-x:hidden;
+	background-color:#c8c8c8;
+	margin:0px;
+	padding:0px;margin-left:0px;
+}
+.select5 li a {
+	height:27px;
+	font:font:normal 16px 'lucida_sansdemibold_roman';color:#45494b;text-align:left;
+	color:#000000;
+	background-color:transparent;
+	padding-left:10px;
+	border:1px solid #fff;
+	line-height:25px;border-bottom:1px dotted #CCC;
+}
+.select5 li a:hover {
+	color:#fff;
+	
+	
+}
+.select5 .optgroupTitle {
+	margin-top:15px;
+	font-size:20px;
+	padding-left:10px;
+	background-color:#7fb32d;
+	color:#fff;
+}
+
+.select6 .selectyzeValue {
+	font:bold 12px Arial, Helvetica, sans-serif;
+	color:#453f3f;
+	width:255px;
+	height:27px;
+	background:url(../images/job_select_box.png) no-repeat;
+	padding-left:12px;
+	line-height:27px;margin:0px 0px 0px 0px;
+}
+
+.select6 .UlSelectize {
+	top:28px;
+	left:0px;
+	width:255px;
+	height:auto;
+	overflow:hidden;
+	overflow-x:hidden;
+	background-color:#d8d8d8;
+	margin:0px;
+	padding:0px;margin-left:0px;
+}
+.select6 li a {
+	height:27px;
+	font:normal 11px Verdana, Geneva, sans-serif;
+	color:#000000;
+	background-color:transparent;
+	padding-left:10px;
+	border:1px solid #fff;
+	line-height:25px;border-bottom:1px dotted #CCC;
+}
+.select6 li a:hover {
+	color:#fff;
+	
+	
+}
+.select6 .optgroupTitle {
+	margin-top:15px;
+	font-size:20px;
+	padding-left:10px;
+	background-color:#7fb32d;
+	color:#fff;
+}
+
+
+
+
+.select7 .selectyzeValue {
+	font:bold 12px Arial, Helvetica, sans-serif;
+	color:#453f3f;	
+	/*font:normal 12px Arial, Helvetica, sans-serif;
+	color:#7e7e7e;*/
+	width:196px;
+	height:33px;
+	background:url(../images/drp_down_bg.png) no-repeat; background-position: center right;
+	padding-left:5px;
+	line-height:33px;margin:0px 0px 0px 0px;
+	padding-left:10px;
+	background-color:#d8d8d8;
+	/*border:1px solid #9f9b9b;*/
+}
+	
+
+.select7 .UlSelectize {
+	top:33px;
+	left:5px;
+	width:206px;
+	height:33px;
+	/*overflow:hidden;
+	overflow-x:hidden;
+	background-color:#d8d8d8;*/
+	background-color:c8c8c8;
+	margin:0px;
+	padding:0px;margin-left:0px;
+}
+.select7 li a {
+	height:25px;
+	/*font:normal 11px Verdana, Geneva, sans-serif;*/
+	font:font:normal 16px 'lucida_sansdemibold_roman';color:#45494b;text-align:left;
+	color:#000000;
+	background-color:transparent;
+	padding-left:10px;
+	border:1px solid #fff;
+	line-height:25px;border-bottom:1px dotted #CCC;
+}
+.select7 li a:hover {
+	color:#fff;
+	
+	
+}
+.select7 .optgroupTitle {
+	margin-top:15px;
+	font-size:20px;
+	padding-left:10px;
+	background-color:#7fb32d;
+	color:#fff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*******************/
+	/** FIREFOX THEME **/
+	/*******************/
+	.firefox .selectyzeValue {
+	font:12px/22px Arial;
+	color:#000;
+	width:185px;
+	height:22px;
+	background:url('bg_ff.jpg') no-repeat;
+	padding-left:15px
+}
+.firefox .UlSelectize {
+	top:21px;
+	left:0px;
+	min-width:241px;
+	border:1px solid #bebebf;
+	background-color:#fff
+}
+.firefox li a {
+	height:20px;
+	font:12px/20px Arial;
+	background-color:transparent;
+	color:#000;
+	padding-left:10px;
+	border:1px solid #fff
+}
+.firefox li a:hover {
+	color:#fff;
+	background-color:#3399ff;
+}
+.firefox .optgroupTitle {
+	margin-top:15px;
+	font-size:17px;
+	font-style:italic;
+	padding-left:10px;
+	background-color:#fff;
+	color:#000;
+	font-weight:700
+}
+/****************/
+	/** CSS3 THEME **/
+	/****************/
+	.css3 .selectyzeValue {
+	font:14px/46px Arial;
+	color:#666666;
+	text-shadow:1px 1px 0px #fff;
+	text-align:center;
+	width:195px;
+	height:46px;
+	background:url('bg_css3.png') no-repeat;
+}
+.css3 .UlSelectize {
+	top:36px;
+	left:2px;
+	width:190px;
+	background-color:#222222
+}
+.css3 li a {
+	font:12px/20px Arial;
+	background-color:transparent;
+	color:#fff;
+	text-align:center;
+	padding:3px 0
+}
+.css3 li a:hover {
+	background-color:#3e3d3d;
+}
+.css3 .optgroupTitle {
+	margin-top:15px;
+	font-size:17px;
+	font-style:italic;
+	padding-left:10px;
+	background-color:#3e3d3d;
+	color:#fff;
+	font-weight:700
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

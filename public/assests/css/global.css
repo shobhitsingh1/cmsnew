@@ -1,0 +1,727 @@
+/* CSS Document */
+/*
+---------------------------------------
+	01. Default Element
+---------------------------------------
+*/
+*{padding:0px;margin:0px;}
+html, body {
+	height: 100%;
+}
+body {padding:0px;margin:0px;background:#FFF;font:normal 12px Arial, Helvetica, sans-serif;color:#000;line-height:18px;}
+div, h1, h2, h3, h4, h5, h6, p, span, input, textarea, select, form, strong, img, a, ul, li {padding:0px;margin:0px;}
+img, a, input, textarea {text-decoration:none;outline:none;border:none;}
+*{border:none;outline:none;/*text-decoration:none;*/}
+.left {float:left;}
+.right {float:right;}
+.clear {clear:both;line-height:1px;}
+@font-face {
+font-family: 'ITCAvantGardeStd-DemiCn';
+src: url('itcavantgardestd-demicn.eot');
+src: url('itcavantgardestd-demicn.eot?#iefix') format('embedded-opentype'),
+		 url('itcavantgardestd-demicn.woff') format('woff'),
+		 url('itcavantgardestd-demicn.ttf') format('truetype'),
+		 url('itcavantgardestd-demicn.svg#itcavantgardestd-demicn') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+@font-face {
+font-family: 'AvantGardeBkBTDemi';
+src: url('avgardd-webfont.eot');
+src: url('avgardd-webfont.eot?#iefix') format('embedded-opentype'),
+ url('avgardd-webfont.woff') format('woff'),
+ url('avgardd-webfont.ttf') format('truetype'),
+ url('avgardd-webfont.svg#AvantGardeBkBTDemi') format('svg');
+font-weight: normal;
+font-style: normal;
+
+}
+@font-face {
+font-family: 'AvantGardeBkBTBook';
+src: url('avgardn-webfont.eot');
+src: url('avgardn-webfont.eot?#iefix') format('embedded-opentype'),
+ url('avgardn-webfont.woff') format('woff'),
+ url('avgardn-webfont.ttf') format('truetype'),
+ url('avgardn-webfont.svg#AvantGardeBkBTBook') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+
+
+h1{font:normal 33.38px 'ITCAvantGardeStd-DemiCn';color:#000000;margin:0px;padding:0px;text-align:center;line-height:50px;}
+h1 span{font:normal 16.94px 'ITCAvantGardeStd-DemiCn';color:#f47b20;margin:0px;padding:0px;text-align:center;line-height:normal;}
+
+/*
+---------------------------------------
+	02. Container & Wrapper
+---------------------------------------
+*/
+#top_container {width:100%;height:100%;background:url(../images/top_bg.jpg);float:left;/*min-height:680px*/min-height:680px;position:relative;}
+.wrapper {width:948px;height:auto;margin:0 auto;}
+
+
+
+/*
+---------------------------------------
+	03. Top Section
+---------------------------------------
+*/
+
+
+h1.welcome {/*font:normal 84.7px*/ font:normal 50.7px 'ITCAvantGardeStd-DemiCn';color:#f47b20;border-bottom:1px solid #f47b20;margin:0px;padding:30px 0px 0px 0px;text-align:left;line-height:64px;}
+.welcome_left{width:478px;height:auto;float:left;margin-left:82px;margin-top:159px;}
+.welcome_right{width:318px;height:auto;float:left;margin-top:47px;position:relative;}
+.welcome_left h2 {font:normal 38px 'AvantGardeBkBTBook';color:#000;line-height:40px;}
+.welcome_left h1 {font:normal 14px 'AvantGardeBkBTBook';color:#000;line-height:20px; text-align:justify;}
+.logout{font:bold 14px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#80c342;margin:0px;padding:0px;position:absolute;right:-70px;top:-110px;text-decoration:underline;}
+
+
+.content_section{}
+
+/*-------------Cover Style Start-------------*/
+.cover_img_holder{position:relative;width:902px;position:relative;padding-left:46px;}
+.left_arw{position:absolute;left:0; top:254px; z-index:1; /*top:274px; top:94px;*/}
+.right_arw{position:absolute;right:0; top:254px; z-index:1; /*top:274px; top:94px;*/}
+.cover_text{width:185px;float:left;padding-top:83px; /*padding-left:30px; margin-left:20px;*/}
+.cover_text p{font:normal 16.94px 'ITCAvantGardeStd-DemiCn';color:#000000;margin:0px;padding:0px;text-align:center;line-height:normal;}
+.cover_text p a{font:normal 12.07px 'ITCAvantGardeStd-DemiCn';color:#000000;margin:0px;padding:0px;line-height:normal;}
+/*.cover_img{width:157px;height:303px;float:left;padding:34px 33px 0px 32px;}*/
+.cover_img{width:157px;height:303px;float:left;padding:34px 33px 0px 32px;}
+.cover_img:hover{background:url(../images/img_hover.png) no-repeat;font-weight:bold;}
+.cover_img.active{background:url(../images/img_hover.png) no-repeat;font-weight:bold;}
+.cover_img h2{font:normal 16.94px 'ITCAvantGardeStd-DemiCn';color:#000000;margin:0px;padding:15px 0px 0px 0px;text-align:center;}
+.cover_img h2 a{color:#000;}
+#btm_nav{margin:0px;padding:0px;width:948px;height:17px;background:url(../images/nav_bg.png) repeat-x;margin-top:35px;margin-bottom:19px;position:absolute;bottom:0;}
+#btm_nav ul{margin:0px;padding:0px;list-style:none;}
+#btm_nav ul li{margin:0px;padding:0px;float:left;height:17px;line-height:17px;}
+#btm_nav ul li a{margin:0px 30px;padding:0px 1px;float:left;font:normal 16.94px 'ITCAvantGardeStd-DemiCn';color:#333333;background-color:#fabd90;height:17px;line-height:17px; cursor:default;}
+#btm_nav ul li a.active, #btm_nav ul li a:hover{font:bold 16.94px 'ITCAvantGardeStd-DemiCn';color:#000000; }
+/*-------------Cover Style End-------------*/
+
+
+/*-------------Contact Info Start-------------*/
+.contact_info{width:646px;float:left;margin-left:137px;}
+.form_box{width:297px;float:left;}
+.form_boxbill{width:297px;float:left;}
+.form_box_service{width:594px;float:left;}
+.contact_textbox{width:248px;height:35px;background:url(../images/contact_textbox.png) no-repeat left top;font:normal 16.94px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px 0px 12px 0px;padding:0px 16px;line-height:35px;}
+.contact_textbox2{width:107px;height:35px;background:url(../images/contact_textbox2.png) no-repeat left top;font:normal 16.94px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px 3px 12px 0px;padding:0px 16px;line-height:35px;}
+.contact_textbox3{width:78px;height:35px;background:url(../images/contact_textbox3.png) no-repeat left top;font:normal 16.94px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px 3px 12px 0px;padding:0px 12px;line-height:35px;}
+
+.contact_phonebox{width:66px;height:35px;background:url(../images/contact_phonebox.png) no-repeat left top;font:normal 16.94px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px 1px 12px 0px;padding:0px 12px;line-height:35px;}
+
+.contact_phonebox2{width:61px;height:35px;background:url(../images/contact_phonebox.png) no-repeat center top;font:normal 16.94px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px 1px 12px 2px;padding:0px 12px;line-height:35px;}
+
+/*-------------Contact Info End-------------*/
+
+
+/*-------------Letter Start-------------*/
+ul.letter{margin:0px;padding:0px 45px 0px 0px;list-style:none;text-align:center;}
+ul.letter li{margin:0px;padding:0px;display:inline-block;width:219px;height:104px;line-height:29px;}
+ul.letter li a{margin:0px;padding:22px 0px 0px 0px;font:normal 25.41px 'ITCAvantGardeStd-DemiCn';color:#000000;display:inline-block;width:219px;height:82px;text-align:center;line-height:29px;}
+li#inactive_link_123 {display: none;}
+ul.letter li#inactive_link_123 a {background-image: none !important;}
+ul.letter li#inactive_link_123 a, ul.letter li#inactive_link_123:hover a {background-image: none !important;}
+ul.letter li.active a, ul.letter li:hover a{background:url(../images/letter_hover.png) no-repeat;}
+ul.letter li#inactive_link_123 a, ul.letter li#inactive_link_123:hover a {background-image: none !important;}
+.custom_left{width:390px;/*width:471px; margin-left:85px;*/float:left;margin-left:130px;}
+.custom_right{/*width:246px;*/width:230px;float:left;}
+.custom_left p{font:normal 12.7px 'ITCAvantGardeStd-DemiCn';color:#000000;margin:0px;padding:0px 0px 5px 0px;text-align:center;/*width:220px;*/width:310px;}
+.drag_box{-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;behavior: url(ie-css3.htc);position:relative;z-index:1;width:230px;min-height:65px;background-color:#ebebeb;padding-top:16px;}
+.drag_box p{font:normal 16.94px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px;padding:0px 0px 0px 0px;text-align:center;line-height:20px;}
+.drag_box p span{font:bold 25.41px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;font-style:italic;margin:0px;padding:0px;line-height:20px;}
+.custom_letter_form{width:308px;margin-left:271px;}
+.custom_letter_textbox{width:276px;height:35px;background:url(../images/custom_textbox.png) no-repeat left top;font:normal 16.94px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#999999;margin:0px 0px 0px 0px;padding:0px 16px;float:left;line-height:normal;}
+.custom_letter_form p{font:normal 12.7px 'ITCAvantGardeStd-DemiCn' ;color:#000000;margin:0px;padding:0px;text-align:center;text-transform:uppercase;line-height:26px;}
+
+ul.closing{margin:0px;padding:0px 45px 0px 0px;list-style:none;text-align:center;}
+ul.closing li{margin:0px 30px 27px 30px;padding:0px;display:inline-block;width:183px;height:72px;line-height:29px;}
+ul.closing li a{margin:0px;padding:24px 0px 0px 0px;font:normal 25.41px 'ITCAvantGardeStd-DemiCn';color:#000000;display:inline-block;width:183px;height:48px;text-align:center;line-height:29px;}
+ul.closing li.active a, ul.closing li:hover a{background:url(../images/closing_hover.png) no-repeat;font-weight:bold;}
+.closing_textbox{width:454px;margin-left:199px;margin-top:47px;text-align:center;}
+.closing_submit{float:left;margin:6px 0px 0px 13px;}
+.closing_textbox p{font:bold 16.94px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;font-style:italic;margin:0px;padding:0px;text-align:center;}
+
+ul.signature{margin:0px;padding:0px 45px 0px 0px;list-style:none;text-align:center;}
+ul.signature li{margin:0px 120px 27px 120px;padding:0px;display:inline-block;width:98px;height:74px;line-height:29px;}
+ul.signature li a{margin:0px;padding:24px 0px 0px 0px;font:normal 25.41px 'ITCAvantGardeStd-DemiCn';color:#000000;display:inline-block;width:98px;height:50px;text-align:center;line-height:29px;}
+ul.signature li.active a, ul.signature li:hover a{background:url(../images/signature_hover.png) no-repeat;font-weight:bold;}
+
+.letter_hover_left{width:172px;float:left;}
+.letter_hover_left ul{margin:0px 6px;padding:0px;list-style:none;width:160px;}
+.letter_hover_left ul li{margin:0px;padding:0px 0px 0px 0px;font:normal 21.18px 'ITCAvantGardeStd-DemiCn';color:#000000;text-align:left;}
+.letter_hover_left ul li a{margin:0px;padding:0px 6px 0px 17px;font:normal 19.18px 'ITCAvantGardeStd-DemiCn';color:#000000;background:url(../images/line.jpg) no-repeat 17px bottom;text-align:left;}
+.letter_hover_left ul li ul{margin:0px;padding:11px 0px 11px 0px;}
+.letter_hover_left ul li ul li{background-image:none;margin-bottom:1px;line-height:20px;}
+.letter_hover_left ul li ul li:hover{background-color:#ff9f57;}
+.letter_hover_left ul li ul li.current{background-color:#ff9f57;}
+.letter_hover_left ul li ul li a{font:normal 16.94px 'ITCAvantGardeStd-DemiCn';color:#000000;background:url(../images/bullet.png) no-repeat 17px 7px;margin:0px;padding:0px 0px 0px 32px;line-height:20px;}
+
+.letter_hover_right{width:349px;float:left;margin-left:18px;}
+.letter_hover_right h3{font:bold 16.94px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#f47b20;margin:0px;padding:5px 0px 12px 0px;text-align:center;}
+.letter_hover_right p{font:normal 16.94px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px;padding:0px 0px 16px 0px;text-align:left;line-height:18px;}
+.white_mid{background:url(../images/white_mid.png) repeat-y;width:172px;min-height:308px;}
+
+.popup_form{width:538px;margin:0 auto;}
+.popup_box1{width:296px;float:left;margin-bottom:5px;}
+.popup_box2{width:124px;float:left;}
+.popup_box3{width:114px;float:left;}
+.popup_textbox{width:256px;height:29px;background:url(../images/popup_textbox.png) no-repeat left top;font:normal 14px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000;margin:0px 0px 0px 0px;padding:0px 16px;float:left;line-height:19px;}
+
+.type_letterbox{width:418px;}
+.icon_box{margin-left:4px;margin-bottom:9px;}
+.icon_box a{float:left;margin-right:5px;}
+.popup_textarea{width:379px;height:133px;background:url(../images/popup_textrarea.png) no-repeat;resize:none;font:normal 14px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#999999;margin:0px 0px 8px 0px;padding:15px;}
+.type_letterbox p{font:normal 14px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px;padding:0px 0px 0px 5px;float:left;width:390px;line-height:33px;}
+.type_letterbox p a{float:right;}
+/*-------------Letter End-------------*/
+
+
+
+
+
+/*-------------Billing Start-------------*/
+.billing_box{width:247px;float:left;margin-left:306px;position:relative;}
+.billing_textbox{width:205px;height:39px;background:url(../images/billing_textbox.png) no-repeat left top;font:normal 16.94px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px 0px 0px 0px;padding:0px 16px;float:left;line-height:39px;}
+.billing_textbox22{width:126px;height:39px;background:url(../images/billing_textbox.png) no-repeat left top;font:normal 16.94px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px 0px 0px 0px;padding:0px 16px;float:left;line-height:39px;}
+.billing_textbox2{width:111px;height:39px;background:url(../images/billing_textbox.png) no-repeat left top;font:normal 16.94px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px 0px 0px 0px;padding:0px 16px;float:left;line-height:39px;}
+.billing_textbox3{width:107px;height:38px;background:url(../images/billing_textbox4.png) no-repeat left top;font:normal 16.94px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px 0px 0px 0px;padding:0px 16px;float:left;line-height:38px;}
+ul.billing{margin:0px;padding:0px 45px 0px 0px;list-style:none;text-align:center;}
+ul.billing li{margin:0px 22px 27px 22px;padding:0px;display:inline-block;width:199px;height:72px;line-height:29px;}
+ul.billing li a{margin:0px;padding:22px 0px 0px 0px;font:normal 25.41px 'ITCAvantGardeStd-DemiCn';color:#000000;display:inline-block;width:199px;height:50px;text-align:center;line-height:29px;}
+ul.billing li.active a, ul.billing li:hover a{background:url(../images/billing_hover.png) no-repeat;font-weight:bold;}
+
+.billing_box2{width:526px;float:left;/*margin-left:170px;*/margin-left:210px;position:relative;}
+.inner_billing_box{width:247px;float:left;}
+/*-------------Billing End-------------*/
+
+
+/*-------------Shipping Start-------------*/
+.shipping_box{width:247px;float:left;position:relative;}
+.shipping_box_text{width:178px;float:left;margin-left:173px;padding-top:45px;}
+.checkbox1{float:left;margin:3px 8px 0px 0px;padding:0px;}
+.shipping_box_text p{float:left;font:normal 14px 'ITCAvantGardeStd-DemiCn';color:#000000;margin:0px;padding:0px;}
+/*-------------Shipping End-------------*/
+
+
+
+/*-------------Order Start-------------*/
+.order_box{width:226px;float:left;margin:0px 0px 0px 5px;}
+.order_mid{background:url(../images/order_mid.png) repeat-y;width:226px;padding:13px 0px 10px 0px; text-align:left;}
+.order_top{background:url(../images/order_top.png) no-repeat;width:226px;height:28px;}
+.order_top h2{font:normal 12.7px 'ITCAvantGardeStd-DemiCn';color:#ffffff;margin:0px;padding:0px 12px 0px 10px;text-transform:uppercase;line-height:28px; text-align:left;}
+.order_top h2 a{float:right;color:#ff9f57;}
+.order_top h2 .span_text{float:right;color:#ff9f57;}
+.order_mid p{font:normal 12.7px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px;padding:0px 12px 0px 12px;line-height:20px;} 
+.order_mid p a{color:#000;}
+.order_box h3{font:bold 21px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000;text-align:center;margin:0px;padding:10px 0px 10px 0px;}
+.order_box h3 span{font-size:50px;}
+.order_box h1{font:bold 16px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000;text-align:center;margin:0px;padding:10px 0px 10px 0px;}
+
+.order_white ul{margin:0px;padding:0px 45px 0px 20px;text-align:center;list-style:none;}
+.order_white ul li{margin:0px 30px;padding:25px 0px 0px 0px;float:left;background:url(../images/order_white_box.png) no-repeat;width:206px;min-height:230px;}
+.order_white ul li h2{font:normal 33.88px 'ITCAvantGardeStd-DemiCn';color:#80c342;margin:0px;padding:13px 0px 0px 0px;text-align:center;line-height:22px;}
+.order_white ul li h3{font:normal 16.94px 'ITCAvantGardeStd-DemiCn';color:#000000;margin:0px;padding:13px 0px 0px 0px;text-align:center;line-height:22px;}
+.order_white h4{font:normal 16.94px 'ITCAvantGardeStd-DemiCn';color:#000000;margin:0px;padding:0px;text-align:center;}
+.order_white h4 a{font-weight:bold;color:#000;}
+
+
+.form_box2{width:337px;float:left;}
+.form_box2 p{float:left;width:48px;margin-left:29px;margin-right:6px;font:normal 16.94px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#555555;text-align:right;padding:0px;line-height:32px;}
+/*-------------Order End-------------*/
+
+
+.design_review{}
+.design_review p{font:normal 16.94px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#555555;float:left;margin:0px;padding:0px 0px 20px 0px;}
+.design_review .radio_btn{margin:5px 8px;padding:0px;float:left;}
+.design_review p span{color:#000000;padding-right:30px;}
+.thankyou_page{width:384px;margin:0 auto;}
+.thankyou_page p{font:normal 14px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px;padding:10px 0px 0px 0px;text-align:center;}
+.thankyou_page p a{color:#80c342;font-weight:bold;text-decoration:underline;}
+.thankyou_page h2{font:normal 56px 'ITCAvantGardeStd-DemiCn';color:#000000;margin:0px;padding:0px 0px 18px 0px;text-align:center;}
+.thankyou_page h3{font:normal 28px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px;padding:0px 0px 20px 0px;line-height:31px;}
+
+
+/*
+---------------------------------------
+	03. Bottom Section
+---------------------------------------
+*/
+#bottom_container {width:100%;background:url(../images/footer_bg.jpg) repeat-x;float:left;height:auto;min-height:90px;padding-top:32px;}
+#bottom_container p {font:normal 16.94px 'ITCAvantGardeStd-DemiCn';color:#FFF;padding-top:4px;line-height:30px;}
+
+/*Added Styles */
+
+
+.save-btn{
+background:url(../images/start_07.png) no-repeat center top;
+height:22px;
+width:106px; 
+border:none;
+color:#FFFFFF;
+cursor:pointer;
+}
+
+.continue-btn{
+background:url(../images/continue_btn.png) no-repeat center top;
+width:117px;
+height:32px;
+border:none;
+color:#FFFFFF;
+cursor:pointer;
+}
+
+.submit_btn{
+background:url(../images/submit_btn.png) no-repeat center top;
+width:128px;
+height:27px;
+border:none;
+cursor:pointer;
+}
+
+.start_btn{
+background:url(../images/btn_start.png) no-repeat center top;
+width:128px;
+height:27px;
+border:none;
+cursor:pointer;
+}
+
+.save-quit{
+background:url(../images/save_btn.png) no-repeat center top;
+width:129px;
+height:29px;
+border:none;
+cursor:pointer;
+}
+
+.skip-btn{
+background:url(../images/skip_btn.png) no-repeat center top;
+width:137px;
+height:33px;
+border:none;
+cursor:pointer;
+float:left;
+margin:0 0 0 30px;
+}
+
+.use-let-time-btn{
+background:url(../images/button_usethesetimes_1.png) no-repeat center top;
+width:137px;
+height:33px;
+border:none;
+cursor:pointer;
+float:left;
+}
+
+.showError{
+font-family:Arial, Helvetica, sans-serif;	
+font-size : 12px;
+font-weight:bold;
+color:#FF3300;
+text-align:center;
+height:20px;
+}
+
+.use-let-btn{
+background:url(../images/button_usethisletter.png) no-repeat center top;
+width:106px;
+height:22px;
+border:none;
+cursor:pointer;
+}
+
+.okBtn{
+background:url(../images/ok_btn.png) no-repeat center top;
+width:122px;
+height:32px;
+border:none;
+cursor:pointer;
+}
+
+.placeOrdBtn{
+background:url(../images/order_btn.png) no-repeat center top;
+width:117px;
+height:30px;
+border:none;
+cursor:pointer;
+}
+
+.acceptBtn{
+background:url(../images/accept_btn.png) no-repeat center top;
+width:116px;
+height:32px;
+border:none;
+cursor:pointer;
+}
+
+.approveBtn{
+background:url(../images/btn_approve.png) no-repeat center top;
+width:130px;
+height:30px;
+border:none;
+cursor:pointer;
+}
+
+.makeChangeBtn{
+background:url(../images/btn_make_changes.png) no-repeat center top;
+width:130px;
+height:30px;
+border:none;
+cursor:pointer;
+}
+
+.agreeBtn{
+background:url(../images/btn_agree.png) no-repeat center top;
+width:129px;
+height:28px;
+border:none;
+cursor:pointer;
+}
+
+.cancelBtn{
+background:url(../images/btn_cancel.png) no-repeat center top;
+width:129px;
+height:28px;
+border:none;
+cursor:pointer;
+}
+
+
+.chkSBSame{
+background:url(../images/checked-img.png) no-repeat center top;
+width:16px;
+height:15px;
+float:left;
+margin-right:10px;
+}
+.nochkSBSame{
+background:url(../images/nonchecked-img.png) no-repeat center top;
+width:13px;
+height:13px;
+float:left;
+margin-right:10px;
+}
+
+.checkShipping
+{
+width:20px;
+height:20px;
+float:left;
+cursor:pointer;
+}
+
+.divSBSameTxt{
+vertical-align:top;
+text-align:left;
+font-family: 'ITCAvantGardeStd-DemiCn';
+font-size:14px;
+}
+
+a.reviewlink:link{
+	font-size:12px;
+	font-weight:bold;
+	color:#000000;
+	text-decoration:none;
+}
+a.reviewlink:active{
+	font-size:12px;
+	font-weight:bold;
+	color:#000000;
+	text-decoration:none;
+}
+a.reviewlink:visited{
+	font-size:12px;
+	font-weight:bold;
+	color:#000000;
+	text-decoration:none;
+}
+a.reviewlink:hover{
+	font-size:12px;
+	font-weight:bold;
+	color:#FF9F57;
+	text-decoration:underline;
+}
+
+.progsTick{
+background:url(../images/right_img.png) no-repeat;
+width:44px;
+height:51px;
+margin-left:25px;
+}
+
+.bullet_span{
+	height:28px; 
+	vertical-align:middle;
+	text-align:right;
+}
+
+/*
+----------------------------------
+Existing Users
+----------------------------------
+*/
+
+.box_holder_left{width:380px; float:left; font:normal 16px 'ITCAvantGardeStd-DemiCn'; color:#000; padding:0px; line-height:22px; margin:0px 38px 25px 30px; text-align:justify;}
+
+.box_holder_right{width:380px; float:left; font:normal 16px 'ITCAvantGardeStd-DemiCn'; color:#000;padding:0px; line-height:22px; margin:0px 30px 25px 0px; text-align:justify;}
+
+/*.con_improw2{ width:407px; height:34px; margin:0px 0px 0px 27px; padding:0px; border: none; background-color:transparent;float:left; background:url(../images/input_bg.png) no-repeat;}
+.con_imptext2{width:390px; height:30px; margin:0px 0px; padding:0px 0px 0px 5px; text-decoration:none; text-align:left; outline:none; border:none;  border: none; background-color:transparent;font:normal 16px "Trebuchet MS", Arial, Helvetica, sans-serif; color:#999999;}
+*/
+
+.con_improw2{ width:181px; height:34px; margin:0px 0px 0px 0px; padding:0px; border: none; background-color:transparent;float:left; background:url(../images/input_bg.png) no-repeat;}
+.con_imptext2{width:170px; height:30px; margin:0px 0px; padding:0px 0px 0px 5px; text-decoration:none; text-align:left; outline:none; border:none;  border: none; background-color:transparent;font:normal 16px "Trebuchet MS", Arial, Helvetica, sans-serif; color:#999999;}
+
+
+.bottom_btn{width:auto; float:left; margin:0px 10px 0px 0px;}
+.agree{width:129px; height:28px;background:url(../images/btn_agree.png) no-repeat; border:none; background-color:transparent; cursor:pointer; margin:0px 0px 0px 0px;}
+.cancle{width:129px; height:28px;background:url(../images/btn_cancle.jpg) no-repeat; border:none; background-color:transparent; cursor:pointer; margin:0px 0px 0px 0px;}
+.left_arw2{position:absolute;left:0;top:85px;}
+.right_arw2{position:absolute;right:0;top:85px;}
+
+.submit{border:none; background-color:transparent; cursor:pointer; margin:12px 0px 0px 0px !important;}
+
+#login_container{width:100%; float:left; background:url(../images/log-in.jpg); height:100%;}
+.login_wrapper{width:924px; margin:0 auto;}
+.white_area{ width:468px; padding:50px 35px 35px 35px; float:left; background-color:#ffffff; margin:48px 0px 48px 0px;
+ -moz-border-radius: 12px; /* Firefox */
+  -webkit-border-radius: 12px; /* Safari and Chrome */
+  border-radius: 12px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */  behavior: url(ie-css3.htc); /* This lets IE know to call the script on all elements which get the 'box' class */ position:relative;z-index:1;
+}
+.white_area h3{font:normal 20px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#555555;margin:0px;padding:0px 0px 0px 0px;line-height:22px; text-align:center;}
+.white_area h3 span{font:normal 20px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#f15a22;margin:0px;padding:0px 0px 0px 0px;line-height:22px; text-align:center;}
+.white_area h2{font:bold 48px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#555555;margin:0px;padding:0px 0px 0px 0px;line-height:52px; text-align:center;}
+.orange_box{ width:223px; padding:0px 0px 22px 0px; float:left; background-color:#f47b20; margin:50px 22px 0px 0px;
+ -moz-border-radius: 10px; /* Firefox */
+  -webkit-border-radius: 10px; /* Safari and Chrome */
+  border-radius: 10px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */  behavior: url(ie-css3.htc); /* This lets IE know to call the script on all elements which get the 'box' class */ position:relative;z-index:1;
+}
+.orange_box h2{font:bold 86px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#FFFFFF;margin:0px;padding:52px 0px 35px 0px;line-height:20px; text-align:center; text-transform:uppercase;}
+
+.orange_box2{ width:223px; float:left; margin:50px 22px 0px 0px;}
+.orange_box2 h2{font:bold 86px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#FFFFFF;margin:0px;padding:52px 0px 35px 0px;line-height:20px; text-align:center; text-transform:uppercase;}
+.orange_box2 h5{font:bold 42px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#FFFFFF;margin:0px;padding:0px 0px 0px 0px;line-height:36px; text-align:center;}
+.orange_box2 h5 span{font:bold 30px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#FFFFFF;margin:0px;padding:0px 0px 0px 0px;line-height:34px; text-align:center; text-transform:uppercase;}
+
+.white_txt_wrapper{width:170px; height:20px; margin:0 auto; background-color:#FFF; padding:5px 4px 3px 5px;}
+.white_txt_wrapper h3{font:bold 20px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#f47b20;margin:0px;padding:0px 0px 0px 0px;line-height:20px; text-align:center;}
+.orange_box h4{font:normal 14px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#FFFFFF;margin:0px;padding:10px 0px 15px 0px;line-height:20px; text-align:center; font-style:italic;}
+.orange_box h5{font:bold 42px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#FFFFFF;margin:0px;padding:0px 0px 0px 0px;line-height:36px; text-align:center;}
+.orange_box h5 span{font:bold 30px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#FFFFFF;margin:0px;padding:0px 0px 0px 0px;line-height:34px; text-align:center; text-transform:uppercase;}
+
+
+
+.red_box{ width:223px; padding:15px 0px 18px 0px; float:left; background-color:#f15a22; margin:50px 0px 0px 0px;
+ -moz-border-radius: 10px; /* Firefox */
+  -webkit-border-radius: 10px; /* Safari and Chrome */
+  border-radius: 10px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */  behavior: url(ie-css3.htc); /* This lets IE know to call the script on all elements which get the 'box' class */ position:relative;z-index:1;
+}
+.red_box h2{font:normal 20px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#FFFFFF;margin:0px;padding:0px 0px 0px 0px;line-height:35px; text-align:center; text-transform:uppercase; font-style:italic;}
+.red_box h3{font:bold 48px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#FFFFFF;margin:0px;padding:0px 0px 0px 0px; text-align:center; text-transform:uppercase; line-height:42px;}
+
+.red_box h4{font:bold 34px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#FFFFFF;margin:0px;padding:0px 0px 0px 0px; text-align:center; line-height:32px;}
+.red_box h5{font:bold 12px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#FFFFFF;margin:0px;padding:7px 0px 0px 0px; text-align:center; line-height:20px;}
+
+.red_box2{ width:223px; float:left; margin:50px 0px 0px 0px;}
+.red_box2 h2{font:normal 20px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#FFFFFF;margin:0px;padding:0px 0px 0px 0px;line-height:35px; text-align:center; text-transform:uppercase; font-style:italic;}
+.red_box2 h3{font:bold 48px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#FFFFFF;margin:0px;padding:0px 0px 0px 0px; text-align:center; text-transform:uppercase; line-height:42px;}
+
+.red_box2 h4{font:bold 34px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#FFFFFF;margin:0px;padding:0px 0px 0px 0px; text-align:center; line-height:32px;}
+.red_box2 h5{font:bold 12px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#FFFFFF;margin:0px;padding:7px 0px 0px 0px; text-align:center; line-height:20px;}
+
+
+
+
+
+
+
+
+
+.login_area{ width:200px; padding:50px 67px 50px 68px; float:right; background-color:#e2e2e2; margin:48px 0px 48px 0px;
+ -moz-border-radius: 12px; /* Firefox */
+  -webkit-border-radius: 12px; /* Safari and Chrome */
+  border-radius: 12px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */  behavior: url(ie-css3.htc); /* This lets IE know to call the script on all elements which get the 'box' class */ position:relative;z-index:1;
+}
+.login_improw{ width:200px; height:28px; margin:0px 0px 0px 0px; padding:0px; border: none; background-color:#FFF;float:left;
+-moz-border-radius: 7px; /* Firefox */
+  -webkit-border-radius: 7px; /* Safari and Chrome */
+  border-radius: 7px; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */  behavior: url(ie-css3.htc); /* This lets IE know to call the script on all elements which get the 'box' class */ position:relative;z-index:1;
+ }
+
+.login_imptext{width:185px; height:26px; margin:0px 0px; padding:0px 0px 0px 5px; text-decoration:none; text-align:left; outline:none; border:none;  border: none; background-color:transparent; font:normal 16px "Trebuchet MS", Arial, Helvetica, sans-serif; color:#959595;}
+.login{width:124px; height:24px;background:url(../images/btn_login.png) no-repeat; border:none; background-color:transparent; cursor:pointer; margin:0px 0px 25px 0px;}
+.login_area h2{font:normal 16px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#959595;margin:0px;padding:7px 0px 0px 0px; text-align:center; line-height:20px;}
+
+
+
+/*-------------Letter Start-------------*/
+/*ul.letter2{margin:0px;padding:0px 0px 0px 0px;list-style:none;text-align:center;}
+ul.letter2 li{margin:0px;padding:0px;display:inline-block;width:218px;height:104px;line-height:29px;}
+ul.letter2 li a{margin:0px;padding:10px 0px 0px 0px;font:normal 33.88px 'ITCAvantGardeStd-DemiCn';color:#000000;display:inline-block;width:218px;height:104px;text-align:center;line-height:38px; text-decoration:underline; margin:0px 0px 0px 0px;}
+ul.letter2 li a span{width:218px;margin:0px;padding:0px 0px 0px 0px;font:normal 16px 'ITCAvantGardeStd-DemiCn';color:#000000;display:inline-block;text-align:center;line-height:20px;}
+
+ul.letter2 li.current a, ul.letter2 li:hover a{background:url(../images/letter_hover2.png) no-repeat;}
+*/
+
+ul.letter2{margin:0px;padding:0px 0px 0px 0px;list-style:none;text-align:center;}
+ul.letter2 li{margin:0px;padding:0px;display:inline-block;width:154px;height:104px;line-height:29px;}
+ul.letter2 li a{margin:0px;padding:18px 0px 0px 0px;font:normal 33.88px 'ITCAvantGardeStd-DemiCn';color:#000000;display:inline-block;width:154px;height:124px;text-align:center;line-height:40px; text-decoration:underline; margin:0px 0px 0px 0px; cursor:default;}
+ul.letter2 li a span{margin:0px;padding:0px 0px 0px 0px;font:normal 16px 'ITCAvantGardeStd-DemiCn';color:#000000;display:inline-block;text-align:center;line-height:20px;}
+
+/*ul.letter2 li.current a, ul.letter2 li:hover a{background:url(../images/letter_hover2.png) no-repeat;}*/
+ul.letter2 li.current a{background:url(../images/letter_hover2.png) no-repeat;}
+
+ul.letter3{margin:0px;padding:0px 0px 0px 0px;list-style:none;text-align:center;}
+ul.letter3 li{margin:0px;padding:0px;display:inline-block;width:218px;height:104px;line-height:29px;}
+ul.letter3 li a{margin:0px;padding:10px 0px 0px 0px;font:normal 33.88px 'ITCAvantGardeStd-DemiCn';color:#000000;display:inline-block;width:218px;height:104px;text-align:center;line-height:38px; text-decoration:underline; margin:0px 0px 0px 0px;}
+ul.letter3 li a span{width:218px;margin:0px;padding:0px 0px 0px 0px;font:normal 16px 'ITCAvantGardeStd-DemiCn';color:#000000;display:inline-block;text-align:center;line-height:20px;}
+
+ul.letter3 li.current a, ul.letter3 li:hover a{background:url(../images/letter_hover3.png) no-repeat;}
+
+
+.welcome_left2{width:570px;height:auto;float:left; margin:0px 0px 0px 0px;}
+.welcome_content_holder{width:auto; float:left; margin:80px 0px 0px 64px;}
+.welcome_content_holder h2{font:normal 28px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000;line-height:24px; background:url(../images/nav_arrow.png) no-repeat; background-position:right 4px; margin:0px; padding:0px 28px 7px 0px; float:left;}
+.order_status_bg{
+	width:417px;
+	height:106px;
+	background:url(../images/order-status.png) no-repeat left top; 
+	margin-bottom:20px;
+}
+.order_status_bg span{
+	float:left;
+	width:100%;
+	text-align:center;
+	font-size:14px;
+	line-height:20px;
+	font-weight:bold;
+	margin-top:10px;
+}
+.order_status_content{
+	height:100%;
+	text-align:center;
+	font-size:12px;
+	line-height:15px;
+	padding:10px 10px 10px 10px;
+}
+
+.welcome_right2{width:372px;height:auto;float:right;margin-top:33px;position:relative;}
+.welcome_right2 h2{font:normal 34px 'ITCAvantGardeStd-DemiCn';color:#000;line-height:34px; text-align:left; padding:0px 0px 0px 30px;}
+
+.welcome_nav{width:500px; float:left; margin:0px 0px 0px 0px; line-height:14px;}
+ul.arrow li{padding:0px 7px;margin:5px 0px 0px 0px;list-style:none;background-image:url(../images/bullet.png);
+background-repeat:no-repeat;background-position:0px 5px; display:inline;}
+ul.arrow li a{ font:normal 15px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#707070; line-height:20px;}
+ul.arrow li a:hover,ul.arrow li a.active{ font:normal 15px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#707070; line-height:20px;  text-decoration:underline;}
+.nav_holder{width:100%; float:left; margin:0px 0px 15px 0px;}
+
+.welcome_link_wrapper{width:auto; float:left;}
+.welcome_link{width:129; float:left; margin:15px 3px 0px 30px;}
+.welcome_link2{width:129; float:left; margin:15px 3px 0px 14px;}
+
+.custom_left2{width:auto;float:left;margin-left:0px;}
+.custom_left2 p{font:normal 12.7px 'ITCAvantGardeStd-DemiCn';color:#000000;margin:0px;padding:0px 0px 5px 0px;text-align:center;width:220px;}
+
+.custom_right2{width:246px;float:left;}
+
+#btm_nav2{margin:0px;padding:0px;width:948px;height:17px;background:url(../images/nav_bg.png) repeat-x;margin-top:35px;margin-bottom:30px;position:absolute;bottom:0;}
+#btm_nav2 ul{margin:0px 0px 0px 0px;padding:0px;list-style:none;}
+#btm_nav2 ul li{margin:0px;padding:0px;float:left;height:17px;line-height:17px;}
+#btm_nav2 ul li a{margin:0px 50px 0px 50px;padding:0px 1px;float:left;font:normal 16.94px 'ITCAvantGardeStd-DemiCn';color:#333333;background-color:#fabd90;height:17px;line-height:17px; cursor:default;}
+#btm_nav2 ul li a.active, #btm_nav ul li a:hover{font:bold 16.94px 'ITCAvantGardeStd-DemiCn';color:#000000;}
+
+.thankyou_page2{width:420px;margin:0 auto;}
+.thankyou_page2 p{font:normal 14px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px;padding:10px 0px 0px 0px;text-align:center;}
+.thankyou_page2 p a{color:#80c342;font-weight:bold;text-decoration:underline;}
+.thankyou_page2 h2{font:normal 60px 'AvantGardeBkBTDemi';color:#000000;margin:0px;padding:0px 0px 60px 0px;text-align:center;}
+.thankyou_page2 h3{font:normal 28px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#000000;margin:0px;padding:0px 0px 20px 0px;line-height:31px; text-align:center;}
+
+.imgLoading{
+	top:30%;
+	left:46%;
+	position:absolute;
+	z-index:99;
+}
+#loadingImage{
+	display: none;
+    position:absolute;
+    width: 100%;
+    height: 100%;
+	z-index: 999;
+    top: 0;
+    left: 0;
+	    
+	/*opacity: 0.1;    
+	-ms-filter: alpha(opacity=0.1);
+	background-color:#F5D0A9;*/
+	/*background:url(../images/top_bg.jpg) repeat-x;*/
+}
+
+.nicEdit-main{
+	background:none;
+	white-space: pre-wrap;      /* CSS3 */   
+    white-space: -moz-pre-wrap; /* Firefox */    
+    white-space: -pre-wrap;     /* Opera <7 */   
+    white-space: -o-pre-wrap;   /* Opera 7 */    
+    word-wrap: break-word;      /* IE */
+}
+
+.callSelect{
+	width:202px;
+	border:1px solid #a0a8cf;
+}
+
+.callTxtArea{
+	width:200px;
+	border:1px solid #a0a8cf;
+}
+
+.btnSendRequest{
+	width:100px;
+	height:24px;
+	border:1px solid #a0a8cf;
+}
+
+.btnSRequest{
+	width:100px;
+	height:24px;
+	border:1px solid #a0a8cf;
+}
+
+.btnSRClose{
+	width:60px;
+	height:24px;
+	border:1px solid #a0a8cf;
+}
+.defaultCursorLnk{
+cursor:default;
+}
+.cltxtAreaComment{
+width:440px;
+height:170px;
+border:1px solid #666666;
+}
+
+.okBtn{
+background:url(../images/ok_btn.png) no-repeat center top;
+width:122px;
+height:32px;
+border:none;
+cursor:pointer;
+}
+
+.error, label.error {
+color: red;
+    font-style: italic;
+    margin-top: 5px;
+    padding-left: 10px;
+}
+.error_div {
+color: red;
+    font-style: italic;
+    margin-top: 5px;
+    padding-left: 10px;
+	height:20px;
+	width:190px;
+}
