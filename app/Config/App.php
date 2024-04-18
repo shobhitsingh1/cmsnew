@@ -17,7 +17,7 @@ class App extends BaseConfig
      * E.g., http://example.com/
      */
 //    public string $baseURL = 'http://localhost:8080/';
-    public $baseURL = 'http://localhost/cms_ci4/';
+    public $baseURL ='';
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
      * If you want to accept multiple Hostnames, set this.
@@ -40,7 +40,7 @@ class App extends BaseConfig
      * something else. If you have configured your web server to remove this file
      * from your site URIs, set this variable to an empty string.
      */
-    public string $indexPage = 'index.php';
+    public string $indexPage = '';
 
     /**
      * --------------------------------------------------------------------------
@@ -57,8 +57,8 @@ class App extends BaseConfig
      *
      * WARNING: If you set this to 'PATH_INFO', URIs will always be URL-decoded!
      */
-//    public string $uriProtocol = 'REQUEST_URI';
-    public string $uriProtocol = 'PATH_INFO';
+    public string $uriProtocol = 'REQUEST_URI';
+   // public string $uriProtocol = 'PATH_INFO';
 
     /*
     |--------------------------------------------------------------------------
