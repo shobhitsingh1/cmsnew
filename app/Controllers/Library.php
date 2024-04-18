@@ -7,6 +7,8 @@ use Config\Database;
 use App\Models\Tags;
 use App\Models\User;
 use CodeIgniter\Router\Router;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\PhpWord;
 
 class Library extends BaseController
 {
@@ -360,112 +362,10 @@ class Library extends BaseController
 
     function download()
     {
-//		$this->load->library('word');
-//		$this->load->database();
-//		$this->load->model('User');
-//		$this->load->model('Tags');
 
         $db = \Config\Database::connect();
 
         ///http://www.ahowto.net/php/creating-ms-word-document-using-codeigniter-and-phpword
-//		if(ISSET($_POST['checkBoxList'])){
-//			$checkBoxList = array();
-//			$group1 = '';
-//			$checkBoxList = explode(",",$_POST['checkBoxList']);
-//			$group1 = '';
-//			$group1 = $this->request->getPost('group1');
-//			$group2 = '';
-//			$group2 = $this->request->getPost('group2');
-//			$group3 = '';
-//			$group3 = $this->request->getPost('group3');
-//
-//            $order_by = " ORDER BY devotional_date ";
-//            if(ISSET($_REQUEST['sortby'])){
-//                if($_POST['sortby'] != 'counter' && $_POST['sortby'] != ''){
-//                    //$asc_by = " ".$this->request->getPost('sortedBy');
-//                   // $order_by = " ORDER BY ".$this->request->getPost('sortby')." ". $asc_by;
-//                    $this->db->order_by($this->request->getPost('sortby'), $this->request->getPost('sortedBy'));
-//
-//                }
-//
-//            }
-//
-//
-//
-//
-//            $query = $db->table('tbl_devotional')
-//                ->select('*')
-//                ->where('id', $checkBoxList)
-//                ->get();
-//            $query_author = $query->getResultObject();
-//			if(count($query_author) > 0){
-//				$sectionStyle = array('orientation' => null,
-//			    'marginLeft' => 900,
-//			    'marginRight' => 900,
-//			    'marginTop' => 900,
-//			    'marginBottom' => 900);
-//
-//				$section = $this->word->createSection();
-//				foreach($query_author as $rows){
-//
-//					if($group3 == 'HID'){
-//						$section->addText(html_entity_decode(date("l F d, Y",strtotime($rows->devotional_date)), ENT_COMPAT, 'UTF-8' ),'',array('spaceAfter' => '1'));
-//					}else{
-//						$section->addText("(ID ".$rows->id.") ".html_entity_decode(date("l F d, Y",strtotime($rows->devotional_date)), ENT_COMPAT, 'UTF-8' ),'',array('spaceAfter' => '1'));
-//
-//					}
-//					$section->addText(html_entity_decode($rows->title,ENT_COMPAT, 'UTF-8'),'',array('spaceAfter' => '1'));
-//					//$section->addTextBreak(1);
-//					$section->addText(html_entity_decode($rows->subtitle,ENT_COMPAT, 'UTF-8' ),'',array('spaceAfter' => '1'));
-//					//$section->addTextBreak(1);
-//					$section->addText(html_entity_decode($rows->text,ENT_COMPAT, 'UTF-8'),'',array('spaceAfter' => '1'));
-//
-//					//$section->addTextBreak(1);
-//					//$tag = $section->createTextRun();
-//					if($group1 != 'HT'){
-//                        $section->addText("Tags: ".html_entity_decode($this->Tags->getTagsName($rows->tag_ids),ENT_COMPAT, 'UTF-8'),'',array('spaceAfter' => '1'));
-//                        $section->addText("Books: ".html_entity_decode($this->Tags->getTagsName($rows->book_ids),ENT_COMPAT, 'UTF-8'),'',array('spaceAfter' => '1'));
-//                        $section->addText("Authors: ".html_entity_decode($this->Tags->getTagsName($rows->author_ids),ENT_COMPAT, 'UTF-8'),'',array('spaceAfter' => '1'));
-//                    }
-//					//$tag->addText(html_entity_decode($this->Tags->getTagsName($rows->tag_ids),ENT_QUOTES),'',array('spaceAfter' => '1'));
-//
-//					if($group2 != 'HA'){
-//                        $section->addText("Acknowledgements: ".html_entity_decode( $rows->acknowledgements,ENT_COMPAT, 'UTF-8'),'',array('spaceAfter' => '1'));
-//                     }
-//					//$tag2->addText(html_entity_decode( $rows->acknowledgements,ENT_QUOTES),array('spaceAfter' => '1'));
-//					/*if($group1 == '' && $group2 == ''){
-//
-//                        $section->addText("Tags: ".html_entity_decode($this->Tags->getTagsName($rows->tag_ids),ENT_QUOTES),'',array('spaceAfter' => '1'));
-//                        $section->addText("Books: ".html_entity_decode($this->Tags->getTagsName($rows->book_ids),ENT_QUOTES),'',array('spaceAfter' => '1'));
-//                        $section->addText("Authors: ".html_entity_decode($this->Tags->getTagsName($rows->author_ids),ENT_QUOTES),'',array('spaceAfter' => '1'));
-//                        $section->addText("Acknowledgements: ".html_entity_decode( $rows->acknowledgements,ENT_QUOTES),'',array('spaceAfter' => '1'));
-//
-//                    }*/
-//					//$tag3 = $section->createTextRun();
-//					$section->addText("Submitted By: ".html_entity_decode($this->User->getUserName($rows->user_id),ENT_COMPAT, 'UTF-8'),'', array('spaceAfter'=>1));
-//					//$tag3->addText(html_entity_decode($this->User->getUserName($rows->user_id),ENT_QUOTES),array(),array('spaceAfter' => '1'));
-//
-//					$section->addTextBreak(1);
-//
-//
-//
-//
-//				}
-//
-//
-//			}
-//
-//
-//			$filename='your_desired_filename.docx'; //save our document as this file name
-//			header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document'); //mime type
-//			header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
-//			header('Cache-Control: max-age=0'); //no cache
-//
-//			$objWriter = PHPWord_IOFactory::createWriter($this->word, 'Word2007');
-//			$objWriter->save('php://output');
-//
-//		}
-
 
         if (isset($_POST['checkBoxList'])) {
             $checkBoxList = explode(",", $this->request->getPost('checkBoxList'));
@@ -474,31 +374,70 @@ class Library extends BaseController
             $group3 = $this->request->getPost('group3');
 
 
+            if(isset($_REQUEST['sortby']) && $_REQUEST['sortby'] != 'undefined') {
+                $query = $db->table('tbl_devotional')
+                    ->select('*')
+                    ->orderBy($this->request->getPost('sortby'), $this->request->getPost('sortedBy'))
+                    ->limit(30)
+                    ->get();
+            }
+
             $query = $db->table('tbl_devotional')
-                ->select('*')
-                ->orderBy($this->request->getPost('sortby'), $this->request->getPost('sortedBy'))
+                ->where('id',$checkBoxList)
                 ->limit(30)
                 ->get();
 
 
             $query_data = $query->getResultObject();
 
+
             if (count($query_data) > 0) {
+                $phpWord = new PhpWord();
+
+                $section = $phpWord->addSection();
+
+                // Loop through query results
+                foreach ($query_data as $rows) {
+                    if ($group3 == 'HID') {
+                        // Add devotional date
+                        $section->addText(html_entity_decode(date("l F d, Y", strtotime($rows->devotional_date)), ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
+                    } else {
+                        // Add devotional date with ID
+                        $section->addText("(ID " . $rows->id . ") " . html_entity_decode(date("l F d, Y", strtotime($rows->devotional_date)), ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
+                    }
+
+                    $section->addText(html_entity_decode($rows->title, ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
+                    $section->addText(html_entity_decode($rows->subtitle, ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
+                    $section->addText(html_entity_decode($rows->text, ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
+
+                    if ($group1 != 'HT') {
+                        $section->addText("Tags: " . html_entity_decode($this->tagsModel->getTagsName($rows->tag_ids), ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
+                        $section->addText("Books: " . html_entity_decode($this->tagsModel->getTagsName($rows->book_ids), ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
+                        $section->addText("Authors: " . html_entity_decode($this->tagsModel->getTagsName($rows->author_ids), ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
+                    }
+
+                    if ($group2 != 'HA') {
+                        $section->addText("Acknowledgements: " . html_entity_decode($rows->acknowledgements, ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
+                    }
+
+                    $section->addText("Submitted By: " . html_entity_decode($this->usersModel->getUserName($rows->user_id), ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
+                    $section->addTextBreak(1);
+                }
 
                 $filename = 'your_desired_filename.docx';
-                header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+                header('Content-Type: application/octet-stream');
                 header('Content-Disposition: attachment;filename="' . $filename . '"');
                 header('Cache-Control: max-age=0');
-
-                $objWriter = PHPWord_IOFactory::createWriter($this->word, 'Word2007');
-                $objWriter->save('php://output');
-                exit();
+                flush();
+                $writer = IOFactory::createWriter($phpWord, 'Word2007');
+                $writer->save('php://output');
             }
-        }
 
+
+        }
+        return redirect()->to(base_url('library.php'));
 
     }
-
     function librarysingle()
     {
         $this->load->database();
