@@ -7,9 +7,11 @@
 	<meta http-equiv="content-style-type" content="text/css" />
 	<meta http-equiv="content-script-type" content="text/javascript" />
 <title>DevoCMS</title>
-<link href="<?php echo  base_url() ?>application/assests/css/style.css" rel="stylesheet" type="text/css" media="all" />
-<link rel="stylesheet" href="<?php echo  base_url() ?>application/assests/css/jquery-ui.css" type="text/css" />
-<?php $user_data = $this->session->all_userdata();
+<link href="<?php echo  base_url() ?>public/assests/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="<?php echo  base_url() ?>public/assests/css/jquery-ui.css" type="text/css" />
+<?php
+$session = \Config\Services::session();
+$user_data = $session->get();
 	  if(empty($user_data['username'])){
 			redirect("login");
 

@@ -373,39 +373,28 @@ class Library extends BaseController
             $group2 = $this->request->getPost('group2');
             $group3 = $this->request->getPost('group3');
 
+            $query = $db->table('tbl_devotional');
 
-            if(isset($_REQUEST['sortby']) && $_REQUEST['sortby'] != 'undefined') {
-                $query = $db->table('tbl_devotional')
-                    ->select('*')
-                    ->orderBy($this->request->getPost('sortby'), $this->request->getPost('sortedBy'))
-                    ->limit(30)
-                    ->get();
+            if (isset($_REQUEST['sortby']) && $_REQUEST['sortby'] != 'undefined') {
+                $query->orderBy($this->request->getPost('sortby'), $this->request->getPost('sortedBy'));
             }
 
-            $query = $db->table('tbl_devotional')
-                ->where('id',$checkBoxList)
-                ->limit(30)
-                ->get();
+            $query->whereIn('id', $checkBoxList)
+                ->limit(30);
 
-
-            $query_data = $query->getResultObject();
-
+            // Execute query
+            $query_data = $query->get()->getResultObject();
 
             if (count($query_data) > 0) {
                 $phpWord = new PhpWord();
-
                 $section = $phpWord->addSection();
 
                 // Loop through query results
                 foreach ($query_data as $rows) {
-                    if ($group3 == 'HID') {
-                        // Add devotional date
-                        $section->addText(html_entity_decode(date("l F d, Y", strtotime($rows->devotional_date)), ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
-                    } else {
-                        // Add devotional date with ID
-                        $section->addText("(ID " . $rows->id . ") " . html_entity_decode(date("l F d, Y", strtotime($rows->devotional_date)), ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
-                    }
-
+                    // Add devotional date
+                    $dateText = ($group3 == 'HID') ? "" : "(ID " . $rows->id . ") ";
+                    $dateText .= html_entity_decode(date("l F d, Y", strtotime($rows->devotional_date)), ENT_COMPAT, 'UTF-8');
+                    $section->addText($dateText, '', ['spaceAfter' => '1']);
                     $section->addText(html_entity_decode($rows->title, ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
                     $section->addText(html_entity_decode($rows->subtitle, ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
                     $section->addText(html_entity_decode($rows->text, ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
@@ -424,108 +413,142 @@ class Library extends BaseController
                     $section->addTextBreak(1);
                 }
 
+                // Prepare and output the Word document
                 $filename = 'your_desired_filename.docx';
                 header('Content-Type: application/octet-stream');
                 header('Content-Disposition: attachment;filename="' . $filename . '"');
                 header('Cache-Control: max-age=0');
-                flush();
                 $writer = IOFactory::createWriter($phpWord, 'Word2007');
                 $writer->save('php://output');
+                exit;
             }
-
-
         }
         return redirect()->to(base_url('library.php'));
 
     }
+
     function librarysingle()
     {
-        $this->load->database();
-        $this->load->model('User');
-        $this->load->model('Tags');
-        $user_data = $this->session->all_userdata();
 
-        $this->db->select('*');
+        $db = \Config\Database::connect();
+        $session = \Config\Services::session();
+        $user_data = $session->get();
 
-        $id = $this->input->get('id');
-
-        //$this->db->order_by('id','DESC');
-        $this->db->where('id', $id);
-        $this->db->from('tbl_devotional');
-        $query_devotional = $this->db->get();
-        $this->db->select('*');
-        $this->db->where('type', 'Tags');
-        $this->db->from('tbl_tags');
-        $this->db->order_by('title', 'ASC');
-        $query_tags = $this->db->get();
+        $id = $this->request->getGet('id');
 
 
-        $this->db->select('*');
-        $this->db->where('type', 'Books');
-        $this->db->from('tbl_tags');
-        $this->db->order_by('title', 'ASC');
-        $query_books = $this->db->get();
+        $database = Database::connect();
 
-        $this->db->select('*');
-        $this->db->where('type', 'Author');
-        $this->db->from('tbl_tags');
-        $this->db->order_by('title', 'ASC');
-        $query_author = $this->db->get();
-
-        $data = array("query_tags" => $query_tags, "query_books" => $query_books, "query_author" => $query_author, "query_devotional" => $query_devotional, "session_data" => $user_data);
-
-        $this->load->view('popupheader');
-
-        $this->load->view('content/librarysingle', $data);
-        $this->load->view('popupfooter');
+        $query_devotional = $db->table('tbl_devotional')
+            ->select('*')
+            ->where('id', $id)
+            ->get();
+        $query_devotional = $query_devotional->getResultObject();
 
 
+        $query_tags = $this->tagsModel
+            ->select('*')
+            ->where('type', 'Tags')
+            ->orderBy('title', 'ASC')
+            ->get();
+
+        $query_tags = $query_tags->getResultObject();
+
+        $query_books = $this->tagsModel
+            ->select('*')
+            ->where('type', 'Books')
+            ->orderBy('title', 'ASC')
+            ->get();
+
+        $query_books = $query_books->getResultObject();
+
+        $query_author = $this->tagsModel
+            ->select('*')
+            ->where('type', 'Author')
+            ->orderBy('title', 'ASC')
+            ->get();
+
+        $query_author = $query_author->getResultObject();
+
+
+        $session = \Config\Services::session();
+        $sessionData = $session->get();
+        $router = service('router');
+
+        $class = $router->controllerName();
+        $className = substr($class, strrpos($class, '\\') + 1);
+        $class = strtolower($className);
+        $data = [
+            'query_tags' => $query_tags,
+            'query_books' => $query_books,
+            'query_author' => $query_author,
+            'user_data' => $sessionData,
+            'class_name' => '',
+            'query_devotional' => $query_devotional
+        ];
+
+        return view('content/librarysingle', $data);
     }
 
     function libraryseries()
     {
+        $db = \Config\Database::connect();
+        $session = \Config\Services::session();
+        $user_data = $session->get();
+
+        $id = $this->request->getGet('id');
 
 
-        $this->load->database();
-        $this->load->model('User');
-        $this->load->model('Tags');
-        $user_data = $this->session->all_userdata();
+        $database = Database::connect();
 
-        $this->db->select('*');
-
-        $id = $this->input->get('id');
-
-        //$this->db->order_by('id','DESC');
-        $this->db->where('series_id', $id);
-        $this->db->from('tbl_devotional');
-        $query_devotional = $this->db->get();
+        $query_devotional = $db->table('tbl_devotional')
+            ->select('*')
+            ->where('series_id', $id)
+            ->get();
+        $query_devotional = $query_devotional->getResultObject();
 
 
-        $this->db->select('*');
-        $this->db->where('type', 'Tags');
-        $this->db->from('tbl_tags');
-        $this->db->order_by('title', 'ASC');
-        $query_tags = $this->db->get();
+        $query_tags = $this->tagsModel
+            ->select('*')
+            ->where('type', 'Tags')
+            ->orderBy('title', 'ASC')
+            ->get();
+
+        $query_tags = $query_tags->getResultObject();
+
+        $query_books = $this->tagsModel
+            ->select('*')
+            ->where('type', 'Books')
+            ->orderBy('title', 'ASC')
+            ->get();
+
+        $query_books = $query_books->getResultObject();
+
+        $query_author = $this->tagsModel
+            ->select('*')
+            ->where('type', 'Author')
+            ->orderBy('title', 'ASC')
+            ->get();
+
+        $query_author = $query_author->getResultObject();
 
 
-        $this->db->select('*');
-        $this->db->where('type', 'Books');
-        $this->db->from('tbl_tags');
-        $this->db->order_by('title', 'ASC');
-        $query_books = $this->db->get();
+        $session = \Config\Services::session();
+        $sessionData = $session->get();
+        $router = service('router');
 
-        $this->db->select('*');
-        $this->db->where('type', 'Author');
-        $this->db->from('tbl_tags');
-        $this->db->order_by('title', 'ASC');
-        $query_author = $this->db->get();
-
-        $data = array("query_tags" => $query_tags, "query_books" => $query_books, "query_author" => $query_author, "query_devotional" => $query_devotional, "session_data" => $user_data);
-
-        $this->load->view('popupheader');
-
-        $this->load->view('content/libraryseries', $data);
-        $this->load->view('popupfooter');
+        $class = $router->controllerName();
+        $className = substr($class, strrpos($class, '\\') + 1);
+        $class = strtolower($className);
+        $data = [
+            'query_tags' => $query_tags,
+            'query_books' => $query_books,
+            'query_author' => $query_author,
+            'user_data' => $sessionData,
+            'class_name' => '',
+            'query_devotional' => $query_devotional
+        ];
+        return view('content/libraryseries', $data);
 
 
     }

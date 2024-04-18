@@ -172,7 +172,23 @@ class Login extends BaseController {
                 $session->set($sessiondata);
                 return redirect()->to(base_url('library.php'));
             } else {
+                $router = service('router');
+                $class = $router->controllerName();
+                $className = substr($class, strrpos($class, '\\') + 1);
+                $class = strtolower($className);
+                $admin_data['super_admin'] = '';
+                $admin_data['username'] = '';
+                $data = [
+                    'cssFiles' => '',
+                    'jsFiles' => '',
+                    'user_data' => $admin_data,
+                    'class_name' =>  $class,
+                    'query_admin_users' => $query_admin_users
+                ];
+
                 $data['error'] = 'Invalid Username and Password';
+                return view('content/login_new', $data);
+
             }
 
         }
