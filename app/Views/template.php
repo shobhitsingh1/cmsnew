@@ -10,9 +10,8 @@
 <title><?php echo $title ?></title>
 <link href="<?= base_url('/public/assests/css/style.css')?><?php echo $random ?>" rel="stylesheet" type="text/css" media="all" />
 <?php
-	  if(empty($user_data['username'])){
+	  if(!isset($user_data['username'])){
 			redirect("/");
-
 		}
 ?>
 <link rel="stylesheet" href="<?= base_url('/public/assests/css/jquery-ui.css')?><?php echo $random ?>" type="text/css" />
@@ -204,7 +203,7 @@ $('ul#menu2').lavaLamp();
                             <li <?php echo ($active_menu == 'tagview')? 'class="selectedLava"':'';?> ><a href="<?php echo base_url()?>tagview.php" >&nbsp;Tag View&nbsp;</a></li>      
                             <li  <?php echo ($active_menu == 'settings')? 'class="selectedLava"':'';?>><a href="<?php echo base_url()?>settings.php">&nbsp;Settings&nbsp;</a></li>
 							 
-							<?php if($user_data['super_admin'] == 'super_admin') :?>		
+							<?php if($user_data['super_admin'] == 'super_admin') :?>
 							<li <?php echo ($active_menu == 'users')? 'class="selectedLava"':'';?> ><a href="<?php echo base_url()?>users.php" >&nbsp;Users&nbsp;</a></li>
 							 <?php else: ?>
 							 <li>&nbsp;&nbsp;&nbsp;</li>

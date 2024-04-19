@@ -125,6 +125,9 @@ class Settings extends BaseController
 
         $session = \Config\Services::session();
         $sessionData = $session->get();
+        if(!isset($sessionData['username'])){
+            return redirect()->to(base_url('/'));
+        }
         $router = service('router');
         $class = $router->controllerName();
         $className = substr($class, strrpos($class, '\\') + 1);
