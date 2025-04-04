@@ -7,6 +7,7 @@ use Config\Database;
 use App\Models\Tags;
 use App\Models\User;
 use CodeIgniter\Router\Router;
+use DateTime;
 
 class Devotional extends BaseController
 {
@@ -42,6 +43,7 @@ class Devotional extends BaseController
             'public/assests/js/jquery.multiselect_new.js',
             'public/assests/js/jquery.multiselect.filter.js',
             'public/assests/js/jquery.colorbox.js',
+            'public/assests/js/datepicker.js',
             'public/assests/js/jquery.lavalamp.min.js',
             'public/assests/js/Selectyze.jquery.js',
         ];
@@ -93,6 +95,7 @@ class Devotional extends BaseController
         $class = $router->controllerName();
         $className = substr($class, strrpos($class, '\\') + 1);
         $class = strtolower($className);
+
         $data = [
             'cssFiles' => $cssFiles,
             'jsFiles' => $jsFiles,
@@ -163,8 +166,10 @@ class Devotional extends BaseController
 
     function adddevotional()
     {
-        $this->load->database();
+        
+        // $this->load->database();
 
+        $db = \Config\Database::connect();
 
         $arrMonth = array();
 
@@ -181,20 +186,30 @@ class Devotional extends BaseController
         $arrMonth[10] = "November";
         $arrMonth[11] = "December";
         $strText = ltrim($_POST["devotional"]);
-        $user_data = $this->session->all_userdata();
+        $session = \Config\Services::session();
+    
+        //$user_data = $this->session->all_userdata();
+        $user_data = $session->get();
 
-        //print_r($_POST);
+        //print_r($user_data);
+
         if ($strText != '') {
-
             $strText = str_replace(chr(13) . chr(10) . chr(32) . chr(13) . chr(10), chr(13) . chr(10) . chr(13) . chr(10), $strText);
             //window
-            $osType = getOs();
+           // $osType = getOs();
+           $osType = PHP_OS_FAMILY === 'Windows' ? 'WIN' : 'OTHER';
+           
             if ($osType == 'WIN')
                 $arrText = @split(chr(13) . chr(10) . chr(13) . chr(10), $strText);
             else
                 $arrText = explode("\n\n", $strText);
 
-            //print_r($arrText); die;
+               
+                function isValidDate($date, $format = 'Y-m-d') {
+                    $d = DateTime::createFromFormat($format, $date);
+                    return $d && $d->format($format) === $date;
+                }
+                
             foreach ($arrText as $key => $value) {
 
                 $strText = $value;
@@ -206,7 +221,7 @@ class Devotional extends BaseController
                     else
                         $arrListing = explode("\n", $strText);
 
-                    //print_r($arrListing); die;
+
                     if (count($arrListing) >= 3) {
 
                         $strDate = trim($arrListing[0]);
@@ -238,8 +253,12 @@ class Devotional extends BaseController
                         }else{
                             $strDate  = date("Y-m-d",strtotime($str_day. "-" . $str_month. "-" . $tmp_year));
                         }*/
-                        $strDate = date("Y-m-d", strtotime($str_day . "-" . $str_month . "-" . $tmp_year));
-                        $final_date = trim($strDate);
+                       
+                         $strDate = date("Y-m-d", strtotime($str_day . "-" . $str_month . "-" . $tmp_year));
+                         $final_date = trim($strDate);
+                       
+                        // $strDate =  2025-04-01;
+                        // $final_date = 2025-04-01;
 
                         if (isValidDate($final_date) == 1) {
                             $strDate = $strDate;
@@ -258,6 +277,7 @@ class Devotional extends BaseController
                         }
 
                         $strText = $strText;
+
                         /* $strText = str_replace(chr(176),"&deg;",
                         //str_replace(".".chr(153),"&trade;",
                         str_replace(chr(151),"-",
@@ -321,25 +341,31 @@ class Devotional extends BaseController
                                 $this->tagsModel->where('devotional_date', $strDate);
                                 $this->tagsModel->from('tbl_devotional');
                                 $query_devotional_date = $this->tagsModel->get();
-                                $count_devotinal_date = $query_devotional_date->num_rows();
+                                $count_devotinal_date = $query_devotional_date->getNumRows();
+                                
                                 if ($count_devotinal_date == 0) {
                                     $data = array(
-                                        'title' => htmlentities(($strTitle), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
-                                        'subtitle' => htmlentities(($strSubtitle), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
-                                        'text' => htmlentities(($strText), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
-                                        'acknowledgements' => htmlentities(($_POST['acknowledgements']), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
-                                        'date_year' => ($_POST['date_devo']),
-                                        'date_quarter' => ($_POST['date_quarter']),
-                                        'tag_ids' => @implode(",", ($_POST['Tags'])),
-                                        'book_ids' => @implode(",", ($_POST['books'])),
-                                        'author_ids' => @implode(",", ($_POST['author'])),
-                                        'devotional_date' => $strDate,
-                                        'user_id' => $user_data['username_id'],
+                                        'title' => htmlentities(($strTitle ?? ''), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
+                                        'subtitle' => htmlentities(($strSubtitle ?? ''), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
+                                        'text' => htmlentities(($strText ?? ''), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
+                                        'acknowledgements' => htmlentities((isset($_POST['acknowledgements']) && !empty($_POST['acknowledgements'])) ? $_POST['acknowledgements'] : '', ENT_QUOTES | ENT_IGNORE, "UTF-8"),
+                                        'date_year' => isset($_POST['date_devo']) && !empty($_POST['date_devo']) ? $_POST['date_devo'] : '',
+                                        'date_quarter' => isset($_POST['date_quarter']) && !empty($_POST['date_quarter']) ? $_POST['date_quarter'] : '',
+                                        // 'tag_ids' => @implode(",", ($_POST['Tags'])),
+                                        // 'book_ids' => @implode(",", ($_POST['books'])),
+                                        // 'author_ids' => @implode(",", ($_POST['author'])),
+                                        'tag_ids' => isset($_POST['Tags']) && !empty($_POST['Tags']) ? implode(",", $_POST['Tags']) : '',
+                                        'book_ids' => isset($_POST['books']) && !empty($_POST['books']) ? implode(",", $_POST['books']) : '',
+                                        'author_ids' => isset($_POST['author']) && !empty($_POST['author']) ? implode(",", $_POST['author']) : '',
+                                        'devotional_date' => isset($strDate) && !empty($strDate) ? $strDate : '',
+                                        'user_id' => isset($user_data['username_id']) && !empty($user_data['username_id']) ? $user_data['username_id'] : '',
                                         'created_on' => date("Y-m-d H:i:s"),
-
                                     );
-                                    //print_r($data); die;
-                                    $this->tagsModel->insert('tbl_devotional', $data);
+                                    
+                                   // print_r($data); die;
+                                   // $this->tagsModel->insert('tbl_devotional', $data);
+                                    $db->table('tbl_devotional')->insert($data);
+
                                 } else {
                                     $data = array(
                                         'title' => htmlentities(($strTitle), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
@@ -348,18 +374,22 @@ class Devotional extends BaseController
                                         'acknowledgements' => htmlentities(($_POST['acknowledgements']), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
                                         'date_year' => ($_POST['date_devo']),
                                         'date_quarter' => ($_POST['date_quarter']),
-                                        'tag_ids' => @implode(",", ($_POST['Tags'])),
-                                        'book_ids' => @implode(",", ($_POST['books'])),
-                                        'author_ids' => @implode(",", ($_POST['author'])),
+                                        // 'tag_ids' => @implode(",", ($_POST['Tags'])),
+                                        // 'book_ids' => @implode(",", ($_POST['books'])),
+                                        // 'author_ids' => @implode(",", ($_POST['author'])),
+                                        'tag_ids' => isset($_POST['Tags']) && !empty($_POST['Tags']) ? implode(",", $_POST['Tags']) : '',
+                                        'book_ids' => isset($_POST['books']) && !empty($_POST['books']) ? implode(",", $_POST['books']) : '',
+                                        'author_ids' => isset($_POST['author']) && !empty($_POST['author']) ? implode(",", $_POST['author']) : '',
                                         'user_id' => $user_data['username_id'],
                                         'created_on' => date("Y-m-d H:i:s")
                                     );
 
 
-                                    $this->tagsModel->where('devotional_date', $strDate);
-                                    $this->tagsModel->update('tbl_devotional', $data);
+                                  //  $this->tagsModel->where('devotional_date', $strDate);
+                                    //$this->tagsModel->update('tbl_devotional', $data);
+                                   // echo $strDate;exit;
 
-
+                                   $db->table('tbl_devotional')->where('devotional_date', $strDate)->update($data);
                                 }
 
 
@@ -367,23 +397,40 @@ class Devotional extends BaseController
 
                                 if (!empty($_POST['series_processing']) && !empty($_POST['start_processing'])) {
 
-                                    $series_id = 1;
-                                    $this->tagsModel->select('MAX(series_id) as max_series');
-                                    $this->tagsModel->from('tbl_devotional');
-                                    $series_sql = $this->tagsModel->get();
-                                    $series_sql->num_rows();
+                                    // $series_id = 1;
+                                    // $this->tagsModel->select('MAX(series_id) as max_series');
+                                    // $this->tagsModel->from('tbl_devotional');
+                                    // $series_sql = $this->tagsModel->get();
+                                    // $series_sql->num_rows();
 
-                                    if ($series_sql->num_rows() > 0) {
-                                        $series_row = $series_sql->row();
-                                        //print_r($series_row);
-                                        $series_id_exist = $series_row->max_series;
+                                    // if ($series_sql->num_rows() > 0) {
+                                    //     $series_row = $series_sql->row();
+                                    //     //print_r($series_row);
+                                    //     $series_id_exist = $series_row->max_series;
+                                    //     $series_id = $series_id_exist + 1;
+                                    // }
+
+                                    $series_id = 1;
+                                    $builder = $db->table('tbl_devotional');
+                                    $builder->select('MAX(series_id) as max_series');
+                                    $query = $builder->get();
+
+                                    if ($query->getNumRows() > 0) {
+                                        $row = $query->getRow(); 
+                                        $series_id_exist = $row->max_series ?? 0;
                                         $series_id = $series_id_exist + 1;
                                     }
 
 
-                                    $this->session->set_userdata('series_processing', $_POST['series_processing']);
-                                    $this->session->set_userdata('start_processing', $_POST['start_processing']);
+                                    // $this->session->set_userdata('series_processing', $_POST['series_processing']);
+                                    // $this->session->set_userdata('start_processing', $_POST['start_processing']);
                                     //checking if devotional date not exist
+
+                                    $session = \Config\Services::session();
+                                    $session->set([
+                                        'series_processing' => $_POST['series_processing'],
+                                        'start_processing' => $_POST['start_processing'],
+                                    ]);
 
 
                                     $data = array(
@@ -393,17 +440,22 @@ class Devotional extends BaseController
                                         'acknowledgements' => htmlentities(($_POST['acknowledgements']), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
                                         'date_year' => ($_POST['date_devo']),
                                         'date_quarter' => ($_POST['date_quarter']),
-                                        'tag_ids' => @implode(",", ($_POST['Tags'])),
-                                        'book_ids' => @implode(",", ($_POST['books'])),
-                                        'author_ids' => @implode(",", ($_POST['author'])),
+                                        // 'tag_ids' => @implode(",", ($_POST['Tags'])),
+                                        // 'book_ids' => @implode(",", ($_POST['books'])),
+                                        // 'author_ids' => @implode(",", ($_POST['author'])),
+                                        'tag_ids' => isset($_POST['Tags']) && !empty($_POST['Tags']) ? implode(",", $_POST['Tags']) : '',
+                                        'book_ids' => isset($_POST['books']) && !empty($_POST['books']) ? implode(",", $_POST['books']) : '',
+                                        'author_ids' => isset($_POST['author']) && !empty($_POST['author']) ? implode(",", $_POST['author']) : '',
                                         'devotional_date' => $strDate,
                                         'created_on' => date("Y-m-d H:i:s"),
                                         'user_id' => $user_data['username_id'],
                                         'series_id' => $series_id
 
                                     );
-                                    //print_r($data); die;
-                                    $this->tagsModel->insert('tbl_devotional_tmp', $data);
+                                 
+                                   // $this->tagsModel->insert('tbl_devotional_tmp', $data);
+                                    $db->table('tbl_devotional_tmp')->insert($data);
+                                    
                                     if ($_POST['start_processing'] == $_POST['series_processing']) {
                                         $series_last_id = $_POST['series_processing'];
                                         for ($i = 1; $i <= $series_last_id; $i++) {
@@ -412,69 +464,113 @@ class Devotional extends BaseController
                                             $this->tagsModel->from('tbl_devotional_tmp');
                                             //$this->db->where('series_id',$i);
                                             $this->tagsModel->where('user_id', $user_data['username_id']);
+                                          //  $query_devotional_tmp = $this->tagsModel->get();
+
                                             $query_devotional_tmp = $this->tagsModel->get();
-                                            if ($query_devotional_tmp->num_rows() > 0) {
-                                                foreach ($query_devotional_tmp->result() as $row_devotional_obj) {
-                                                    $row_devotional = (array)$row_devotional_obj;
-                                                    //Strdata already in DB
-                                                    $this->tagsModel->select('*');
-                                                    $this->tagsModel->where('devotional_date', $row_devotional['devotional_date']);
-                                                    $this->tagsModel->from('tbl_devotional');
-                                                    $query_devotional_date = $this->tagsModel->get();
-                                                    $count_devotinal_date = $query_devotional_date->num_rows();
-                                                    if ($count_devotinal_date == 0) {
 
+                                            // if ($query_devotional_tmp->getNumRows() > 0) {
+                                            //     foreach ($query_devotional_tmp->result() as $row_devotional_obj) {
+                                            //         $row_devotional = (array)$row_devotional_obj;
+                                            //         //Strdata already in DB
+                                            //         $this->tagsModel->select('*');
+                                            //         $this->tagsModel->where('devotional_date', $row_devotional['devotional_date']);
+                                            //         $this->tagsModel->from('tbl_devotional');
+                                            //         $query_devotional_date = $this->tagsModel->get();
+                                            //       //  $count_devotinal_date = $query_devotional_date->num_rows();
+                                            //         $count_devotinal_date = $query_devotional_date->getNumRows();
+                                            //         if ($count_devotinal_date == 0) {
 
-                                                        $data = array(
-                                                            'title' => $row_devotional['title'],
-                                                            'subtitle' => $row_devotional['subtitle'],
-                                                            'text' => $row_devotional['text'],
-                                                            'acknowledgements' => $row_devotional['acknowledgements'],
-                                                            'date_year' => $row_devotional['date_year'],
-                                                            'date_quarter' => $row_devotional['date_quarter'],
-                                                            'tag_ids' => $row_devotional['tag_ids'],
-                                                            'book_ids' => $row_devotional['book_ids'],
-                                                            'author_ids' => $row_devotional['author_ids'],
-                                                            'devotional_date' => $row_devotional['devotional_date'],
-                                                            'created_on' => $row_devotional['created_on'],
-                                                            'series_id' => $row_devotional['series_id'],
-                                                            'user_id' => $user_data['username_id']
-                                                        );
-                                                        //print_r($data); die;
-                                                        $this->tagsModel->insert('tbl_devotional', $data);
+                                            //             $data = array(
+                                            //                 'title' => $row_devotional['title'],
+                                            //                 'subtitle' => $row_devotional['subtitle'],
+                                            //                 'text' => $row_devotional['text'],
+                                            //                 'acknowledgements' => $row_devotional['acknowledgements'],
+                                            //                 'date_year' => $row_devotional['date_year'],
+                                            //                 'date_quarter' => $row_devotional['date_quarter'],
+                                            //                 'tag_ids' => $row_devotional['tag_ids'],
+                                            //                 'book_ids' => $row_devotional['book_ids'],
+                                            //                 'author_ids' => $row_devotional['author_ids'],
+                                            //                 'devotional_date' => $row_devotional['devotional_date'],
+                                            //                 'created_on' => $row_devotional['created_on'],
+                                            //                 'series_id' => $row_devotional['series_id'],
+                                            //                 'user_id' => $user_data['username_id']
+                                            //             );
+                                            //             //print_r($data); die;
+                                            //           //  $this->tagsModel->insert('tbl_devotional', $data);
+                                            //           $db->table('tbl_devotional')->insert($data);
 
+                                            //         } else {
+                                            //             $data = array(
+                                            //                 'title' => $row_devotional['title'],
+                                            //                 'subtitle' => $row_devotional['subtitle'],
+                                            //                 'text' => $row_devotional['text'],
+                                            //                 'acknowledgements' => $row_devotional['acknowledgements'],
+                                            //                 'date_year' => $row_devotional['date_year'],
+                                            //                 'date_quarter' => $row_devotional['date_quarter'],
+                                            //                 'tag_ids' => $row_devotional['tag_ids'],
+                                            //                 'book_ids' => $row_devotional['book_ids'],
+                                            //                 'author_ids' => $row_devotional['author_ids'],
+                                            //                 //  'devotional_date' => $row_devotional['devotional_date'],
+                                            //                 'created_on' => $row_devotional['created_on'],
+                                            //                 'series_id' => $row_devotional['series_id'],
+                                            //                 'user_id' => $user_data['username_id']
+                                            //             );
+                                                    
+                                            //         //    $this->tagsModel->where('devotional_date', $row_devotional['devotional_date']);
+                                            //          //   $this->tagsModel->update('tbl_devotional', $data);
+                                            //          $db->table('tbl_devotional')
+                                            //          ->where('devotional_date', $row_devotional['devotional_date'])
+                                            //          ->update($data);
+                                            //         }
+
+                                            //     }
+                                            // }
+
+                                            if ($query_devotional_tmp->getNumRows() > 0) {
+                                                foreach ($query_devotional_tmp->getResultArray() as $row_devotional) {
+                                            
+                                                    $query_devotional_date = $db->table('tbl_devotional')
+                                                        ->where('devotional_date', $row_devotional['devotional_date'])
+                                                        ->get();
+                                            
+                                                    $count_devotional_date = $query_devotional_date->getNumRows();
+                                            
+                                                    $data = [
+                                                        'title'            => $row_devotional['title'],
+                                                        'subtitle'         => $row_devotional['subtitle'],
+                                                        'text'             => $row_devotional['text'],
+                                                        'acknowledgements' => $row_devotional['acknowledgements'],
+                                                        'date_year'        => $row_devotional['date_year'],
+                                                        'date_quarter'     => $row_devotional['date_quarter'],
+                                                        'tag_ids'          => $row_devotional['tag_ids'],
+                                                        'book_ids'         => $row_devotional['book_ids'],
+                                                        'author_ids'       => $row_devotional['author_ids'],
+                                                        'created_on'       => $row_devotional['created_on'],
+                                                        'series_id'        => $row_devotional['series_id'],
+                                                        'user_id'          => $user_data['username_id'],
+                                                    ];
+                                            
+                                                    if ($count_devotional_date == 0) {
+                                                        $data['devotional_date'] = $row_devotional['devotional_date'];
+                                                        $db->table('tbl_devotional')->insert($data);
                                                     } else {
-                                                        $data = array(
-                                                            'title' => $row_devotional['title'],
-                                                            'subtitle' => $row_devotional['subtitle'],
-                                                            'text' => $row_devotional['text'],
-                                                            'acknowledgements' => $row_devotional['acknowledgements'],
-                                                            'date_year' => $row_devotional['date_year'],
-                                                            'date_quarter' => $row_devotional['date_quarter'],
-                                                            'tag_ids' => $row_devotional['tag_ids'],
-                                                            'book_ids' => $row_devotional['book_ids'],
-                                                            'author_ids' => $row_devotional['author_ids'],
-                                                            //  'devotional_date' => $row_devotional['devotional_date'],
-                                                            'created_on' => $row_devotional['created_on'],
-                                                            'series_id' => $row_devotional['series_id'],
-                                                            'user_id' => $user_data['username_id']
-                                                        );
-                                                        $this->tagsModel->where('devotional_date', $row_devotional['devotional_date']);
-                                                        $this->tagsModel->update('tbl_devotional', $data);
-
-
+                                                        $db->table('tbl_devotional')
+                                                            ->where('devotional_date', $row_devotional['devotional_date'])
+                                                            ->update($data);
                                                     }
-
-
                                                 }
                                             }
+                                            
 
 
                                         }
-                                        $array_items = array('series_processing' => null, 'start_processing' => null);
+                                        // $array_items = array('series_processing' => null, 'start_processing' => null);
 
-                                        $this->session->unset_userdata($array_items);
+                                        // $this->session->unset_userdata($array_items);
 
+                                        $session = \Config\Services::session();
+                                        $array_items = ['series_processing', 'start_processing'];
+                                        $session->remove($array_items);
 
                                     }
 
@@ -492,7 +588,9 @@ class Devotional extends BaseController
 
 
         }
-        redirect(get_full_url() . "add_devotional.php");
+        // exit("dsa");
+        return redirect()->to(base_url('add_devotional.php'));
+
         //$this->template->render();
 
 
@@ -501,14 +599,38 @@ class Devotional extends BaseController
 
     function devotionaltags()
     {
-        $this->load->database();
-        $tag_ids = $this->input->post('tag_ids');
-        $author_ids = $this->input->post('author_ids');
-        $books_ids = $this->input->post('books_ids');
-        $devotional_id = $this->input->post('devotional_id');
-        $data = array("tag_ids" => @implode(",", $tag_ids), "book_ids" => @implode(",", $books_ids), "author_ids" => @implode(",", $author_ids));
-        $this->tagsModel->where('id', $devotional_id);
-        $this->tagsModel->update('tbl_devotional', $data);
+        // $this->load->database();
+
+        $db = \Config\Database::connect();
+
+        $tag_ids =  $this->request->getPost('tag_ids');
+        $author_ids = $this->request->getPost('author_ids');
+        $books_ids = $this->request->getPost('books_ids');
+        $devotional_id = $this->request->getPost('devotional_id');
+
+        // $data = array("tag_ids" => @implode(",", $tag_ids), "book_ids" => @implode(",", $books_ids), "author_ids" => @implode(",", $author_ids));
+
+        $data = [];
+
+        if (!empty($tag_ids)) {
+            $data['tag_ids'] = implode(',', $tag_ids);
+        }
+
+        if (!empty($books_ids)) {
+            $data['book_ids'] = implode(',', $books_ids);
+        }
+
+        if (!empty($author_ids)) {
+            $data['author_ids'] = implode(',', $author_ids);
+        }
+
+        
+        // $this->tagsModel->where('id', $devotional_id);
+        // $this->tagsModel->update('tbl_devotional', $data);
+        $db->table('tbl_devotional')
+        ->where('id', $devotional_id)
+        ->update($data);
+
 
         echo "ok";
 

@@ -107,7 +107,7 @@
 			<div class="scroll_bg" style="background-color:#fff;height:450px;">
 				<div class="scroll-pane" style="height:650px;width:680px;">
 							<form name="frmSetting" id="frmSetting" method="post" action="settings.php">
-								<?php $row = $query_admin_users[0];
+								<?php $row = (isset($query_admin_users[0]) && $query_admin_users[0]);
 									
 								?> 
                                 <div class="left">
@@ -167,13 +167,26 @@
                                     <select name="fonts" id="fonts" style="width:300px;margin-top:1px;height:24px;">
 									<?php foreach($array_fornts as $v) { 
 										$sel = '';
-										if(empty($row->fonts)){
+										
+										$titles = [];
+
+										foreach ($query_admin_users as $row) {
+											$titles[] = $row->fonts;
 											$row->fonts = 'Arial, Helvetica, sans-serif';
 										}
+
+										// print_r($titles);exit;
+										// echo $query_admin_users->getNumRows();exit;
+										// if(!isset($row->fonts)){
+										// 	$row->fonts = 'Arial, Helvetica, sans-serif';
+										// }
 										?>
-										<?php if($row->fonts == $v): ?>
+										<?php
+										foreach ($query_admin_users as $row) {
+										   if($row->fonts == $v): ?>
 										<?php $sel = "selected='selected'"; ?>
 										<?php endif; ?>
+										<?php } ?>
 										<option value="<?php echo $v ?>" <?php echo $sel ?>><?php echo str_replace("'",'',$v) ?></option>
 									<?php } ?>
 									</select>	

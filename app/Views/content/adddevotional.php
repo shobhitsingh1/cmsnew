@@ -14,8 +14,6 @@
 		
 		$(".colorbox2").colorbox({iframe:true,innerWidth:"800px", innerHeight:"600px"}); 
 		
-	
-		
 		$('.selectyze2').Selectyze({
 			theme : 'select2'
 		});
@@ -300,11 +298,23 @@
 			var date_quarter = $('#date_quarter :selected').text();
 			//alert("date_quarter"+date_quarter);
 			var date_year = $('#date_devo :selected').text();
-			var d = $.datepicker.parseDate("DD MM dd, yy",  devotional_lines[0]+", "+date_year);
-			var datestrInNewFormat = $.datepicker.formatDate( "yy-mm-dd", d);
-			var New_datestrInNewFormat = $.datepicker.formatDate( "DD, MM dd, yy", d);
+			// var d = $.datepicker.parseDate("DD MM dd, yy",  devotional_lines[0]+", "+date_year);
+			var dateString = devotional_lines[0] + ", " + date_year;
+			var parsedDate = new Date(dateString);
+
+			if (isNaN(parsedDate)) {
+				console.error("Invalid date format:", dateString);
+			} else {
+				console.log("Parsed Date:", parsedDate);
+			}
+
+
+			//var datestrInNewFormat = $.datepicker.formatDate( "yy-mm-dd", d);
+			//var New_datestrInNewFormat = $.datepicker.formatDate( "DD, MM dd, yy", d);
 			//alert(datestrInNewFormat);
-			
+			var datestrInNewFormat = $.datepicker.formatDate("yy-mm-dd", parsedDate);
+			var New_datestrInNewFormat = $.datepicker.formatDate("DD, MM dd, yy", parsedDate);
+
 			var d_date = new Array();
 			$('.d_date_class').each(function(){
 			   d_date.push($(this).val());
@@ -627,17 +637,17 @@
 								}
 							}
 						$tags_str = implode(",",array_merge($tags_key_value,$tags_author_key_value,$tags_key_value3));
-							
-
+						
 						?>
                         <div class="content_con">
                         	<p><span class="boldHeading"><?php echo  html_entity_decode($row_devotional->title) ?></span><br />
 							<p><span style="text-decoration:underline;"><?php echo  html_entity_decode($row_devotional->subtitle) ?></span><br />
                             <span><?php echo  (strlen($row_devotional->text) > 400)?substr(html_entity_decode($row_devotional->text),0,398)."..":html_entity_decode($row_devotional->text) ?> </span><br />
                            <hr  style="border-bottom: dotted 1px #000;background-color:transparent;padding-top:10px;"></hr>
-							<p style="padding-top:10px; word-wrap: break-word;"><span style="font-weight: bold;">Tags</span>: <?php   $this->tagsModel->getTagsName($row_devotional->tag_ids) ?><br />
-							<span style="font-weight: bold;">Books</span>: <?php print  $this->tagsModel->getTagsName($row_devotional->book_ids); ?><br />
-                            <span style="font-weight: bold;">Authors</span>: <?php print  $this->tagsModel->getTagsName($row_devotional->author_ids); ?><br />
+							<p style="padding-top:10px; word-wrap: break-word;">
+							<span style="font-weight: bold;">Tags</span>: <?php echo $this->tagsModel->getTagsName($row_devotional->tag_ids) ?><br />
+							<span style="font-weight: bold;">Books</span>: <?php echo  $this->tagsModel->getTagsName($row_devotional->book_ids); ?><br />
+                            <span style="font-weight: bold;">Authors</span>: <?php echo  $this->tagsModel->getTagsName($row_devotional->author_ids); ?><br />
                             <span style="font-weight: bold;">Acknowledgements</span>: <?php echo  $row_devotional->acknowledgements ?></p>
 							<p><span style="font-weight: bold;">Submitted By</span>: <?php  echo   $this->usersModel->getUserName($row_devotional->user_id) ?></p>
 							
@@ -665,3 +675,4 @@
 							</fieldset>
 						</form>
 					</div>
+?>

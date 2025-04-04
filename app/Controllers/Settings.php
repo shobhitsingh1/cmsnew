@@ -47,6 +47,7 @@ class Settings extends BaseController
         ];
 
         if (isset($_POST['btnsubmit'])) {
+          
             if (count($query_admin_users) == 0) {
                 $insert_array = array(
                     "header_text_color" => $this->request->getPost('header_text_color'),

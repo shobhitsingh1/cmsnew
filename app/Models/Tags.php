@@ -52,32 +52,49 @@ class Tags extends Model {
     }
 
     public function getTagsCounts($ids) {
-        $query = $this->db->query("SELECT * FROM tbl_devotional WHERE FIND_IN_SET('$ids', tag_ids) > 0");
-        return $query->num_rows();
+        
+        // $query = $this->db->query("SELECT * FROM tbl_devotional WHERE FIND_IN_SET('$ids', tag_ids) > 0");
+        // return $query->num_rows();
+
+        $db = \Config\Database::connect();
+        $query = $db->query("SELECT * FROM tbl_devotional WHERE FIND_IN_SET('$ids', tag_ids) > 0");
+        return $query->getNumRows();
+
     }
 
     public function getBookCounts($ids) {
-        $query = $this->db->query("SELECT * FROM tbl_devotional WHERE FIND_IN_SET('$ids', book_ids) > 0");
-        return $query->num_rows();
+
+        $db = \Config\Database::connect();
+        $query = $db->query("SELECT * FROM tbl_devotional WHERE FIND_IN_SET('$ids', book_ids) > 0");
+        //return $query->num_rows();
+          return $query->getNumRows();
     }
 
     public function getAuthorCounts($ids) {
-        $query = $this->db->query("SELECT * FROM tbl_devotional WHERE FIND_IN_SET('$ids', author_ids) > 0");
-        return $query->num_rows();
+        $db = \Config\Database::connect();
+        $query = $db->query("SELECT * FROM tbl_devotional WHERE FIND_IN_SET('$ids', author_ids) > 0");
+        //return $query->num_rows();
+         return $query->getNumRows();
     }
 
-    public function getTagTypeById($ids) {
-        $this->db->select('type');
-        $this->db->where('id', $ids);
-        $query = $this->db->get('tbl_tags');
+    public function getTagTypeById($id)
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('tbl_tags');
+        $builder->select('type');
+        $builder->where('id', $id);
+        $query = $builder->get();
+    
         $title = '';
-        if ($query->num_rows() > 0) {
-            foreach ($query->result() as $row) {
-                $title = ($row->type == 'Tags') ? 'Keyword' : $row->type;
-            }
+    
+        if ($query->getNumRows() > 0) {
+            $row = $query->getRow();
+            $title = ($row->type === 'Tags') ? 'Keyword' : $row->type;
         }
+    
         return $title;
     }
+    
 
     public function getStringCount($str, $text) {
         $str = trim($str);

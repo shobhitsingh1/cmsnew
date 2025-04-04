@@ -85,6 +85,7 @@ class Users extends BaseController
             $query_admin_users =  $query->getResultObject();
 
         }
+
         if (isset($_GET['action'])) {
             $action = $_GET['action'];
             if ($action == 'delete') {
@@ -99,6 +100,7 @@ class Users extends BaseController
             }
 
         }
+
         if (isset($_POST['cmdSaveAdminUser'])) {
 
             $admin_user = (isset($_POST['user_privileges'])) ? '1' : '0';
@@ -125,6 +127,7 @@ class Users extends BaseController
 
 
         }
+
         if (isset($_POST['cmdUpdateAdminUser'])) {
             $admin_user = (isset($_POST['user_privileges'])) ? '1' : '0';
             if (empty($_POST['user_password'])) {
@@ -144,7 +147,15 @@ class Users extends BaseController
                 );
 
             }
-            if (!empty($query)) {
+
+
+            // if (!empty($query)) {
+            //     $db->table('tbl_admin_user')
+            //         ->where('id',$this->request->getPost('user_id'))
+            //         ->update($insertArray);
+            // }
+
+            if (!empty($_POST['user_password'])) {
                 $db->table('tbl_admin_user')
                     ->where('id',$this->request->getPost('user_id'))
                     ->update($insertArray);
