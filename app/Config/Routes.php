@@ -29,4 +29,21 @@ $routes->get('/users/create_users.php', 'Users::create_users');
 $routes->post('/users/create_users.php', 'Users::create_users');
 $routes->get('/login/logout.php', 'Login::logout');
 
+// Cron routes
+// Public cron routes (no authentication required)
+$routes->get('/cron', 'Cron::index');
+$routes->post('/cron/sync_today', 'Cron::sync_today');
+$routes->post('/cron/sync_hourly', 'Cron::sync_hourly');
+$routes->post('/cron/sync_weekly', 'Cron::sync_weekly');
+$routes->post('/cron/sync_manual', 'Cron::sync_manual');
+$routes->post('/cron/test_connection', 'Cron::test_connection');
 
+if (is_cli()) {
+    $routes->cli('cronjob', 'CronJob::index');
+    $routes->cli('cronjob/daily', 'CronJob::daily');
+    $routes->cli('cronjob/hourly', 'CronJob::hourly');
+    $routes->cli('cronjob/weekly', 'CronJob::weekly');
+    $routes->cli('cronjob/manual/(:any)/(:any)', 'CronJob::manual/$1/$2');
+    $routes->cli('cronjob/test', 'CronJob::test');
+    $routes->cli('cronjob/help', 'CronJob::help');
+}

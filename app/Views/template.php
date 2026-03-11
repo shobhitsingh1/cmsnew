@@ -202,7 +202,10 @@ $('ul#menu2').lavaLamp();
                             <li <?php echo ($active_menu == 'devotional')? 'class="selectedLava"':'';?> ><a href="<?php echo base_url()?>add_devotional.php" >&nbsp;Add Devotional&nbsp;</a></li>	
                             <li <?php echo ($active_menu == 'tagview')? 'class="selectedLava"':'';?> ><a href="<?php echo base_url()?>tagview.php" >&nbsp;Tag View&nbsp;</a></li>      
                             <li  <?php echo ($active_menu == 'settings')? 'class="selectedLava"':'';?>><a href="<?php echo base_url()?>settings.php">&nbsp;Settings&nbsp;</a></li>
-							 
+							<li <?php echo ($active_menu == 'cron')? 'class="selectedLava"':'';?>>
+							<li <?php echo ($active_menu == 'cron')? 'class="selectedLava"':'';?>>
+								<a href="<?php echo base_url('cron'); ?>">&nbsp;Cron&nbsp;</a>
+							</li>
 							<?php if($user_data['super_admin'] == 'super_admin') :?>
 							<li <?php echo ($active_menu == 'users')? 'class="selectedLava"':'';?> ><a href="<?php echo base_url()?>users.php" >&nbsp;Users&nbsp;</a></li>
 							 <?php else: ?>
