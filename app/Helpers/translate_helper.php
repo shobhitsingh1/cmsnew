@@ -190,6 +190,7 @@ function translateTitleToSpanish(){
         if($title == $translatedTitle){
             $translatedTitle = $translatedTitle.'1';
         }
+        
         $updateBuilder = $db->table('tbl_tags');
         $updateBuilder->where('id', $row->id);
         $updateBuilder->update([
