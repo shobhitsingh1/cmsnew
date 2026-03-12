@@ -9,6 +9,7 @@ use App\Models\User;
 use CodeIgniter\Router\Router;
 use DateTime;
 
+
 class Devotional extends BaseController
 {
 
@@ -460,14 +461,21 @@ class Devotional extends BaseController
                                         $series_last_id = $_POST['series_processing'];
                                         for ($i = 1; $i <= $series_last_id; $i++) {
 
-                                            $this->tagsModel->select('*');
-                                            $this->tagsModel->from('tbl_devotional_tmp');
-                                            //$this->db->where('series_id',$i);
-                                            $this->tagsModel->where('user_id', $user_data['username_id']);
-                                          //  $query_devotional_tmp = $this->tagsModel->get();
+                                        //     $this->tagsModel->select('*');
+                                        //     $this->tagsModel->from('tbl_devotional_tmp');
+                                        //     //$this->db->where('series_id',$i);
+                                        //     $this->tagsModel->where('user_id', $user_data['username_id']);
+                                        //   //  $query_devotional_tmp = $this->tagsModel->get();
 
-                                            $query_devotional_tmp = $this->tagsModel->get();
+                                        //     $query_devotional_tmp = $this->tagsModel->get();
 
+                                                $query_devotional_tmp = $db
+                                                ->table('tbl_devotional_tmp')
+                                                ->select('*')
+                                                ->where('user_id', $user_data['username_id'])
+                                                ->get();
+
+                                          //  print_r($query_devotional_tmp);exit;
                                             // if ($query_devotional_tmp->getNumRows() > 0) {
                                             //     foreach ($query_devotional_tmp->result() as $row_devotional_obj) {
                                             //         $row_devotional = (array)$row_devotional_obj;
