@@ -20,32 +20,56 @@ class Tags extends Model {
 
     public function getTagsName($ids) {
         $db = \Config\Database::connect();
+        $session = \Config\Services::session();
+        $sessionData = $session->get();
+        $lang = isset($sessionData['site_lang']) && !empty($sessionData['site_lang']) 
+        ? $sessionData['site_lang'] 
+        : 'en';
+
+
         $builder = $db->table('tbl_tags');
 
         $ids_array = explode(",", $ids);
-        $builder->select('title');
+
+        $builder->select($lang == 'en' ? 'title' : 'title_'.$lang);
+        // $builder->select('title');
         $builder->whereIn('id', $ids_array);
         $query = $builder->get();
         $query = $query->getResultObject();
         $titles = [];
+        // foreach ($query as $row) {
+        //     $titles[] = $row->title;
+        // }
+        $column = $lang == 'en' ? 'title' : 'title_'.$lang;
         foreach ($query as $row) {
-            $titles[] = $row->title;
+             $titles[] = $row->$column;
         }
         return implode(",", $titles);
     }
 
     public function getTagNameById($ids) {
         $db = \Config\Database::connect();
+
+        $session = \Config\Services::session();
+        $sessionData = $session->get();
+        $lang = isset($sessionData['site_lang']) && !empty($sessionData['site_lang']) 
+        ? $sessionData['site_lang'] 
+        : 'en';
+
         $builder = $db->table('tbl_tags');
         $title = array();
-        $builder->select('title');
+        //$builder->select('title');
+        $builder->select($lang == 'en' ? 'title' : 'title_'.$lang);
         $builder->where('id', $ids);
         $querys = $builder->get();
         $querys = $querys->getResultObject();
 
+        $column = $lang == 'en' ? 'title' : 'title_'.$lang;
         if (count($querys) > 0) {
             foreach ($querys as $query) {
-                $title = $query->title;
+                //$title = $query->title;
+                 $title = $query->$column;
+
             }
         }
         return $title;

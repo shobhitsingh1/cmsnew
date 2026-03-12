@@ -428,14 +428,14 @@
 				<div class="main">
                 	<div class="body_left">
                     	<div class="sidebar_widgit" style=" height: 1000px;">
-                        	<h2  >SELECT QUARTER:</h2>
+                        	<h2><?= t('SELECT QUARTER') ?>:</h2>
                            
                               
                               <div class="select_con">
                                <div class='selectBox1'>
                                     <select id="date_quarter" name="date_quarter" placeholder="Quarter" >
                                     
-									 <option value="d" disabled="disabled" selected="selected" >Quarter</option>
+									 <option value="d" disabled="disabled" selected="selected" ><?= t('Quarter') ?></option>
 										<?php  for($i=94; $i <= 99; $i++): ?>
 										<?php $quarter_array = array('03','06','09','12');
 											foreach($quarter_array as $quarter_val): ?>
@@ -459,14 +459,14 @@
                            	  </div> 
                             </div>
                              <br/>   
-                            <h2  >SELECT YEAR:</h2>
+                            <h2  ><?= t('SELECT YEAR') ?>:</h2>
                            
                               <div class="select_con" style="padding-bottom:10px;" >
                                <div class='selectBox1'>
                                   
                            	 
 							  <select id="date_devo" name="date_devo" placeholder="Year" >
-                               <option value="d" disabled="disabled" selected="selected">Year</option>
+                               <option value="d" disabled="disabled" selected="selected"><?= t('Year') ?></option>
 									<?php for($i=1994; $i <= 2035; $i++): ?>
 										<option  value=<?php echo $i ?>><?php echo $i ?></option>
 									
@@ -476,7 +476,7 @@
 								</div>
                               </div>
                                 <div class="save" style="margin-left:16px;">
-                            	<input name="View" type="button"  onclick="check_date();" value="Assign" class="btn_1" />
+                            	<input name="View" type="button"  onclick="check_date();" value=<?= t("Assign") ?> class="btn_1" />
                             </div>
                             </form>
                         </div>
@@ -488,15 +488,15 @@
                         <div class="clear"></div>
                     </div>
                     <div class="body_right">
-                        <h2>Devotional</h2>
-						<h2 style="float:right;margin-top:-30px;" ><a id='create_series' ><?php echo (empty($session_data['series_processing']))? "Create Series" :"(Series) Processing ".($session_data['start_processing']+1)." of ".$session_data['series_processing']; ?></a><input type="hidden" name="series_processing" id="series_processing" value="<?php echo (!empty($session_data['series_processing']))? $session_data['series_processing'] :'' ?>"><input type="hidden" id="start_processing" name="start_processing" value="<?php echo (!empty($session_data['start_processing']))? ($session_data['start_processing']+1) :'' ?>" ></h2>
+                        <h2><?=  t('Devotional') ?></h2>
+						<h2 style="float:right;margin-top:-30px;" ><a id='create_series' ><?php echo (empty($session_data['series_processing']))? t("Create Series") : t("(Series) Processing ").($session_data['start_processing']+1)." of ".$session_data['series_processing']; ?></a><input type="hidden" name="series_processing" id="series_processing" value="<?php echo (!empty($session_data['series_processing']))? $session_data['series_processing'] :'' ?>"><input type="hidden" id="start_processing" name="start_processing" value="<?php echo (!empty($session_data['start_processing']))? ($session_data['start_processing']+1) :'' ?>" ></h2>
                         <textarea name="devotional" id="devotional" cols="" rows="" class="textarea"></textarea>
-                        <h2>Acknowledgements</h2>
+                        <h2><?=  t('Acknowledgements') ?></h2>
                         <textarea name="acknowledgements" cols="" rows="" class="textarea"></textarea>
                         <div class="popup_bottom">
                         	<div class="popup_bottom_con">
                             	<div class="sidebar_widgit">
-                        		<h2>Tags</h2>
+                        		<h2><?=  t('Tags') ?></h2>
                                 <div class="btm_input">
                                 	<div class="btn_in_left"><input name="tag_name" type="text" class="textbox_1" id="tag_name" maxlength="50" /> </div>
 									 <div class="btn_in_right">
@@ -513,7 +513,23 @@
 										foreach ($query_tags as $row_tags):
 											$tags[$row_tags->id] =  $row_tags->title;
 										?>
-									<option value="<?php echo $row_tags->id; ?>"><?php echo (strlen($row_tags->title) > 50)?substr($row_tags->title,0,50)."..":$row_tags->title; ?></option>
+										
+									<!-- <option value="<?php // echo $row_tags->id; ?>"><?php // echo (strlen($row_tags->title) > 50)? substr($row_tags->title,0,50)."..": $row_tags->title; ?></option> -->
+
+									<?php
+										$lang = isset($_SESSION['site_lang']) ? $_SESSION['site_lang'] : 'en';
+
+										if ($lang == 'en') {
+											$title = $row_tags->title;
+										} else {
+											$column = 'title_'.$lang;
+											$title = !empty($row_tags->$column) ? $row_tags->$column : $row_tags->title;
+										}
+										?>
+
+										<option value="<?php echo $row_tags->id; ?>">
+											<?php echo (strlen($title) > 50) ? substr($title,0,50).".." : $title; ?>
+										</option>
 										<?php endforeach; ?>
 									<?php endif; ?>	
 									</select>
@@ -522,7 +538,7 @@
                             </div>
                             <div class="popup_bottom_con">
                             	<div class="sidebar_widgit">
-                        	<h2>Books</h2>
+                        	<h2><?=  t('Books') ?></h2>
                             <div class="btm_input" >
                                 	<div class="btn_in_left"><input name="tag_books" type="text" class="textbox_1" id="tag_books" maxlength="50" /> </div>
 									 <div class="btn_in_right">
@@ -538,7 +554,26 @@
 										foreach ($query_books as $row_tags):
 											$tags[$row_tags->id] =  $row_tags->title;
 										?>
-									<option value="<?php echo $row_tags->id; ?>"><?php echo (strlen($row_tags->title) > 50)?substr($row_tags->title,0,50)."..":$row_tags->title; ?></option>
+
+										<?php
+
+										$lang = isset($_SESSION['site_lang']) ? $_SESSION['site_lang'] : 'en';
+
+										if ($lang == 'en') {
+											$title = $row_tags->title;
+										} else {
+											$column = 'title_'.$lang;
+											$title = !empty($row_tags->$column) ? $row_tags->$column : $row_tags->title;
+										}
+										?>
+
+
+									<!-- <option value="<?php // echo $row_tags->id; ?>"><?php // echo (strlen($row_tags->title) > 50)?substr($row_tags->title,0,50)."..":$row_tags->title; ?></option> -->
+
+									<option value="<?php echo $row_tags->id; ?>">
+										<?php echo (strlen($title) > 50) ? substr($title,0,50).".." : $title; ?>
+									</option>
+									
 										<?php endforeach; ?>
 									<?php endif; ?>	
 									</select>
@@ -550,7 +585,7 @@
                             </div>
                             <div class="popup_bottom_con_last">
                             	<div class="sidebar_widgit">
-                        	<h2>Authors</h2>
+                        	<h2><?=  t('Authors') ?></h2>
                             <div class="btm_input">
                                 	<div class="btn_in_left"><input name="tag_author" type="text" class="textbox_1" id="tag_author" maxlength="50" /> </div>
                                     <div class="btn_in_right">
@@ -566,7 +601,26 @@
 										foreach ($query_author as $row_tags):
 											$tags[$row_tags->id] =  $row_tags->title;
 										?>
-									<option value="<?php echo $row_tags->id; ?>"><?php echo (strlen($row_tags->title) > 50)?substr($row_tags->title,0,50)."..":$row_tags->title; ?></option>
+
+										<?php
+
+										$lang = isset($_SESSION['site_lang']) ? $_SESSION['site_lang'] : 'en';
+
+										if ($lang == 'en') {
+											$title = $row_tags->title;
+										} else {
+											$column = 'title_'.$lang;
+											$title = !empty($row_tags->$column) ? $row_tags->$column : $row_tags->title;
+										}
+										?>
+
+									<!-- <option value="<?php // echo $row_tags->id; ?>"><?php // echo (strlen($row_tags->title) > 50)?substr($row_tags->title,0,50)."..":$row_tags->title; ?></option> -->
+
+									<option value="<?php echo $row_tags->id; ?>">
+										<?php echo (strlen($title) > 50) ? substr($title,0,50).".." : $title; ?>
+									</option>
+									
+
 										<?php endforeach; ?>
 									<?php endif; ?>	
 									</select>
@@ -578,20 +632,20 @@
                             </div>
                             <div class="clear"></div>
                         </div>
-                        <h3>Recent History</h3>
+                        <h3><?=  t('Recent History') ?></h3>
 						           	
 						
 						<?php if(count($query_devotional) > 0):
 							foreach ($query_devotional as $row_devotional): ?>
                       <div class="right_top_con2">
                         	<div class="selct_hd">
-							<label id="Label120"  class=""><span  class="hd_text" style="margin-left:-5px;font-size:14px;"><strong>ID:<?php echo  $row_devotional->id ?></strong></span></label>
+							<label id="Label120"  class=""><span  class="hd_text" style="margin-left:-5px;font-size:14px;"><strong><?=  t('ID') ?>:<?php echo  $row_devotional->id ?></strong></span></label>
                             </div>
 							<input type="hidden" name="d_date" class="d_date_class" value="<?php echo $row_devotional->devotional_date; ?>">
                             <?php if($row_devotional->series_id > 0) : ?>
-                            <div class="hd_text"><a href="<?php echo base_url();?>library/libraryseries.php?id=<?php echo $row_devotional->series_id ?>"  class="colorbox2"><?php echo  date("l, F d, Y",strtotime($row_devotional->devotional_date)) ?></a></div>
+                            <div class="hd_text"><a href="<?php echo base_url();?>library/libraryseries.php?id=<?php echo $row_devotional->series_id ?>"  class="colorbox2"><?php echo englishDateToSpanish(date("l, F d, Y",strtotime($row_devotional->devotional_date)), isset($_SESSION['site_lang']) ? $_SESSION['site_lang'] : 'en') ?></a></div>
                             <?php else: ?>
-							 <div class="hd_text"><a href="<?php echo base_url();?>library/librarysingle.php?id=<?php echo $row_devotional->id ?>"  class="colorbox2"><?php echo  date("l, F d, Y",strtotime($row_devotional->devotional_date)) ?></a></div>
+							 <div class="hd_text"><a href="<?php echo base_url();?>library/librarysingle.php?id=<?php echo $row_devotional->id ?>"  class="colorbox2"><?php echo  englishDateToSpanish(date("l, F d, Y",strtotime($row_devotional->devotional_date)),isset($_SESSION['site_lang']) ? $_SESSION['site_lang'] : 'en') ?></a></div>
 							<?php endif; ?>	
                             <?php
 							if(!empty($row_devotional->series_id)) : ?>
@@ -645,11 +699,11 @@
                             <span><?php echo  (strlen($row_devotional->text) > 400)?substr(html_entity_decode($row_devotional->text),0,398)."..":html_entity_decode($row_devotional->text) ?> </span><br />
                            <hr  style="border-bottom: dotted 1px #000;background-color:transparent;padding-top:10px;"></hr>
 							<p style="padding-top:10px; word-wrap: break-word;">
-							<span style="font-weight: bold;">Tags</span>: <?php echo $this->tagsModel->getTagsName($row_devotional->tag_ids) ?><br />
-							<span style="font-weight: bold;">Books</span>: <?php echo  $this->tagsModel->getTagsName($row_devotional->book_ids); ?><br />
-                            <span style="font-weight: bold;">Authors</span>: <?php echo  $this->tagsModel->getTagsName($row_devotional->author_ids); ?><br />
-                            <span style="font-weight: bold;">Acknowledgements</span>: <?php echo  $row_devotional->acknowledgements ?></p>
-							<p><span style="font-weight: bold;">Submitted By</span>: <?php  echo   $this->usersModel->getUserName($row_devotional->user_id) ?></p>
+							<span style="font-weight: bold;"><?=  t('Tags') ?></span>: <?php echo $this->tagsModel->getTagsName($row_devotional->tag_ids) ?><br />
+							<span style="font-weight: bold;"><?=  t('Books') ?></span>: <?php echo  $this->tagsModel->getTagsName($row_devotional->book_ids); ?><br />
+                            <span style="font-weight: bold;"><?=  t('Authors') ?></span>: <?php echo  $this->tagsModel->getTagsName($row_devotional->author_ids); ?><br />
+                            <span style="font-weight: bold;"><?=  t('Acknowledgements') ?></span>: <?php echo  $row_devotional->acknowledgements ?></p>
+							<p><span style="font-weight: bold;"><?=  t('Submitted By') ?></span>: <?php  echo   $this->usersModel->getUserName($row_devotional->user_id) ?></p>
 							
                         </div>
                         <?php endforeach; ?>
@@ -663,11 +717,11 @@
                 </div>
 			</div>
 			</form>
-				<div id="dialog-form" title="Create New Series">
+				<div id="dialog-form" title='<?= t("Create New Series") ?>'>
 						
 						<form id="frm2">
 							<fieldset>
-								<label for="name"># of Days In Series</label>
+								<label for="name"># <?=  t('of Days In Series') ?></label>
 								<input type="text" name="series_count" id="series_count" maxlength="1" ui-widget-content ui-corner-all">
 								
 								<!-- Allow form submission with keyboard without duplicating the dialog button -->

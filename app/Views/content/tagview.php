@@ -369,14 +369,14 @@ $this->usersModel = new User();
                 	<form action="tagview.php" name="frm2" id="frm2" method="POST">
                 	<div class="body_left">
                     	<div class="sidebar_widgit">
-                        	<h2>SEARCH BY:</h2>
+                        	<h2><?= t('SEARCH BY') ?>:</h2>
                            
-                           	  <input name="Search" type="text" class="textbox" id="Search"  placeholder="Devotional Text" value="<?php echo (ISSET($GET))?$GET['Search']:'' ?>"/>
-                              <input name="ID" type="text" class="textbox" id="ID"  placeholder="ID Number" value="<?php echo (ISSET($GET))?$GET['ID']:'' ?>"/> 
+                           	  <input name="Search" type="text" class="textbox" id="Search"  placeholder='<?=  t("Devotional Text") ?>' value="<?php echo (ISSET($GET))?$GET['Search']:'' ?>"/>
+                              <input name="ID" type="text" class="textbox" id="ID"  placeholder='<?=  t("ID Number") ?>' value="<?php echo (ISSET($GET))?$GET['ID']:'' ?>"/> 
                               <div class="select_con" style="padding-bottom:10px;">
                                <div class='selectBox'>
                                     <select id="date_year" name="date_year"  placeholder="Year">
-                                        <option value="d" disabled="disabled">Date Year</option>
+                                        <option value="d" disabled="disabled"><?=  t("Date Year") ?></option>
 										
 										
 										<?php for($i=1994; $i <= 2030; $i++): ?>
@@ -393,9 +393,9 @@ $this->usersModel = new User();
                                <div class='selectBox'>
                                     <div class='selectBox'>
                                     
-                                    <select id="date_quarter" name="date_quarter" placeholder="Quarter" >
+                                    <select id="date_quarter" name="date_quarter" placeholder='<?=  t("Quarter") ?>' >
                                         
-                                         <option value="d" disabled="disabled" selected="selected" >Quarter</option>
+                                         <option value="d" disabled="disabled" selected="selected" ><?=  t("Quarter") ?></option>
                                             <?php  for($i=94; $i <= 99; $i++): ?>
                                             <?php $quarter_array = array('03','06','09','12');
                                                 foreach($quarter_array as $quarter_val): ?>
@@ -424,11 +424,11 @@ $this->usersModel = new User();
                               	<div class="date_picker left">
                                 	
                                 	<div class="date">
-									<input type="text" id="from_date" value="<?php echo (ISSET($GET))?$GET['from_date']:'' ?>" name="from_date" class="textbox" placeholder="From Date" style="float: left; width: 67px;"></div>
+									<input type="text" id="from_date" value="<?php echo (ISSET($GET))?$GET['from_date']:'' ?>" name="from_date" class="textbox" placeholder='<?=  t("From Date") ?>' style="float: left; width: 67px;"></div>
                                 </div>
                                 <div class="date_picker right">
                                 	<div class="date">
-									<input type="text" id="to_date" value="<?php echo (ISSET($GET))?$GET['to_date']:'' ?>" name="to_date" class="textbox" placeholder="To Date" style="float: left; width: 67px;"></div>
+									<input type="text" id="to_date" value="<?php echo (ISSET($GET))?$GET['to_date']:'' ?>" name="to_date" class="textbox" placeholder='<?=  t("To Date") ?>' style="float: left; width: 67px;"></div>
                                 </div>
                                 <div class="clear"></div>
                               </div>
@@ -443,8 +443,8 @@ $this->usersModel = new User();
                       
                         
                          <div class="select_con">
-                              	<div class="sub_btn_1 left"><input name="View" type="submit" value="View" class="btn_1" /></div>
-                                <div class="sub_btn_1 right"><input name="reset" type="button" id="reset" value="Reset" class="btn_2" /></div>
+                              	<div class="sub_btn_1 left"><input name="View" type="submit" value='<?=  t("View") ?>' class="btn_1" /></div>
+                                <div class="sub_btn_1 right"><input name="reset" type="button" id="reset" value='<?=  t("Reset") ?>' class="btn_2" /></div>
                                 <div class="clear"></div>
                               </div>
                         <div class="clear"></div>
@@ -463,7 +463,13 @@ $this->usersModel = new User();
                         
                         if(ISSET($query_devotional)){
                             if(count($query_devotional) > 1){
-                                 
+
+
+                                  // $lang = $_SESSION['site_lang'] ?? 'en';
+                                  // $titleColumn = ($lang == 'en') ? 'title' : 'title_' . $lang;
+                                  // $title = $row_devotional->$titleColumn;
+                                  
+                               
                                   foreach ($query_devotional as $row_devotional){
                                        
                                         if($row_devotional->type == 'Tags'){
@@ -489,7 +495,7 @@ $this->usersModel = new User();
                         ?>
                         <div class="body_right">
                          <?php if(count($tags_array_tmp) > 0):  ?>
-                            <h3>Tags</h3>
+                            <h3><?= t("Tags") ?></h3>
                             <div class="scroll_bg" style="height:188px;">
                                 <div class="scroll-pane">
                                     <div class="scroll-padding">
@@ -512,7 +518,7 @@ $this->usersModel = new User();
                             </div>
                              <?php endif; ?>
                             <?php if(count($book_array_tmp) > 0):  ?>
-                            <h3>Books</h3>
+                            <h3><?= t("Books") ?></h3>
                             <div class="scroll_bg" style="height:188px;">
                                 <div class="scroll-pane">
                                     <div class="scroll-padding">
@@ -535,7 +541,7 @@ $this->usersModel = new User();
                             </div>
                              <?php endif; ?>
                              <?php if(count($author_array_tmp) > 0):  ?>
-                            <h3>Authors</h3>
+                            <h3><?= t("Authors") ?></h3>
                             <div class="scroll_bg" style="height:188px;">
                                 <div class="scroll-pane">
                                     <div class="scroll-padding">
@@ -615,7 +621,7 @@ $this->usersModel = new User();
                         ?>
                         <div class="body_right">
                          <?php if(count($tags_array) > 0):  ?>
-                            <h3>Tags</h3>
+                            <h3><?=  t('Tags') ?></h3>
                             <div class="scroll_bg" style="height:188px;">
                                 <div class="scroll-pane">
                                     <div class="scroll-padding">
@@ -640,7 +646,7 @@ $this->usersModel = new User();
                             </div>
                              <?php endif; ?>
                             <?php if(count($book_array) > 0):  ?>
-                            <h3>Books</h3>
+                            <h3><?=  t('Books') ?></h3>
                             <div class="scroll_bg" style="height:188px;">
                                 <div class="scroll-pane">
                                     <div class="scroll-padding">
@@ -666,7 +672,7 @@ $this->usersModel = new User();
                             </div>
                              <?php endif; ?>
                              <?php if(count($author_array) > 0):  ?>
-                            <h3>Authors</h3>
+                            <h3><?=  t('Authors') ?></h3>
                             <div class="scroll_bg" style="height:188px;">
                                 <div class="scroll-pane">
                                     <div class="scroll-padding">

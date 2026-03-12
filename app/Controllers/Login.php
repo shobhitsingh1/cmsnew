@@ -169,6 +169,9 @@ class Login extends BaseController {
                 }
 
                 $session = \Config\Services::session();
+
+                $sessiondata['site_lang'] = 'en';
+                
                 $session->set($sessiondata);
                 return redirect()->to(base_url('library.php'));
             } else {

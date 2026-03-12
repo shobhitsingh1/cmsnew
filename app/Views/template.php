@@ -177,7 +177,10 @@ $('ul#menu2').lavaLamp();
 				});				
 			}//-->
 			
-			
+			function changeLang(lang)
+			{
+				window.location.href = "<?php echo base_url(); ?>language/" + lang;
+			}
 
 </script>
 <!--		-->
@@ -198,13 +201,24 @@ $('ul#menu2').lavaLamp();
                 	<div class="header_nav">
                     	<ul class="lavaLampWithImage" id='menu'>
 						<?php $active_menu = $class_name ?>
-                            <li  <?php echo ($active_menu == 'library')? 'class="selectedLava"':'';?>><a href="<?php echo base_url()?>library.php">&nbsp;Library&nbsp;</a></li>     
-                            <li <?php echo ($active_menu == 'devotional')? 'class="selectedLava"':'';?> ><a href="<?php echo base_url()?>add_devotional.php" >&nbsp;Add Devotional&nbsp;</a></li>	
-                            <li <?php echo ($active_menu == 'tagview')? 'class="selectedLava"':'';?> ><a href="<?php echo base_url()?>tagview.php" >&nbsp;Tag View&nbsp;</a></li>      
-                            <li  <?php echo ($active_menu == 'settings')? 'class="selectedLava"':'';?>><a href="<?php echo base_url()?>settings.php">&nbsp;Settings&nbsp;</a></li>
+                            <li  <?php echo ($active_menu == 'library')? 'class="selectedLava"':'';?>><a href="<?php echo base_url()?>library.php">&nbsp;<?= t('Library') ?>&nbsp;</a></li>     
+                            <li <?php echo ($active_menu == 'devotional')? 'class="selectedLava"':'';?> ><a href="<?php echo base_url()?>add_devotional.php" >&nbsp;<?= t('Add Devotional') ?>&nbsp;</a></li>	
+                            <li <?php echo ($active_menu == 'tagview')? 'class="selectedLava"':'';?> ><a href="<?php echo base_url()?>tagview.php" >&nbsp;<?= t('Tag View') ?>&nbsp;</a></li>      
+                            <li  <?php echo ($active_menu == 'settings')? 'class="selectedLava"':'';?>><a href="<?php echo base_url()?>settings.php">&nbsp;<?= t('Settings') ?>&nbsp;</a></li>
+							<li <?php echo ($active_menu == 'language') ? 'class="selectedLava"' : ''; ?>>
+								<select id="language" onchange="changeLang(this.value)" 
+									style="background:transparent;
+										border:none;
+										color:inherit;
+										font:inherit;
+										cursor:pointer;">
+									<option value="en" <?php echo (session()->get('site_lang') == 'en') ? 'selected' : ''; ?>><?= t('ENGLISH') ?></option>
+									<option value="es" <?php echo (session()->get('site_lang') == 'es') ? 'selected' : ''; ?>><?= t('SPANISH') ?></option>
+								</select>
+							</li>
 							 
 							<?php if($user_data['super_admin'] == 'super_admin') :?>
-							<li <?php echo ($active_menu == 'users')? 'class="selectedLava"':'';?> ><a href="<?php echo base_url()?>users.php" >&nbsp;Users&nbsp;</a></li>
+							<li <?php echo ($active_menu == 'users')? 'class="selectedLava"':'';?> ><a href="<?php echo base_url()?>users.php" >&nbsp;<?= t('Users') ?>&nbsp;</a></li>
 							 <?php else: ?>
 							 <li>&nbsp;&nbsp;&nbsp;</li>
 							 <?php endif ;?>
@@ -216,13 +230,13 @@ $('ul#menu2').lavaLamp();
                     </div>
 					<div class="logout" style="float:left;margin-left:120px;">
                     <ul>
-                         <li><i><a>Welcome, <?php echo ucwords($user_data['username']); ?></a></i></li>
+                         <li><i><a><?= t('Welcome') ?>, <?= t(ucwords($user_data['username'])) ?></a></i></li>
                         </ul>
                     </div>
                     <div class="logout">
                     	<ul >
 						
-                        	<li  ><a href="<?php echo base_url()?>login/logout.php">Log Out</a></li>
+                        	<li  ><a href="<?php echo base_url()?>login/logout.php"><?= t('Log Out')?></a></li>
                         </ul>
                     </div>
                     <div class="clear"></div>
@@ -233,18 +247,18 @@ $('ul#menu2').lavaLamp();
                 	 <div class="header_mid_container">
 					 <?php if($active_menu == 'library'): ?>
 						<div class="header_left">&nbsp;</div>
-                        <div class="header_mid"> <?php if(ISSET($parameter)): ?><h2><span>Search Parameters: <?php print $parameter ?></span></h2> <?php endif; ?></div>
+                        <div class="header_mid"> <?php if(ISSET($parameter)): ?><h2><span><?= t("Search Parameters") ?>: <?php print $parameter ?></span></h2> <?php endif; ?></div>
 						<div class="header_left">&nbsp;</div>
-						<div class="header_mid"> <?php if(ISSET($query_devotional)): ?><h2><span> Records Found: <span id="filter_counter_span"></span></span></h2> <?php endif; ?></div>
+						<div class="header_mid"> <?php if(ISSET($query_devotional)): ?><h2><span> <?= t("Records Found") ?>: <span id="filter_counter_span"></span></span></h2> <?php endif; ?></div>
                         <div class="header_right">
-                        	<div class="ex_btn"><a id="exportBtn" >Export</a></div>
+                        	<div class="ex_btn"><a id="exportBtn" ><?= t("Export") ?></a></div>
                             <div class="radio_con" style="padding-left:23px;" >
 								<input id="CheckBox3" type="checkbox" class="CheckBoxClass" name="group3" value="HID" >
-                                <label style="width:65px;float:left;margin-left:-133px;font-size:13px;" id="Label3" for="CheckBox3" class="CheckBoxLabelClass" >Hide ID</label>
+                                <label style="width:65px;float:left;margin-left:-133px;font-size:13px;" id="Label3" for="CheckBox3" class="CheckBoxLabelClass" ><?= t("Hide ID") ?></label>
                             	<input id="CheckBox1" type="checkbox" class="CheckBoxClass" name="group1" value="HT" >
-                                <label style="width:65px;float:left;margin-left:-50px;font-size:13px;" id="Label1" for="CheckBox1" class="CheckBoxLabelClass" >Hide Tags</label>
+                                <label style="width:65px;float:left;margin-left:-50px;font-size:13px;" id="Label1" for="CheckBox1" class="CheckBoxLabelClass" ><?= t("Hide Tags") ?></label>
                                 <input id="CheckBox2" type="checkbox" class="CheckBoxClass"  value="HA" name="group2"/>
-                                <label style="width:auto;float:left;font-size:13px;" id="Label2" for="CheckBox2" class="CheckBoxLabelClass" >Hide Acknowledgements</label>
+                                <label style="width:auto;float:left;font-size:13px;" id="Label2" for="CheckBox2" class="CheckBoxLabelClass" ><?= t("Hide Acknowledgements") ?></label>
                                 <div class="clear"></div>	
                              </div>
                             </div>
@@ -253,7 +267,7 @@ $('ul#menu2').lavaLamp();
                          <?php if($active_menu == 'tagview'): ?>
 						<div class="header_left">&nbsp;</div>
                             <div class="header_right">
-                        	<div class="ex_btn"><a id="exportBtn" >Export</a></div>
+                        	<div class="ex_btn"><a id="exportBtn" ><?= t("Export") ?></a></div>
                             
                             </div>
                             <div class="clear"></div>

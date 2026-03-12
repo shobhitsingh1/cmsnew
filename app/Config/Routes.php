@@ -23,6 +23,7 @@ $routes->post('/tagview.php', 'Tagview::index');
 $routes->post('/tagview/download', 'Tagview::download');
 $routes->get('/settings.php', 'Settings::index');
 $routes->post('/settings.php', 'Settings::index');
+$routes->get('language/(:any)', 'Language::switch/$1');
 $routes->get('/users.php', 'Users::index');
 $routes->get('/users/checkuser', 'Users::checkuser');
 $routes->get('/users/create_users.php', 'Users::create_users');

@@ -9,6 +9,7 @@ use App\Models\User;
 use CodeIgniter\Router\Router;
 use DateTime;
 
+
 class Devotional extends BaseController
 {
 
@@ -49,6 +50,16 @@ class Devotional extends BaseController
         ];
 
         $database = Database::connect();
+        $db = \Config\Database::connect();
+        $session = \Config\Services::session();
+        $sessionData = $session->get();
+
+
+        $lang = isset($sessionData['site_lang']) && !empty($sessionData['site_lang']) 
+        ? $sessionData['site_lang'] 
+        : 'en';
+
+
 
         $query_tags = $this->tagsModel
             ->select('*')
@@ -75,18 +86,18 @@ class Devotional extends BaseController
 
         $query_author = $query_author->getResultObject();
 
-        $db = \Config\Database::connect();
-
+        
         $query_devotional = $db->table('tbl_devotional')
             ->select('*')
+            ->where('lang', $lang)
             ->orderBy('created_on', 'DESC')
             ->limit(30)
             ->get();
 
+        
         $query_devotional = $query_devotional->getResultObject();
 
-        $session = \Config\Services::session();
-        $sessionData = $session->get();
+        
         if(!isset($sessionData['username'])){
             return redirect()->to(base_url('/'));
         }
@@ -204,11 +215,12 @@ class Devotional extends BaseController
             else
                 $arrText = explode("\n\n", $strText);
 
-               
+                
                 function isValidDate($date, $format = 'Y-m-d') {
                     $d = DateTime::createFromFormat($format, $date);
                     return $d && $d->format($format) === $date;
                 }
+                
                 
             foreach ($arrText as $key => $value) {
 
@@ -220,10 +232,20 @@ class Devotional extends BaseController
                         $arrListing = @split($x, $strText);
                     else
                         $arrListing = explode("\n", $strText);
-
-
+                    
                     if (count($arrListing) >= 3) {
 
+                        $converted_text = '';
+
+                        if($user_data['site_lang'] != "en"){
+                            $converted_text = spanishDateToEnglish($arrListing[0]);
+                        }
+
+                        if($converted_text != ''){
+                            $arrListing[0] = $converted_text;
+                        }
+
+                        
                         $strDate = trim($arrListing[0]);
                         $str_date_arr = explode(" ", $strDate);
                         $strDay = trim($str_date_arr[0]);
@@ -345,6 +367,7 @@ class Devotional extends BaseController
                                 
                                 if ($count_devotinal_date == 0) {
                                     $data = array(
+                                        'lang' =>  isset($user_data['site_lang']) ? $user_data['site_lang'] : 'en',
                                         'title' => htmlentities(($strTitle ?? ''), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
                                         'subtitle' => htmlentities(($strSubtitle ?? ''), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
                                         'text' => htmlentities(($strText ?? ''), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
@@ -368,6 +391,7 @@ class Devotional extends BaseController
 
                                 } else {
                                     $data = array(
+                                        'lang' =>  isset($user_data['site_lang']) ? $user_data['site_lang'] : 'en',
                                         'title' => htmlentities(($strTitle), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
                                         'subtitle' => htmlentities(($strSubtitle), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
                                         'text' => htmlentities(($strText), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
@@ -434,6 +458,7 @@ class Devotional extends BaseController
 
 
                                     $data = array(
+                                        'lang' =>  isset($user_data['site_lang']) ? $user_data['site_lang'] : 'en',
                                         'title' => htmlentities(($strTitle), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
                                         'subtitle' => htmlentities(($strSubtitle), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
                                         'text' => htmlentities(($strText), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
@@ -460,14 +485,21 @@ class Devotional extends BaseController
                                         $series_last_id = $_POST['series_processing'];
                                         for ($i = 1; $i <= $series_last_id; $i++) {
 
-                                            $this->tagsModel->select('*');
-                                            $this->tagsModel->from('tbl_devotional_tmp');
-                                            //$this->db->where('series_id',$i);
-                                            $this->tagsModel->where('user_id', $user_data['username_id']);
-                                          //  $query_devotional_tmp = $this->tagsModel->get();
+                                        //     $this->tagsModel->select('*');
+                                        //     $this->tagsModel->from('tbl_devotional_tmp');
+                                        //     //$this->db->where('series_id',$i);
+                                        //     $this->tagsModel->where('user_id', $user_data['username_id']);
+                                        //   //  $query_devotional_tmp = $this->tagsModel->get();
 
-                                            $query_devotional_tmp = $this->tagsModel->get();
+                                        //     $query_devotional_tmp = $this->tagsModel->get();
 
+                                                $query_devotional_tmp = $db
+                                                ->table('tbl_devotional_tmp')
+                                                ->select('*')
+                                                ->where('user_id', $user_data['username_id'])
+                                                ->get();
+
+                                          //  print_r($query_devotional_tmp);exit;
                                             // if ($query_devotional_tmp->getNumRows() > 0) {
                                             //     foreach ($query_devotional_tmp->result() as $row_devotional_obj) {
                                             //         $row_devotional = (array)$row_devotional_obj;

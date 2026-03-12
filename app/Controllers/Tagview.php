@@ -74,7 +74,7 @@ class Tagview extends BaseController
             if (!empty($_REQUEST['date_year'])) {
 
                 $date_by_string =  $this->request->getPost('date_year');
-                $WHERE[] = "d.date_quarter  LIKE '" . $date_by_string . "'";
+                $WHERE[] = "d.date_year  LIKE '" . $date_by_string . "'";
 
 
             }
@@ -99,6 +99,11 @@ class Tagview extends BaseController
 
 
             if (count($WHERE) > 1) {
+                $session = \Config\Services::session();
+                $sessionData = $session->get();
+                $lang = isset($sessionData['site_lang']) ? $sessionData['site_lang'] : 'en';
+                $WHERE[] = "(lang = '$lang')";
+
                 $where_str = implode(" AND ", $WHERE);
                 $sql = "SELECT d.* from `tbl_devotional` d WHERE $where_str  ORDER BY devotional_date ";
                 $query_devotional = $db->query($sql)->getResult();
