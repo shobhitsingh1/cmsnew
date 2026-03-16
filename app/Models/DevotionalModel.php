@@ -97,63 +97,68 @@ class DevotionalModel extends Model
     /**
      * Prepare devotional data for Milvus
      */
-    public function prepare_devotional_data($devotional)
-    {
-        // Get tag titles
-
-        $tag_titles = $this->get_tag_titles_for_devotional($devotional['devotional_id']);
-
-        $devotional_id = $devotional['devotional_id'];
-
-        $devotional = $this->where('id', $devotional_id)
-                  ->first();
-
-        $combined_parts = [
-            $devotional['title'] ?? '',
-            $devotional['subtitle'] ?? '',
-            $devotional['text'] ?? ''
-        ];
-        
-        // Add tag titles if available
-        if ($tag_titles) {
-            $combined_parts[] = "Tags: $tag_titles";
-        }
-        
-        // Filter out empty parts
-        $non_empty_parts = array_filter($combined_parts, function($part) {
-            return !empty(trim($part));
-        });
-        
-        $combined_text = implode(' | ', $non_empty_parts);
-        
-        // Truncate long texts
-        $truncate = function($text, $max_length) {
-            if (strlen($text) > $max_length) {
-                return substr($text, 0, $max_length) . '... [truncated]';
-            }
-            return $text;
-        };
-
-
-        return [
-            'id' => (int) $devotional['id'],
-            'title' => $truncate($devotional['title'] ?? '', 500),
-            'subtitle' => $truncate($devotional['subtitle'] ?? '', 65535),
-            'text' => $truncate($devotional['text'] ?? '', 65535),
-            'series_id' => (int) ($devotional['series_id'] ?? 0),
-            'lang' => ($devotional['lang'] ?? ''),
-            'acknowledgements' => $truncate($devotional['acknowledgements'] ?? '', 65535),
-            'tag_ids' => $truncate($devotional['tag_ids'] ?? '', 500),
-            'tag_titles' => $truncate($tag_titles ?? '', 1000),
-            'created_on' => $truncate($devotional['created_on'] ?? '', 100),
-            'date_quarter' => $truncate($devotional['date_quarter'] ?? '', 50),
-            'date_year' => $truncate($devotional['date_year'] ?? '', 20),
-            'active' => $truncate($devotional['active'] ?? '0', 1),
-            'book_ids' => $truncate($devotional['book_ids'] ?? '', 500),
-            'author_ids' => $truncate($devotional['author_ids'] ?? '', 500),
-            'devotional_date' => $truncate($devotional['devotional_date'] ?? '', 200),
-            'user_id' => (int) ($devotional['user_id'] ?? 0),
-            'combined_text' => $truncate($combined_text, 65535)
-        ];
+  public function prepare_devotional_data($devotional)
+{
+    // Get tag titles
+    $tag_titles = $this->get_tag_titles_for_devotional($devotional['devotional_id']);
+    
+    $devotional_id = $devotional['devotional_id'];
+    
+    $devotional_data = $this->where('id', $devotional_id)->first();
+    
+    $combined_parts = [];
+    
+    if (!empty($devotional_data['title'])) {
+        $combined_parts[] = trim($devotional_data['title']);
     }
+    
+    if (!empty($devotional_data['subtitle'])) {
+        $combined_parts[] = trim($devotional_data['subtitle']);
+    }
+    
+    if (!empty($devotional_data['text'])) {
+        $text = trim($devotional_data['text']);
+        if (strlen($text) > 500) {
+            $text = substr($text, 0, 500) . '...';
+        }
+        $combined_parts[] = $text;
+    }
+    
+    if (!empty($tag_titles)) {
+        $combined_parts[] = "Tags: " . trim($tag_titles);
+    }
+    
+    $combined_text = !empty($combined_parts) ? implode(' | ', $combined_parts) : '';
+    
+    $truncate = function($text, $max_length) {
+        if (empty($text)) return '';
+        $text = trim($text);
+        if (strlen($text) > $max_length) {
+            return substr($text, 0, $max_length) . '... [truncated]';
+        }
+        return $text;
+    };
+    
+     return [
+        'id' => (int) $devotional_data['id'],
+        'title' => $truncate($devotional_data['title'] ?? '', 500),
+        'subtitle' => $truncate($devotional_data['subtitle'] ?? '', 65535),
+        'text' => $truncate($devotional_data['text'] ?? '', 65535),
+        'series_id' => (int) ($devotional_data['series_id'] ?? 0),
+        'lang' => $devotional_data['lang'] ?? '',
+        'acknowledgements' => $truncate($devotional_data['acknowledgements'] ?? '', 65535),
+        'tag_ids' => $truncate($devotional_data['tag_ids'] ?? '', 500),
+        'tag_titles' => $truncate($tag_titles ?? '', 1000),
+        'created_on' => $truncate($devotional_data['created_on'] ?? '', 100),
+        'date_quarter' => $truncate($devotional_data['date_quarter'] ?? '', 50),
+        'date_year' => $truncate($devotional_data['date_year'] ?? '', 20),
+        'active' => $truncate($devotional_data['active'] ?? '0', 1),
+        'book_ids' => $truncate($devotional_data['book_ids'] ?? '', 500),
+        'author_ids' => $truncate($devotional_data['author_ids'] ?? '', 500),
+        'devotional_date' => $truncate($devotional_data['devotional_date'] ?? '', 200),
+        'user_id' => (int) ($devotional_data['user_id'] ?? 0),
+        'combined_text' => $combined_text,  
+    ];
+  
+}
 }

@@ -541,10 +541,12 @@ class Library extends BaseController
 
 
         $database = Database::connect();
+        $lang = isset($sessionData['site_lang']) ? $sessionData['site_lang'] : 'en';
 
         $query_devotional = $db->table('tbl_devotional')
             ->select('*')
             ->where('series_id', $id)
+            ->where('lang', $lang)
             ->get();
         $query_devotional = $query_devotional->getResultObject();
 

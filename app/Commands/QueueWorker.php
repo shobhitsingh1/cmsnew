@@ -52,20 +52,28 @@ class QueueWorker extends BaseCommand
         ];
     } 
 
- public function run(array $params)
+public function run(array $params)
 {
     $jobModel = new JobModel();
     $devotionalModel = new DevotionalModel();
 
-    // Get all pending jobs
-    $jobs = $jobModel->where('status', 'pending')->findAll();
+    $this->log("Queue worker started");
 
-    if (!$jobs) {
-        echo "No jobs found\n";
-        return;
-    }
+    while (true) {
 
-    foreach ($jobs as $job) {
+        // Get next pending job
+        $job = $jobModel
+                ->where('status', 'pending')
+                ->orderBy('id', 'ASC')
+                ->first();
+
+        if (!$job) {
+            $this->log("No pending jobs. Waiting...");
+            sleep(3);
+            continue;
+        }
+
+        $this->log("Processing Job ID: " . $job['id']);
 
         // Mark job as processing
         $jobModel->update($job['id'], [
@@ -169,7 +177,7 @@ class QueueWorker extends BaseCommand
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 
-            echo "Job completed ID: " . $job['id'] . "\n";
+            $this->log("Job completed ID: " . $job['id']);
 
         } catch (\Exception $e) {
 
@@ -184,8 +192,8 @@ class QueueWorker extends BaseCommand
 
             echo "Job failed ID " . $job['id'] . ": " . $e->getMessage() . "\n";
         }
-    }
 
-    echo "All pending jobs processed\n";
+        sleep(1); // small delay before next job
+    }
 }
 }
