@@ -24,7 +24,7 @@
 		$('#tag_click').click(function(){
 			var tag_name = $.trim($('#tag_name').val());
 			if(tag_name == ''){
-				alert("Please enter tag name");
+				alert('<?= t("Please enter tag name") ?>');
 			
 			}else{
 			
@@ -32,13 +32,19 @@
 				 url:"devotional/addtag",
 				 data:{tag_name:tag_name,tag_type:"Tags"},
 				 type:'post',
+				 dataType:'json',
 				 success:function(result){
 						if($.trim(result) != 'EXIST'){
 							//$('#div_tag_name_1').append(result);
 							//$('#tag_name').val('');
-							var v = tagItem.val(), opt = $('<option />', {
-								value: result,
-								text: v
+							// var v = tagItem.val(), opt = $('<option />', {
+							// 	value: result,
+							// 	text: v
+							// });
+							
+							 var opt = $('<option />', {
+								value: result.id,
+								text: result.text
 							});
 							
 							
@@ -48,7 +54,7 @@
 							el.multiselect('refresh');
 							$('#tag_name').val('');
 						}else{
-							alert(tag_name+" Already Exist as Tag Name's");
+							alert(tag_name+ "<?= t(" Already Exist as Tag Name's") ?>");
 						
 						}
 					}
@@ -69,7 +75,7 @@
 		
 			var tag_name = $.trim($('#tag_author').val());
 			if(tag_name == ''){
-				alert("Please enter author name");
+				alert('<?= t("Please enter author name") ?>');
 			
 			}else{
 			
@@ -77,12 +83,19 @@
 				 url:"devotional/addtag",
 				 data:{tag_name:tag_name,tag_type:"Author"},
 				 type:'post',
+				 dataType:'json',
 				 success:function(result){
 						if($.trim(result) != 'EXIST'){
-						var v = authorItem.val(), opt = $('<option />', {
-								value: result,
-								text: v
+						// var v = authorItem.val(), opt = $('<option />', {
+						// 		value: result,
+						// 		text: v
+						// 	});
+
+						    var opt = $('<option />', {
+								value: result.id,
+								text: result.text
 							});
+							
 							
 							
 							
@@ -91,7 +104,7 @@
 							e2.multiselect('refresh');
 							$('#tag_author').val('');
 						}else{
-							alert(tag_name+" Already Exist as Author Name's");
+							alert(tag_name+ "<?= t(" Already Exist as Author Name's") ?>");
 						
 						}
 					}
@@ -112,7 +125,7 @@
 		$('#book_click').click(function(){
 			var tag_name = $.trim($('#tag_books').val());
 			if(tag_name == ''){
-				alert("Please enter book name");
+				alert('<?= t("Please enter book name")?>');
 			
 			}else{
 			
@@ -120,11 +133,13 @@
 				 url:"devotional/addtag",
 				 data:{tag_name:tag_name,tag_type:"books"},
 				 type:'post',
+				 dataType:'json',
 				 success:function(result){
+					   
 						if($.trim(result) != 'EXIST'){
-							var v = bookItem.val(), opt = $('<option />', {
-								value: result,
-								text: v
+							var opt = $('<option />', {
+								value: result.id,
+								text: result.text
 							});
 							
 							
@@ -134,7 +149,7 @@
 							e3.multiselect('refresh');
 							$('#tag_books').val('');
 						}else{
-							alert(tag_name+" Already Exist as Book Name's");
+							alert(tag_name+ "<?=  t(" Already Exist as Book Name's") ?>");
 						
 						}
 					}
@@ -383,8 +398,8 @@
 		  height: 'auto',
 		  modal: true,
 			buttons: {
-				"Create Series": addUser,
-				Cancel: function() {
+				'<?=  t("Create Series") ?>': addUser,
+				'<?=  t("Cancel") ?>': function() {
 					dialog.dialog( "close" );
 				}
 			},
@@ -562,7 +577,8 @@
 										if ($lang == 'en') {
 											$title = $row_tags->title;
 										} else {
-											$column = 'title_'.$lang;
+											//$column = 'title_'.$lang;
+											$column = $row_tags->title;
 											$title = !empty($row_tags->$column) ? $row_tags->$column : $row_tags->title;
 										}
 										?>
@@ -609,7 +625,8 @@
 										if ($lang == 'en') {
 											$title = $row_tags->title;
 										} else {
-											$column = 'title_'.$lang;
+											//$column = 'title_'.$lang;
+											$column = $row_tags->title;
 											$title = !empty($row_tags->$column) ? $row_tags->$column : $row_tags->title;
 										}
 										?>

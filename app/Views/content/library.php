@@ -57,6 +57,11 @@ function setQuarterDefault(defValue) {
 }
 	$(document).ready(function(){
        // $('#ID').ForceNumericOnly();
+
+      //  var get_text = $('.span.ui-icon.ui-icon-triangle-2-n-s').find('span').text();
+
+      //  alert(get_text);
+
         $('#reset').click(function(){
        
         $('#Search').val('');

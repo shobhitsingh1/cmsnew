@@ -80,7 +80,7 @@ function spanishDateToEnglish($text)
         'domingo'=>'Sunday'
     ];
 
-    $text = strtolower($text);
+    $text = mb_strtolower($text, 'UTF-8');
 
     $dayName = '';
     $monthName = '';
@@ -190,7 +190,7 @@ function translateTitleToSpanish(){
         if($title == $translatedTitle){
             $translatedTitle = $translatedTitle.'1';
         }
-        
+
         $updateBuilder = $db->table('tbl_tags');
         $updateBuilder->where('id', $row->id);
         $updateBuilder->update([

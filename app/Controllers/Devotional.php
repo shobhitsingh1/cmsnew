@@ -6,6 +6,7 @@ use Config\Database;
 
 use App\Models\Tags;
 use App\Models\User;
+use App\Models\JobModel;
 use CodeIgniter\Router\Router;
 use DateTime;
 
@@ -150,12 +151,45 @@ class Devotional extends BaseController
             ->get();
 
 
+        $session = \Config\Services::session();
+        $session_data = $session->get();
+
+       
+        if(isset($session_data['site_lang']) && $session_data['site_lang'] == 'en'){
+
+             $query_tags = $this->tagsModel
+            ->select('*')
+            ->where('type', $tag_type)
+            ->where('title', $tag_name)
+            ->get();
+        }else{
+            $query_tags = $this->tagsModel
+            ->select('*')
+            ->where('type', $tag_type)
+            ->where('title_'. $session_data['site_lang'], $tag_name)
+            ->get();
+        }
+
+        $translated_tag_name = '';
+
+        if(isset($session_data['site_lang']) && $session_data['site_lang'] == 'en'){
+            $translated_tag_name = googleTranslate($tag_name, 'en', 'es');
+        }else if(isset($session_data['site_lang']) && $session_data['site_lang'] != 'en'){
+            $translated_tag_name = googleTranslate($tag_name, $session_data['site_lang'], 'en');
+            $t = $tag_name;
+            $tag_name = $translated_tag_name;
+            $translated_tag_name = $t;
+        }
+        
         $query_exist_tags = $query_tags->getResultObject();
+
+        $lang = isset($session_data['site_lang']) && $session_data['site_lang'] == 'en' ? 'es' : $session_data['site_lang'];
 
 
         if (empty($query_exist_tags)) {
             $data = array(
                 'title' => $tag_name,
+                'title_'.  $lang  => $translated_tag_name,
                 'type' => $tag_type,
                 'created_on' => date("Y-m-d H:i:s")
             );
@@ -165,7 +199,14 @@ class Devotional extends BaseController
             $builder->insert($data);
             $id =  $db->insertID();
 
-            echo $id;
+            if($tag_type == 'Tags'){
+                $array = ['id' => $id , 'text' => $data['title_'.$lang]];
+            }else{
+                $array = ['id' => $id , 'text' => $data['title']];
+            }
+            
+
+            return json_encode($array);
 
     } else {
             echo "EXIST";
@@ -244,6 +285,8 @@ class Devotional extends BaseController
                         if($converted_text != ''){
                             $arrListing[0] = $converted_text;
                         }
+
+                        //print_r($arrListing);exit;
 
                         
                         $strDate = trim($arrListing[0]);
@@ -568,6 +611,7 @@ class Devotional extends BaseController
                                                     $count_devotional_date = $query_devotional_date->getNumRows();
                                             
                                                     $data = [
+                                                        'lang'             => $user_data['site_lang'],
                                                         'title'            => $row_devotional['title'],
                                                         'subtitle'         => $row_devotional['subtitle'],
                                                         'text'             => $row_devotional['text'],
@@ -621,6 +665,19 @@ class Devotional extends BaseController
 
         }
         // exit("dsa");
+          $jobModel = new JobModel();
+
+          $devotionalId = $db->insertID();
+          
+            $jobModel->insert([
+                'type' => 'send_devotional',
+                'payload' => json_encode([
+                    'devotional_id' => $devotionalId
+                ]),
+                'status' => 'pending',
+                'created_at' => date('Y-m-d H:i:s')
+            ]);
+            
         return redirect()->to(base_url('add_devotional.php'));
 
         //$this->template->render();

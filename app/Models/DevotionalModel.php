@@ -65,28 +65,32 @@ class DevotionalModel extends Model
     public function get_tag_titles_for_devotional($devotional_id)
     {
         // First get tag IDs from devotional
-        $devotional = $this->find($devotional_id);
+
+        //$devotional = $this->find($devotional_id);
+
+        $devotional =  $this->where("id = $devotional_id")
+                    ->findAll();
         
-        if (!$devotional || empty($devotional['tag_ids'])) {
-            return '';
-        }
+    
+        // if (!$devotional || empty($devotional['tag_ids'])) {
+        //     return '';
+        // }
         
         // Parse tag IDs (assuming comma-separated)
-        $tag_ids = explode(',', $devotional['tag_ids']);
-        $tag_ids = array_filter($tag_ids, 'is_numeric');
-        
-        if (empty($tag_ids)) {
-            return '';
+
+        if(isset($devotional['tag_ids'])){
+            $tag_ids = explode(',', $devotional['tag_ids']);
+            $tag_ids = array_filter($tag_ids, 'is_numeric');
+            $db = db_connect();
+            $builder = $db->table('tbl_tags');
+            $builder->select('GROUP_CONCAT(title) as tag_titles');
+            $builder->whereIn('id', $tag_ids);
+            $query = $builder->get();
+            
+            $result = $query->getRowArray();
+
         }
         
-        // Get tag titles using Query Builder
-        $db = db_connect();
-        $builder = $db->table('tbl_tags');
-        $builder->select('GROUP_CONCAT(title) as tag_titles');
-        $builder->whereIn('id', $tag_ids);
-        $query = $builder->get();
-        
-        $result = $query->getRowArray();
         return $result['tag_titles'] ?? '';
     }
     
@@ -96,9 +100,14 @@ class DevotionalModel extends Model
     public function prepare_devotional_data($devotional)
     {
         // Get tag titles
-        $tag_titles = $this->get_tag_titles_for_devotional($devotional['id']);
-        
-        // Prepare combined text
+
+        $tag_titles = $this->get_tag_titles_for_devotional($devotional['devotional_id']);
+
+        $devotional_id = $devotional['devotional_id'];
+
+        $devotional = $this->where('id', $devotional_id)
+                  ->first();
+
         $combined_parts = [
             $devotional['title'] ?? '',
             $devotional['subtitle'] ?? '',
@@ -124,13 +133,15 @@ class DevotionalModel extends Model
             }
             return $text;
         };
-        
+
+
         return [
             'id' => (int) $devotional['id'],
             'title' => $truncate($devotional['title'] ?? '', 500),
             'subtitle' => $truncate($devotional['subtitle'] ?? '', 65535),
             'text' => $truncate($devotional['text'] ?? '', 65535),
             'series_id' => (int) ($devotional['series_id'] ?? 0),
+            'lang' => ($devotional['lang'] ?? ''),
             'acknowledgements' => $truncate($devotional['acknowledgements'] ?? '', 65535),
             'tag_ids' => $truncate($devotional['tag_ids'] ?? '', 500),
             'tag_titles' => $truncate($tag_titles ?? '', 1000),

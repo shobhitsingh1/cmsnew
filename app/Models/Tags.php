@@ -32,6 +32,9 @@ class Tags extends Model {
         $ids_array = explode(",", $ids);
 
         $builder->select($lang == 'en' ? 'title' : 'title_'.$lang);
+        $builder->select('type');
+        $builder->select('title');
+        //$builder->select('title, "title_es", type');
         // $builder->select('title');
         $builder->whereIn('id', $ids_array);
         $query = $builder->get();
@@ -41,8 +44,16 @@ class Tags extends Model {
         //     $titles[] = $row->title;
         // }
         $column = $lang == 'en' ? 'title' : 'title_'.$lang;
+      
         foreach ($query as $row) {
-             $titles[] = $row->$column;
+            //  $titles[] = $row->$column;
+            if($lang == 'es' && $row->type == 'Tags'){
+                $column = 'title_'.$lang;
+                $titles[] = $row->$column;
+            } else {
+                $titles[] = $row->title;
+            }
+
         }
         return implode(",", $titles);
     }
