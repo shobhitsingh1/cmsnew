@@ -244,6 +244,7 @@ class Devotional extends BaseController
         $user_data = $session->get();
 
         //print_r($user_data);
+        $devotionalId = 0;
 
         if ($strText != '') {
             $strText = str_replace(chr(13) . chr(10) . chr(32) . chr(13) . chr(10), chr(13) . chr(10) . chr(13) . chr(10), $strText);
@@ -404,9 +405,12 @@ class Devotional extends BaseController
 
                                 $this->tagsModel->select('*');
                                 $this->tagsModel->where('devotional_date', $strDate);
+                                $this->tagsModel->where('lang', $user_data['site_lang']);
                                 $this->tagsModel->from('tbl_devotional');
                                 $query_devotional_date = $this->tagsModel->get();
+
                                 $count_devotinal_date = $query_devotional_date->getNumRows();
+
                                 
                                 if ($count_devotinal_date == 0) {
                                     $data = array(
@@ -431,6 +435,17 @@ class Devotional extends BaseController
                                    // print_r($data); die;
                                    // $this->tagsModel->insert('tbl_devotional', $data);
                                     $db->table('tbl_devotional')->insert($data);
+                                    $devotionalId = $db->insertID();
+                                    $jobModel = new JobModel();
+                                    $jobModel->insert([
+                                            'type' => 'send_devotional',
+                                            'payload' => json_encode([
+                                                'devotional_id' => $devotionalId
+                                            ]),
+                                            'status' => 'pending',
+                                            'created_at' => date('Y-m-d H:i:s')
+                                        ]);
+                                        
 
                                 } else {
                                     $data = array(
@@ -540,6 +555,7 @@ class Devotional extends BaseController
                                                 ->table('tbl_devotional_tmp')
                                                 ->select('*')
                                                 ->where('user_id', $user_data['username_id'])
+                                                ->where('lang', $user_data['site_lang'])
                                                 ->get();
 
                                           //  print_r($query_devotional_tmp);exit;
@@ -601,17 +617,19 @@ class Devotional extends BaseController
                                             //     }
                                             // }
 
+
                                             if ($query_devotional_tmp->getNumRows() > 0) {
                                                 foreach ($query_devotional_tmp->getResultArray() as $row_devotional) {
                                             
                                                     $query_devotional_date = $db->table('tbl_devotional')
                                                         ->where('devotional_date', $row_devotional['devotional_date'])
+                                                        ->where('lang', $user_data['site_lang'])
                                                         ->get();
                                             
                                                     $count_devotional_date = $query_devotional_date->getNumRows();
+
                                             
                                                     $data = [
-                                                        'lang'             => $user_data['site_lang'],
                                                         'title'            => $row_devotional['title'],
                                                         'subtitle'         => $row_devotional['subtitle'],
                                                         'text'             => $row_devotional['text'],
@@ -628,7 +646,20 @@ class Devotional extends BaseController
                                             
                                                     if ($count_devotional_date == 0) {
                                                         $data['devotional_date'] = $row_devotional['devotional_date'];
+                                                        $data['lang'] = $user_data['site_lang'];
                                                         $db->table('tbl_devotional')->insert($data);
+                                                        $devotionalId = $db->insertID();
+
+                                                         $jobModel = new JobModel();
+                                                            $jobModel->insert([
+                                                                'type' => 'send_devotional',
+                                                                'payload' => json_encode([
+                                                                    'devotional_id' => $devotionalId
+                                                                ]),
+                                                                'status' => 'pending',
+                                                                'created_at' => date('Y-m-d H:i:s')
+                                                            ]);
+                                                            
                                                     } else {
                                                         $db->table('tbl_devotional')
                                                             ->where('devotional_date', $row_devotional['devotional_date'])
@@ -665,18 +696,15 @@ class Devotional extends BaseController
 
         }
         // exit("dsa");
-          $jobModel = new JobModel();
-
-          $devotionalId = $db->insertID();
-          
-            $jobModel->insert([
-                'type' => 'send_devotional',
-                'payload' => json_encode([
-                    'devotional_id' => $devotionalId
-                ]),
-                'status' => 'pending',
-                'created_at' => date('Y-m-d H:i:s')
-            ]);
+        //   $jobModel = new JobModel();
+        //     $jobModel->insert([
+        //         'type' => 'send_devotional',
+        //         'payload' => json_encode([
+        //             'devotional_id' => $devotionalId
+        //         ]),
+        //         'status' => 'pending',
+        //         'created_at' => date('Y-m-d H:i:s')
+        //     ]);
             
         return redirect()->to(base_url('add_devotional.php'));
 

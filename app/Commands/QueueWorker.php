@@ -52,132 +52,140 @@ class QueueWorker extends BaseCommand
         ];
     } 
 
-   public function run(array $params)
+ public function run(array $params)
 {
     $jobModel = new JobModel();
-
     $devotionalModel = new DevotionalModel();
 
+    // Get all pending jobs
+    $jobs = $jobModel->where('status', 'pending')->findAll();
 
-    $job = $jobModel->where('status','pending')->first();
-
-
-    if (!$job) {
+    if (!$jobs) {
         echo "No jobs found\n";
         return;
     }
 
-    $jobModel->update($job['id'], ['status' => 'processing']);
+    foreach ($jobs as $job) {
 
-    $payload = json_decode($job['payload'], true);
+        // Mark job as processing
+        $jobModel->update($job['id'], [
+            'status' => 'processing',
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
 
-    try {
+        $payload = json_decode($job['payload'], true);
 
-        if ($job['type'] == 'send_devotional') {
+        try {
 
-            $results = [
-                'synced' => 0,
-                'failed' => 0,
-                'details' => []
-            ];
+            if ($job['type'] == 'send_devotional') {
 
-            $batch_request = [];
+                $results = [
+                    'synced' => 0,
+                    'failed' => 0,
+                    'details' => []
+                ];
 
-            $prepared_data = $devotionalModel->prepare_devotional_data($payload);
+                $batch_request = [];
 
-            print_r($prepared_data);
-            if (!$prepared_data) {
-                throw new \Exception("Prepared data is empty");
-            }
+                // Prepare devotional data
+                $prepared_data = $devotionalModel->prepare_devotional_data($payload);
 
-            $batch_request[] = $prepared_data;
+                if (!$prepared_data) {
+                    throw new \Exception("Prepared data is empty");
+                }
 
-            $fastapi_url = env('FASTAPI_BASE_URL') ?: 'http://localhost:9000';
-            $url = $fastapi_url . "/devotional/batch-create";
+                $batch_request[] = $prepared_data;
 
-            $this->log('Sending batch request to FastAPI: ' . $url);
+                // FastAPI URL
+                $fastapi_url = env('FASTAPI_BASE_URL') ?: 'http://localhost:9000';
+                $url = $fastapi_url . "/devotional/batch-create";
 
-            $jsonPayload = json_encode($batch_request);
+                $this->log('Sending batch request to FastAPI: ' . $url);
 
-            $headers = $this->generate_secure_headers($jsonPayload);
-            $headers[] = 'Content-Length: ' . strlen($jsonPayload);
+                $jsonPayload = json_encode($batch_request);
 
-            $ch = curl_init();
+                $headers = $this->generate_secure_headers($jsonPayload);
+                $headers[] = 'Content-Length: ' . strlen($jsonPayload);
 
-            curl_setopt_array($ch, [
-                CURLOPT_URL => $url,
-                CURLOPT_POST => true,
-                CURLOPT_POSTFIELDS => $jsonPayload,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HTTPHEADER => $headers,
-                CURLOPT_TIMEOUT => 60
-            ]);
+                $ch = curl_init();
 
-            $response = curl_exec($ch);
+                curl_setopt_array($ch, [
+                    CURLOPT_URL => $url,
+                    CURLOPT_POST => true,
+                    CURLOPT_POSTFIELDS => $jsonPayload,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_HTTPHEADER => $headers,
+                    CURLOPT_TIMEOUT => 60
+                ]);
 
-            if ($response === false) {
-                throw new \Exception(curl_error($ch));
-            }
+                $response = curl_exec($ch);
 
-            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                if ($response === false) {
+                    throw new \Exception(curl_error($ch));
+                }
 
-            curl_close($ch);
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-            if ($http_code === 200) {
+                curl_close($ch);
 
-                $result = json_decode($response, true);
+                if ($http_code === 200) {
 
-                if (!empty($result['success'])) {
+                    $result = json_decode($response, true);
 
-                    $results['synced'] = $result['total_created'] ?? count($batch_request);
+                    if (!empty($result['success'])) {
 
-                    $this->log('Batch insert successful: ' . $results['synced'] . ' items created');
+                        $results['synced'] = $result['total_created'] ?? count($batch_request);
 
-                    foreach ($result['results'] ?? [] as $batch_result) {
+                        foreach ($result['results'] ?? [] as $batch_result) {
 
-                        $results['details'][] = [
-                            'id' => $batch_result['assigned_id'] ?? $batch_result['milvus_id'] ?? 'unknown',
-                            'title' => $batch_result['title'] ?? 'Unknown',
-                            'status' => 'synced',
-                            'message' => 'Batch inserted successfully'
-                        ];
+                            $results['details'][] = [
+                                'id' => $batch_result['assigned_id'] ?? $batch_result['milvus_id'] ?? 'unknown',
+                                'title' => $batch_result['title'] ?? 'Unknown',
+                                'status' => 'synced',
+                                'message' => 'Batch inserted successfully'
+                            ];
+                        }
+
+                        $this->log('Batch insert successful: ' . $results['synced'] . ' items created');
+
+                    } else {
+
+                        $results['failed'] = count($batch_request);
+                        $this->log('Batch insert failed: ' . ($result['error'] ?? 'Unknown error'), 'error');
                     }
 
                 } else {
 
                     $results['failed'] = count($batch_request);
-
-                    $this->log('Batch insert failed: ' . ($result['error'] ?? 'Unknown error'), 'error');
+                    $this->log('HTTP error in batch insert: ' . $http_code, 'error');
                 }
 
-            } else {
-
-                $results['failed'] = count($batch_request);
-
-                $this->log('HTTP error in batch insert: ' . $http_code, 'error');
+                print_r($results);
             }
 
-            print_r($results);
+            // Mark job completed
+            $jobModel->update($job['id'], [
+                'status' => 'completed',
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            echo "Job completed ID: " . $job['id'] . "\n";
+
+        } catch (\Exception $e) {
+
+            // Mark job failed
+            $jobModel->update($job['id'], [
+                'status' => 'failed',
+                'attempts' => $job['attempts'] + 1,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            $this->log('Job failed: ' . $e->getMessage(), 'error');
+
+            echo "Job failed ID " . $job['id'] . ": " . $e->getMessage() . "\n";
         }
-
-        $jobModel->update($job['id'], [
-            'status' => 'completed',
-            'updated_at' => date('Y-m-d H:i:s')
-        ]);
-
-        echo "Job completed\n";
-
-    } catch (\Exception $e) {
-
-        $jobModel->update($job['id'], [
-            'status' => 'failed',
-            'attempts' => $job['attempts'] + 1,
-            'updated_at' => date('Y-m-d H:i:s')
-        ]);
-
-        $this->log('Job failed: ' . $e->getMessage(), 'error');
-
-        echo "Job failed: " . $e->getMessage() . "\n";
     }
+
+    echo "All pending jobs processed\n";
 }
 }
