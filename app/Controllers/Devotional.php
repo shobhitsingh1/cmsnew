@@ -663,6 +663,8 @@ class Devotional extends BaseController
                                                     } else {
                                                         $db->table('tbl_devotional')
                                                             ->where('devotional_date', $row_devotional['devotional_date'])
+                                                            ->where('lang', $user_data['site_lang'])
+                                                            ->where('user_id', $user_data['username_id'])
                                                             ->update($data);
                                                     }
                                                 }
