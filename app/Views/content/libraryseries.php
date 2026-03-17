@@ -134,10 +134,10 @@ function single(Id) {
 							foreach ($query_devotional as $row_devotional): ?>
                       <div class="right_top_con2">
                         	<div class="selct_hd">
-							<label id="Label120"  class=""><span  class="hd_text" style="margin-left:-5px;font-size:14px;"><strong>ID:<?php echo  $row_devotional->id ?></strong></span></label>
+							<label id="Label120"  class=""><span  class="hd_text" style="margin-left:-5px;font-size:14px;"><strong><?=  t('ID') ?>:<?php echo  $row_devotional->id ?></strong></span></label>
                             </div>
 							<input type="hidden" name="d_date" class="d_date_class" value="<?php echo $row_devotional->devotional_date; ?>">
-                            <div class="hd_text"><a onclick="single(<?php echo $row_devotional->id; ?> );"  style="cursor:pointer;" class="colorbox"><?php echo  date("l, F d, Y",strtotime($row_devotional->devotional_date)) ?></a></div>
+                            <div class="hd_text"><a onclick="single(<?php echo $row_devotional->id; ?> );"  style="cursor:pointer;" class="colorbox"><?php echo englishDateToSpanish(date("l, F d, Y",strtotime($row_devotional->devotional_date)),isset($_SESSION['site_lang']) ? $_SESSION['site_lang'] : 'en')  ?></a></div>
                             <?php
 							if(!empty($row_devotional->series_id)) : ?>
 							<div class="ico"><img src="<?php echo  base_url() ?>public/assests/images/icon_1.png" width="19" height="19" alt="Series ID: <?php echo $row_devotional->series_id ?>" title="Series ID: <?php echo $row_devotional->series_id ?>" /></div>
@@ -169,11 +169,11 @@ function single(Id) {
 							
 							
 							?>
-							<p style="padding-top:10px;word-wrap: break-word;"><span style="font-weight: bold;">Tags</span>: <?php print $this->tagsModel->getTagsName($row_devotional->tag_ids) ?><br />
-							<span style="font-weight: bold;">Books</span>: <?php print $this->tagsModel->getTagsName($row_devotional->book_ids); ?><br />
-                            <span style="font-weight: bold;">Authors</span>: <?php print $this->tagsModel->getTagsName($row_devotional->author_ids); ?><br />
-                            <span style="font-weight: bold;">Acknowledgements</span>: <?php echo  $row_devotional->acknowledgements ?></p>
-							<p><span style="font-weight: bold;">Submitted By</span>: <?php  echo  $this->usersModel->getUserName($row_devotional->user_id) ?></p>
+							<p style="padding-top:10px;word-wrap: break-word;"><span style="font-weight: bold;"><?= t("Tags") ?></span>: <?php print $this->tagsModel->getTagsName($row_devotional->tag_ids) ?><br />
+							<span style="font-weight: bold;"><?= t("Books") ?></span>: <?php print $this->tagsModel->getTagsName($row_devotional->book_ids); ?><br />
+                            <span style="font-weight: bold;"><?= t("Authors") ?></span>: <?php print $this->tagsModel->getTagsName($row_devotional->author_ids); ?><br />
+                            <span style="font-weight: bold;"><?= t("Acknowledgements") ?></span>: <?php echo  $row_devotional->acknowledgements ?></p>
+							<p><span style="font-weight: bold;"><?= t("Submitted By") ?></span>: <?php  echo  $this->usersModel->getUserName($row_devotional->user_id) ?></p>
 							<input type="hidden" id="devotional_id" name="devotional_id" value="<?php echo $row_devotional->id ?>">
 							</p>
 							
