@@ -236,6 +236,13 @@ class Library extends BaseController
 
             }
             if (count($WHERE) > 0) {
+
+                $session = \Config\Services::session();
+                $sessionData = $session->get();
+                $lang = isset($sessionData['site_lang']) ? $sessionData['site_lang'] : 'en';
+                $WHERE[] = "(lang = '$lang')";
+               
+                
                 $where_str = implode(" AND ", $WHERE);
 
             }
@@ -267,7 +274,8 @@ class Library extends BaseController
 
             }
             //$sql = "SELECT d.* from `tbl_devotional` d WHERE $where_str  ORDER BY devotion_date ".$limit;
-            $sql = "SELECT d.* FROM tbl_devotional d WHERE $where_str $order_by";
+            
+            $sql = "SELECT d.* FROM tbl_devotional d WHERE $where_str  $order_by";
             $query_devotional = $db->query($sql)->getResult();
 
             /* $sql_counter = "SELECT d.* from `tbl_devotional` d WHERE $where_str ";
@@ -304,22 +312,48 @@ class Library extends BaseController
 //        $sessionData = session()->get();
 //        print_r($sessionData);exit;
 
-        $query = $this->tagsModel->where('type', 'Tags')
-            ->orderBy('title', 'ASC')->get();
+        // $query = $this->tagsModel->where('type', 'Tags')
+        //     ->orderBy('title', 'ASC')->get();
 
-        $query_tags = $query->getResultObject();
+        // $query_tags = $query->getResultObject();
 
-        $query_books = $this->tagsModel->where('type', 'Books')
-            ->orderBy('title', 'ASC')
-            ->get();
+        // $query_books = $this->tagsModel->where('type', 'Books')
+        //     ->orderBy('title', 'ASC')
+        //     ->get();
 
-        $query_books = $query_books->getResultObject();
+        // $query_books = $query_books->getResultObject();
 
-        $query_author = $this->tagsModel->where('type', 'Author')
-            ->orderBy('title', 'ASC')
-            ->get();
+        // $query_author = $this->tagsModel->where('type', 'Author')
+        //     ->orderBy('title', 'ASC')
+        //     ->get();
 
-        $query_author = $query_author->getResultObject();;
+        $session = \Config\Services::session();
+          $sessionData = $session->get();
+          $lang = isset($sessionData['site_lang']) ? $sessionData['site_lang'] : 'en';
+        
+        $titleColumn = ($lang == 'en') ? 'title' : 'title_' . $lang;
+
+        $query_tags = $this->tagsModel
+                ->select("id, $titleColumn as title")
+                ->where('type', 'Tags')
+                ->orderBy($titleColumn, 'ASC')
+                ->get()
+                ->getResultObject();
+
+        $query_books = $this->tagsModel
+                ->select("id, $titleColumn as title")
+                ->where('type', 'Books')
+                ->orderBy($titleColumn, 'ASC')
+                ->get()
+                ->getResultObject();
+
+        $query_author = $this->tagsModel
+                ->select("id, $titleColumn as title")
+                ->where('type', 'Author')
+                ->orderBy($titleColumn, 'ASC')
+                ->get()
+                ->getResultObject();
+
 
 
 //        $this->template->setTitle('CMS: Library');
@@ -328,8 +362,8 @@ class Library extends BaseController
 //        $this->template->set('query_author', $query_author);
 //        $data = array_merge($data,array("query_tags" =>$query_tags,"query_books" => $query_books,"query_author" => $query_author));
 //        echo '<pre>';print_r($data);exit;
-        $session = \Config\Services::session();
-        $sessionData = $session->get();
+        // $session = \Config\Services::session();
+        // $sessionData = $session->get();
 
         if(!isset($sessionData['username'])){
             return redirect()->to(base_url('/'));
@@ -393,11 +427,14 @@ class Library extends BaseController
                 $phpWord = new PhpWord();
                 $section = $phpWord->addSection();
 
+                $session = \Config\Services::session();
+                $sessionData = $session->get();
+
                 // Loop through query results
                 foreach ($query_data as $rows) {
                     // Add devotional date
                     $dateText = ($group3 == 'HID') ? "" : "(ID " . $rows->id . ") ";
-                    $dateText .= html_entity_decode(date("l F d, Y", strtotime($rows->devotional_date)), ENT_COMPAT, 'UTF-8');
+                    $dateText .= html_entity_decode(englishDateToSpanish(date("l F d, Y", strtotime($rows->devotional_date)),isset($sessionData['site_lang']) ? $sessionData['site_lang'] : 'en'), ENT_COMPAT, 'UTF-8');
                     $section->addText($dateText, '', ['spaceAfter' => '1']);
                     $section->addText(html_entity_decode($rows->title, ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
                     $section->addText(html_entity_decode($rows->subtitle, ENT_COMPAT, 'UTF-8'), '', ['spaceAfter' => '1']);
@@ -504,10 +541,15 @@ class Library extends BaseController
 
 
         $database = Database::connect();
+        $session = \Config\Services::session();
+        $sessionData = $session->get();
+        $lang = isset($sessionData['site_lang']) ? $sessionData['site_lang'] : 'en';
+
 
         $query_devotional = $db->table('tbl_devotional')
             ->select('*')
             ->where('series_id', $id)
+            ->where('lang', $lang)
             ->get();
         $query_devotional = $query_devotional->getResultObject();
 

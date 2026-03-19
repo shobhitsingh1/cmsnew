@@ -57,6 +57,11 @@ function setQuarterDefault(defValue) {
 }
 	$(document).ready(function(){
        // $('#ID').ForceNumericOnly();
+
+      //  var get_text = $('.span.ui-icon.ui-icon-triangle-2-n-s').find('span').text();
+
+      //  alert(get_text);
+
         $('#reset').click(function(){
        
         $('#Search').val('');
@@ -395,15 +400,15 @@ $this->usersModel = new User();
                 	<div class="body_left">
                         
                     	<div class="sidebar_widgit">
-                        	<h2>SEARCH BY:</h2>
+                        	<h2><?=  t("SEARCH BY") ?>:</h2>
                            
-                           	  <input name="Search" type="text" class="textbox" id="Search"  placeholder="Devotional Text" value="<?php echo (ISSET($GET))?$GET['Search']:'' ?>"/>
-                              <input name="ack_search" type="text" class="textbox" id="ack_search"  placeholder="Acknowledgment Text" value="<?php echo (ISSET($GET))?$GET['ack_search']:'' ?>"/>
-                              <input name="ID" type="text" class="textbox" id="ID"  placeholder="ID Number" value="<?php echo (ISSET($GET))?$GET['ID']:'' ?>"/> 
+                           	  <input name="Search" type="text" class="textbox" id="Search"  placeholder='<?=t("Devotional Text") ?>' value="<?php echo (ISSET($GET['Search']))?$GET['Search']:'' ?>"/>
+                              <input name="ack_search" type="text" class="textbox" id="ack_search"  placeholder='<?= t("Acknowledgment Text") ?>' value="<?php echo (ISSET($GET['ack_search']))?$GET['ack_search']:'' ?>"/>
+                              <input name="ID" type="text" class="textbox" id="ID"  placeholder='<?= t("ID Number") ?>' value="<?php echo (ISSET($GET['ID']))?$GET['ID']:'' ?>"/> 
                               <div class="select_con" style="padding-bottom:10px;">
                                <div class='selectBox'>
-                                    <select id="date_year" name="date_year"  placeholder="Year">
-                                        <option value="d" disabled="disabled">Year</option>
+                                    <select id="date_year" name="date_year"  placeholder='<?= t("Year") ?>'>
+                                        <option value="d" disabled="disabled"><?= t("Year") ?></option>
 										
 										
 										<?php for($i=1994; $i <= 2030; $i++): ?>
@@ -419,9 +424,9 @@ $this->usersModel = new User();
                               <div class="select_con" style="padding-bottom:10px;">
                                <div class='selectBox'>
                                     <div class='selectBox'>
-                                    <select id="date_quarter" name="date_quarter" placeholder="Quarter" >
+                                    <select id="date_quarter" name="date_quarter" placeholder='<?= t("Quarter") ?>' >
                                         
-                                         <option value="d" disabled="disabled" selected="selected" >Quarter</option>
+                                         <option value="d" disabled="disabled" selected="selected" ><?= t("Quarter") ?></option>
                                             <?php  for($i=94; $i <= 99; $i++): ?>
                                             <?php $quarter_array = array('03','06','09','12');
                                                 foreach($quarter_array as $quarter_val): ?>
@@ -450,11 +455,11 @@ $this->usersModel = new User();
                               	<div class="date_picker left">
                                 	
                                 	<div class="date">
-									<input type="text" id="from_date" value="<?php echo (ISSET($GET))?$GET['from_date']:'' ?>" name="from_date" class="textbox" placeholder="From Date" style="float: left; width: 67px;"></div>
+									<input type="text" id="from_date" value="<?php echo (ISSET($GET))?$GET['from_date']:'' ?>" name="from_date" class="textbox" placeholder='<?= t("From Date") ?>' style="float: left; width: 67px;"></div>
                                 </div>
                                 <div class="date_picker right">
                                 	<div class="date">
-									<input type="text" id="to_date" value="<?php echo (ISSET($GET))?$GET['to_date']:'' ?>" name="to_date" class="textbox" placeholder="To Date" style="float: left; width: 67px;"></div>
+									<input type="text" id="to_date" value="<?php echo (ISSET($GET))?$GET['to_date']:'' ?>" name="to_date" class="textbox" placeholder='<?= t("To Date") ?>'  style="float: left; width: 67px;"></div>
                                 </div>
                                 <div class="clear"></div>
                               </div>
@@ -465,7 +470,7 @@ $this->usersModel = new User();
                            
                         </div>
                         <div class="sidebar_widgit">
-                        	<h2>KEYWORD COUNT</h2>
+                        	<h2><?= t('KEYWORD COUNT') ?></h2>
                             		<div class="count">
                                     <?php
                                     $count_var = array();
@@ -504,7 +509,7 @@ $this->usersModel = new User();
                                     //print_r($Tags_array);
                                     ?>
                         <div class="sidebar_widgit">
-                        	<h2>Tags</h2>
+                        	<h2><?= t("Tags") ?></h2>
                             <div id="div_tag_name">
 									<select size="5" class="multiselect"   id="tt" name="Tags[]" title="Tags" multiple="multiple" >
 									<?php //print_r($query_tags); 
@@ -537,7 +542,7 @@ $this->usersModel = new User();
                                     //print_r($Tags_array);
                                     ?>
                         <div class="sidebar_widgit">
-                        	<h2>Books</h2>
+                        	<h2><?= t("Books") ?></h2>
                             <div id="div_book_name">
 									<select size="5"  class="multiselect"  id="bt" name="books[]" title="Books" multiple="multiple" >
 									<?php //print_r($query_tags); 
@@ -566,7 +571,7 @@ $this->usersModel = new User();
                             $author_array = (array)$GET['author'];
                          } ?>
                         <div class="sidebar_widgit">
-                        	<h2>Authors</h2>
+                        	<h2><?= t("Authors") ?></h2>
                             <div id="div_author_name">
 								<select size="5"  class="multiselect"  id="at" name="author[]" title="Author" multiple="multiple" >
 									<?php //print_r($query_tags); 
@@ -588,7 +593,7 @@ $this->usersModel = new User();
                             
                         </div>
                         <div class="sidebar_widgit">
-                        	<h2>TAG COUNT</h2>
+                        	<h2><?= t("TAG COUNT") ?></h2>
                             		<div class="count">
                                     <?php
                                     $count_tag = array();
@@ -620,8 +625,8 @@ $this->usersModel = new User();
                         </div>
                         
                          <div class="select_con">
-                              	<div class="sub_btn_1 left"><input name="View"  id="View" type="submit" value="View" class="btn_1" /></div>
-                                <div class="sub_btn_1 right"><input name="reset" id="reset" type="button" value="Reset" class="btn_2" /></div>
+                              	<div class="sub_btn_1 left"><input name="View"  id="View" type="submit" value='<?= t("View") ?>' class="btn_1" /></div>
+                                <div class="sub_btn_1 right"><input name="reset" id="reset" type="button" value='<?= t("Reset") ?>' class="btn_2" /></div>
                                 <div class="clear"></div>
                               </div>
                         <div class="clear"></div>
@@ -631,7 +636,7 @@ $this->usersModel = new User();
 					<?php if(ISSET($query_devotional)) :?>
                     	<div class="right_top_con" style="height:13px;">
                         	<input id="selecctall" type="checkbox" class="CheckBoxClass" />
-							<label id="Label19" for="selecctall" class="CheckBoxLabelClass" style=" float: left;width: 69px;"><span>Select All</span></label>
+							<label id="Label19" for="selecctall" class="CheckBoxLabelClass" style=" float: left;width: 69px;"><span><?= t("Select All") ?></span></label>
                             <span class="hd_text_new" style="float:right;padding-right:5px;margin-top:-2.5px;">
                             <select name="sortby" id="sortby">
                             <?php 
@@ -652,12 +657,12 @@ $this->usersModel = new User();
                             }
                             ?>
                              
-                            <option value="id" <?php echo ($cSelected == 'id')?"selected='selected'":'' ?> <?php echo $rs ?>>ID</option>
-                            <option value="devotional_date" <?php echo ($cSelected == 'devotional_date')?"selected='selected'":'' ?>>DEVOTIONAL DATE</option>
+                            <option value="id" <?php echo ($cSelected == 'id')?"selected='selected'":'' ?> <?php echo $rs ?>><?= t('ID') ?></option>
+                            <option value="devotional_date" <?php echo ($cSelected == 'devotional_date')?"selected='selected'":'' ?>><?= t('DEVOTIONAL DATE') ?></option>
                            
                            </select>
-                           <input type="radio" name="sortedBy" class="rf" value="asc" <?php echo ($rChecked == 'asc')?"checked='checked'":'' ?> <?php echo $dChecked ?> > ASC
-                           <input type="radio" name="sortedBy" class="rf" value="desc" <?php echo ($rChecked == 'desc')?"checked='checked'":'' ?>> DESC
+                           <input type="radio" name="sortedBy" class="rf" value="asc" <?php echo ($rChecked == 'asc')?"checked='checked'":'' ?> <?php echo $dChecked ?> > <?= t('ASC') ?>
+                           <input type="radio" name="sortedBy" class="rf" value="desc" <?php echo ($rChecked == 'desc')?"checked='checked'":'' ?>> <?= t('DESC') ?>
                             </span>
                         </div>
 						
@@ -734,12 +739,12 @@ $this->usersModel = new User();
 							
 							
                         	<input  id="CheckBox<?php echo $row_devotional->id ?>"  type="checkbox" class="" name="checkAll[]" value="<?php echo $row_devotional->id ?>" />
-							<label id="Label1<?php echo $row_devotional->id ?>" for="CheckBox<?php echo $row_devotional->id ?>" class=""><span style="color:#FFFFFF;"><strong>ID: <?php echo  $row_devotional->id ?></strong></span></label>
+							<label id="Label1<?php echo $row_devotional->id ?>" for="CheckBox<?php echo $row_devotional->id ?>" class=""><span style="color:#FFFFFF;"><strong><?= t('ID') ?>: <?php echo  $row_devotional->id ?></strong></span></label>
                             </div>
 							<?php if($row_devotional->series_id > 0) : ?>
-                            <div class="hd_text"><a href="<?php echo base_url();?>library/libraryseries.php?id=<?php echo $row_devotional->series_id ?>"  class="colorbox2"><?php echo  date("l, F d, Y",strtotime($row_devotional->devotional_date)) ?></a></div>
+                            <div class="hd_text"><a href="<?php echo base_url();?>library/libraryseries.php?id=<?php echo $row_devotional->series_id ?>"  class="colorbox2"><?php echo englishDateToSpanish(date("l, F d, Y",strtotime($row_devotional->devotional_date)), isset($_SESSION['site_lang']) ? $_SESSION['site_lang'] : 'en') ?></a></div>
                             <?php else: ?>
-							 <div class="hd_text"><a href="<?php echo base_url();?>library/librarysingle.php?id=<?php echo $row_devotional->id ?>"  class="colorbox2"><?php echo  date("l, F d, Y",strtotime($row_devotional->devotional_date)) ?></a></div>
+							 <div class="hd_text"><a href="<?php echo base_url();?>library/librarysingle.php?id=<?php echo $row_devotional->id ?>"  class="colorbox2"><?php echo  englishDateToSpanish(date("l, F d, Y",strtotime($row_devotional->devotional_date)),isset($_SESSION['site_lang']) ? $_SESSION['site_lang'] : 'en') ?></a></div>
 							<?php endif; ?>	
                             
                             <?php
@@ -779,11 +784,11 @@ $this->usersModel = new User();
 							
 							
 							?>
-							<p style="padding-top:10px;word-wrap: break-word;"><span style="font-weight: bold;">Tags</span>: <?php print $this->tagsModel->getTagsName($row_devotional->tag_ids) ?><br />
-							<span style="font-weight: bold;">Books</span>: <?php print $this->tagsModel->getTagsName($row_devotional->book_ids); ?><br />
-                            <span style="font-weight: bold;">Authors</span>: <?php print $this->tagsModel->getTagsName($row_devotional->author_ids); ?><br />
-                            <span style="font-weight: bold;">Acknowledgements</span>: <?php echo  $row_devotional->acknowledgements ?></p>
-							<p><span style="font-weight: bold;">Submitted By</span>: <?php  echo  $this->usersModel->getUserName($row_devotional->user_id) ?></p>
+							<p style="padding-top:10px;word-wrap: break-word;"><span style="font-weight: bold;"><?= t("Tags") ?></span>: <?php print $this->tagsModel->getTagsName($row_devotional->tag_ids) ?><br />
+							<span style="font-weight: bold;"><?= t("Books") ?></span>: <?php print $this->tagsModel->getTagsName($row_devotional->book_ids); ?><br />
+                            <span style="font-weight: bold;"><?= t("Authors") ?></span>: <?php print $this->tagsModel->getTagsName($row_devotional->author_ids); ?><br />
+                            <span style="font-weight: bold;"><?= t("Acknowledgements") ?></span>: <?php echo  $row_devotional->acknowledgements ?></p>
+							<p><span style="font-weight: bold;"><?= t("Submitted By") ?></span>: <?php  echo  $this->usersModel->getUserName($row_devotional->user_id) ?></p>
 							
                         </div>
                         <?php endforeach; ?>

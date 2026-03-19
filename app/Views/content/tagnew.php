@@ -335,7 +335,7 @@ function sendtoLibrary(val,id){
                 	<form action="tagview.php" name="frm2" id="frm2" method="POST">
                 	<div class="body_left">
                     	<div class="sidebar_widgit">
-                        	<h2>SEARCH BY:</h2>
+                        	<h2><?= t('SEARCH BY') ?>:</h2>
                            
                            	  <input name="Search" type="text" class="textbox" id="Search"  placeholder="Devotional Text" value="<?php echo (ISSET($GET))?$GET['Search']:'' ?>"/>
                               <input name="ID" type="text" class="textbox" id="ID"  placeholder="ID Number" value="<?php echo (ISSET($GET))?$GET['ID']:'' ?>"/> 

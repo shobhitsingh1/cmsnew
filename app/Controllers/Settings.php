@@ -48,7 +48,7 @@ class Settings extends BaseController
 
         if (isset($_POST['btnsubmit'])) {
           
-            if (count($query_admin_users) == 0) {
+            if (count($query_admin_users) == 0) {  
                 $insert_array = array(
                     "header_text_color" => $this->request->getPost('header_text_color'),
                     "header_bg_color" =>  $this->request->getPost('header_bg_color'),
@@ -72,11 +72,11 @@ class Settings extends BaseController
                 $query = $query->getResultObject();
 
                 if(count($query) == 0){
-                    $db->table('tbl_admin_user')->insert($insert_array);
+                    // $db->table('tbl_admin_user')->insert($insert_array);
+                    $db->table('tbl_color_preference')->insert($insert_array);
                 }
 
             } else {
-
                 $insert_array = array(
                     "header_text_color" =>  $this->request->getPost('header_text_color'),
                     "header_bg_color" =>  $this->request->getPost('header_bg_color'),

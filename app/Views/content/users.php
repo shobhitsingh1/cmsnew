@@ -2,9 +2,9 @@
 				<div class="main">
                     <div class="body_right_new">
                     	<div class="search_con">
-                    	<h3>Users</h3>
+                    	<h3><?= t("Users") ?></h3>
 						<h2 style="float:right">
-                            <?php echo anchor(base_url("users/create_users.php"), "Create Users", "id='create_users'"); ?>
+                            <?php echo anchor(base_url("users/create_users.php"), t("Create Users"), "id='create_users'"); ?>
 						</h2>
                         
                         <div class="clear"></div>
@@ -31,10 +31,10 @@
 												<?php echo ucwords($row_tags->user_name); ?> 
 												</div>
                                                 <div style="width:40px;float:right;padding-left:5px;" class='admin_form_text_user'>
-												 <a href="<?php echo base_url()."users/create_users.php?id=".$row_tags->id."&action=delete" ?>">Delete</a>
+												 <a href="<?php echo base_url()."users/create_users.php?id=".$row_tags->id."&action=delete" ?>"><?= t("Delete") ?></a>
 												</div> 
 												<div style="width:40px;float:right;padding-left:5px;" class='admin_form_text_user'>
-												 <a href="<?php echo base_url()."users/create_users.php?id=".$row_tags->id ?>">Edit</a>
+												 <a href="<?php echo base_url()."users/create_users.php?id=".$row_tags->id ?>"><?= t("Edit") ?></a>
 												</div>
                                                 
 												</li>

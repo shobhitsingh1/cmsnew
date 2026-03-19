@@ -6,6 +6,7 @@ use Config\Database;
 
 use App\Models\Tags;
 use App\Models\User;
+use App\Models\JobModel;
 use CodeIgniter\Router\Router;
 use DateTime;
 
@@ -50,6 +51,16 @@ class Devotional extends BaseController
         ];
 
         $database = Database::connect();
+        $db = \Config\Database::connect();
+        $session = \Config\Services::session();
+        $sessionData = $session->get();
+
+
+        $lang = isset($sessionData['site_lang']) && !empty($sessionData['site_lang']) 
+        ? $sessionData['site_lang'] 
+        : 'en';
+
+
 
         $query_tags = $this->tagsModel
             ->select('*')
@@ -76,18 +87,18 @@ class Devotional extends BaseController
 
         $query_author = $query_author->getResultObject();
 
-        $db = \Config\Database::connect();
-
+        
         $query_devotional = $db->table('tbl_devotional')
             ->select('*')
+            ->where('lang', $lang)
             ->orderBy('created_on', 'DESC')
             ->limit(30)
             ->get();
 
+        
         $query_devotional = $query_devotional->getResultObject();
 
-        $session = \Config\Services::session();
-        $sessionData = $session->get();
+        
         if(!isset($sessionData['username'])){
             return redirect()->to(base_url('/'));
         }
@@ -140,12 +151,45 @@ class Devotional extends BaseController
             ->get();
 
 
+        $session = \Config\Services::session();
+        $session_data = $session->get();
+
+       
+        if(isset($session_data['site_lang']) && $session_data['site_lang'] == 'en'){
+
+             $query_tags = $this->tagsModel
+            ->select('*')
+            ->where('type', $tag_type)
+            ->where('title', $tag_name)
+            ->get();
+        }else{
+            $query_tags = $this->tagsModel
+            ->select('*')
+            ->where('type', $tag_type)
+            ->where('title_'. $session_data['site_lang'], $tag_name)
+            ->get();
+        }
+
+        $translated_tag_name = '';
+
+        if(isset($session_data['site_lang']) && $session_data['site_lang'] == 'en'){
+            $translated_tag_name = googleTranslate($tag_name, 'en', 'es');
+        }else if(isset($session_data['site_lang']) && $session_data['site_lang'] != 'en'){
+            $translated_tag_name = googleTranslate($tag_name, $session_data['site_lang'], 'en');
+            $t = $tag_name;
+            $tag_name = $translated_tag_name;
+            $translated_tag_name = $t;
+        }
+        
         $query_exist_tags = $query_tags->getResultObject();
+
+        $lang = isset($session_data['site_lang']) && $session_data['site_lang'] == 'en' ? 'es' : $session_data['site_lang'];
 
 
         if (empty($query_exist_tags)) {
             $data = array(
                 'title' => $tag_name,
+                'title_'.  $lang  => $translated_tag_name,
                 'type' => $tag_type,
                 'created_on' => date("Y-m-d H:i:s")
             );
@@ -155,7 +199,14 @@ class Devotional extends BaseController
             $builder->insert($data);
             $id =  $db->insertID();
 
-            echo $id;
+            if($tag_type == 'Tags'){
+                $array = ['id' => $id , 'text' => $data['title_'.$lang]];
+            }else{
+                $array = ['id' => $id , 'text' => $data['title']];
+            }
+            
+
+            return json_encode($array);
 
     } else {
             echo "EXIST";
@@ -193,6 +244,7 @@ class Devotional extends BaseController
         $user_data = $session->get();
 
         //print_r($user_data);
+        $devotionalId = 0;
 
         if ($strText != '') {
             $strText = str_replace(chr(13) . chr(10) . chr(32) . chr(13) . chr(10), chr(13) . chr(10) . chr(13) . chr(10), $strText);
@@ -205,11 +257,12 @@ class Devotional extends BaseController
             else
                 $arrText = explode("\n\n", $strText);
 
-               
+                
                 function isValidDate($date, $format = 'Y-m-d') {
                     $d = DateTime::createFromFormat($format, $date);
                     return $d && $d->format($format) === $date;
                 }
+                
                 
             foreach ($arrText as $key => $value) {
 
@@ -221,10 +274,22 @@ class Devotional extends BaseController
                         $arrListing = @split($x, $strText);
                     else
                         $arrListing = explode("\n", $strText);
-
-
+                    
                     if (count($arrListing) >= 3) {
 
+                        $converted_text = '';
+
+                        if($user_data['site_lang'] != "en"){
+                            $converted_text = spanishDateToEnglish($arrListing[0]);
+                        }
+
+                        if($converted_text != ''){
+                            $arrListing[0] = $converted_text;
+                        }
+
+                        //print_r($arrListing);exit;
+
+                        
                         $strDate = trim($arrListing[0]);
                         $str_date_arr = explode(" ", $strDate);
                         $strDay = trim($str_date_arr[0]);
@@ -340,12 +405,16 @@ class Devotional extends BaseController
 
                                 $this->tagsModel->select('*');
                                 $this->tagsModel->where('devotional_date', $strDate);
+                                $this->tagsModel->where('lang', $user_data['site_lang']);
                                 $this->tagsModel->from('tbl_devotional');
                                 $query_devotional_date = $this->tagsModel->get();
+
                                 $count_devotinal_date = $query_devotional_date->getNumRows();
+
                                 
                                 if ($count_devotinal_date == 0) {
                                     $data = array(
+                                        'lang' =>  isset($user_data['site_lang']) ? $user_data['site_lang'] : 'en',
                                         'title' => htmlentities(($strTitle ?? ''), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
                                         'subtitle' => htmlentities(($strSubtitle ?? ''), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
                                         'text' => htmlentities(($strText ?? ''), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
@@ -366,9 +435,21 @@ class Devotional extends BaseController
                                    // print_r($data); die;
                                    // $this->tagsModel->insert('tbl_devotional', $data);
                                     $db->table('tbl_devotional')->insert($data);
+                                    $devotionalId = $db->insertID();
+                                    $jobModel = new JobModel();
+                                    $jobModel->insert([
+                                            'type' => 'send_devotional',
+                                            'payload' => json_encode([
+                                                'devotional_id' => $devotionalId
+                                            ]),
+                                            'status' => 'pending',
+                                            'created_at' => date('Y-m-d H:i:s')
+                                        ]);
+                                        
 
                                 } else {
                                     $data = array(
+                                        'lang' =>  isset($user_data['site_lang']) ? $user_data['site_lang'] : 'en',
                                         'title' => htmlentities(($strTitle), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
                                         'subtitle' => htmlentities(($strSubtitle), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
                                         'text' => htmlentities(($strText), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
@@ -435,6 +516,7 @@ class Devotional extends BaseController
 
 
                                     $data = array(
+                                        'lang' =>  isset($user_data['site_lang']) ? $user_data['site_lang'] : 'en',
                                         'title' => htmlentities(($strTitle), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
                                         'subtitle' => htmlentities(($strSubtitle), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
                                         'text' => htmlentities(($strText), ENT_QUOTES | ENT_IGNORE, "UTF-8"),
@@ -473,6 +555,7 @@ class Devotional extends BaseController
                                                 ->table('tbl_devotional_tmp')
                                                 ->select('*')
                                                 ->where('user_id', $user_data['username_id'])
+                                                ->where('lang', $user_data['site_lang'])
                                                 ->get();
 
                                           //  print_r($query_devotional_tmp);exit;
@@ -534,14 +617,17 @@ class Devotional extends BaseController
                                             //     }
                                             // }
 
+
                                             if ($query_devotional_tmp->getNumRows() > 0) {
                                                 foreach ($query_devotional_tmp->getResultArray() as $row_devotional) {
                                             
                                                     $query_devotional_date = $db->table('tbl_devotional')
                                                         ->where('devotional_date', $row_devotional['devotional_date'])
+                                                        ->where('lang', $user_data['site_lang'])
                                                         ->get();
                                             
                                                     $count_devotional_date = $query_devotional_date->getNumRows();
+
                                             
                                                     $data = [
                                                         'title'            => $row_devotional['title'],
@@ -560,10 +646,25 @@ class Devotional extends BaseController
                                             
                                                     if ($count_devotional_date == 0) {
                                                         $data['devotional_date'] = $row_devotional['devotional_date'];
+                                                        $data['lang'] = $user_data['site_lang'];
                                                         $db->table('tbl_devotional')->insert($data);
+                                                        $devotionalId = $db->insertID();
+
+                                                         $jobModel = new JobModel();
+                                                            $jobModel->insert([
+                                                                'type' => 'send_devotional',
+                                                                'payload' => json_encode([
+                                                                    'devotional_id' => $devotionalId
+                                                                ]),
+                                                                'status' => 'pending',
+                                                                'created_at' => date('Y-m-d H:i:s')
+                                                            ]);
+                                                            
                                                     } else {
                                                         $db->table('tbl_devotional')
                                                             ->where('devotional_date', $row_devotional['devotional_date'])
+                                                            ->where('lang', $user_data['site_lang'])
+                                                            ->where('user_id', $user_data['username_id'])
                                                             ->update($data);
                                                     }
                                                 }
@@ -597,6 +698,16 @@ class Devotional extends BaseController
 
         }
         // exit("dsa");
+        //   $jobModel = new JobModel();
+        //     $jobModel->insert([
+        //         'type' => 'send_devotional',
+        //         'payload' => json_encode([
+        //             'devotional_id' => $devotionalId
+        //         ]),
+        //         'status' => 'pending',
+        //         'created_at' => date('Y-m-d H:i:s')
+        //     ]);
+            
         return redirect()->to(base_url('add_devotional.php'));
 
         //$this->template->render();

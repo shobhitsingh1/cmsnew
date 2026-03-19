@@ -30,7 +30,7 @@ hr{ height:1px; background:#333333; border:none;}
 
 .container{ width:100%;}
 .wrapper{ width:100%;}
-.main{width:980px; margin:0 auto;}
+.main{width:1080px; margin:0 auto;}
 
 /*************************************
 	3. Header
@@ -366,7 +366,7 @@ height:450px;
     height: auto;
     line-height: 30px;
     text-align: right;
-    width: 245px;
+    width: 330px;
 	padding-right: 10px;
 }
 
@@ -445,11 +445,36 @@ ul#menu li{
     color:#333;
 }
 
+ul#menu li select{
+    margin:3px 15px !important;
+    padding:0 !important; 
+    float:left !important;
+   
+    font-size:15px !important;
+    font-weight:bold !important;
+ 
+    color:rgb(193, 193, 193) !important;
+}
+
 ul#menu li a:hover {
     color:#FFF;
 }
 
+
+ul#menu li select:hover {
+    position: relative;
+    z-index: 5;
+    color: #333;
+    text-decoration: none;
+}
     
+
+ul#menu li select {
+    position: relative;
+    z-index: 5;
+    color: #333;
+    text-decoration: none;
+}
 
 
 ul#menu li.backLava {
