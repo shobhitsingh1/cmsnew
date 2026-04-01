@@ -85,7 +85,7 @@ class Mcp extends ResourceController
                 break;
 
             case 'list_tags':
-                $result = $this->toolListContent($input);
+                $result = $this->mcpModel->listtags();
                 break;
 
             case 'update_content':

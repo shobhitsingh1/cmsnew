@@ -124,15 +124,16 @@ class McpModel extends Model
         $builder = $this->db->table(self::TABLE_TAGS);
 
         $tags = $builder
-            ->select('id, title, title_es , tags')
+            ->select('id, title, title_es , type')
             ->orderBy('id', 'ASC')
             ->get()
             ->getResultArray();
 
-        return [
-            'categories' => $tags,
+        return  [
+            'results' => $tags,
             'total'      => count($tags),
         ];
+
     }
 
     // =========================================================
