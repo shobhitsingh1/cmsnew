@@ -31,8 +31,10 @@ $routes->post('/users/create_users.php', 'Users::create_users');
 $routes->get('/login/logout.php', 'Login::logout');
 
 /** MCP routes **/
+
 $routes->add('/api/mcp','Mcp::index');
 $routes->add('/api/mcp/(:any)', 'Mcp::index');
+
 /** ends here */ 
 
 // Cron routes
