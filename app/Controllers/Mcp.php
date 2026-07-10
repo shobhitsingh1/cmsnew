@@ -244,20 +244,20 @@ class Mcp extends ResourceController
                     'properties' => new \stdClass(),
                 ],
             ],
-            [
-                'name' => 'update_content',
-                'description' => 'Update a devotional record. Requires mcp.allowWrite=true.',
-                'inputSchema' => [
-                    'type' => 'object',
-                    'required' => ['id'],
-                    'properties' => [
-                        'id' => ['type' => 'integer', 'description' => 'tbl_devotional.id'],
-                        'title' => ['type' => 'string'],
-                        'body' => ['type' => 'string', 'description' => 'Maps to the text column'],
-                        'status' => ['type' => 'string', 'description' => 'Maps to the active column (0 or 1)'],
-                    ],
-                ],
-            ],
+            // [
+            //     'name' => 'update_content',
+            //     'description' => 'Update a devotional record. Requires mcp.allowWrite=true.',
+            //     'inputSchema' => [
+            //         'type' => 'object',
+            //         'required' => ['id'],
+            //         'properties' => [
+            //             'id' => ['type' => 'integer', 'description' => 'tbl_devotional.id'],
+            //             'title' => ['type' => 'string'],
+            //             'body' => ['type' => 'string', 'description' => 'Maps to the text column'],
+            //             'status' => ['type' => 'string', 'description' => 'Maps to the active column (0 or 1)'],
+            //         ],
+            //     ],
+            // ],
             [
                 'name' => 'parse_devotional_text',
                 'description' => <<<'DESC'
