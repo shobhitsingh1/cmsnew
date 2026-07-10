@@ -309,34 +309,34 @@ class Mcp extends ResourceController
                     ],
                 ],
             ],
-            [
-                'name' => 'import_devotional_rows',
-                'description' => <<<'DESC'
-                    Insert or update devotional rows into tbl_devotional and tbl_devotional_tmp.
+            // [
+            //     'name' => 'import_devotional_rows',
+            //     'description' => <<<'DESC'
+            //         Insert or update devotional rows into tbl_devotional and tbl_devotional_tmp.
 
-                    Pass the full output of parse_devotional_text as input:
-                    rows              – devotional_rows from parse step
-                    flush_tmp         – flush flag from parse step (copies series tmp rows to main table)
-                    series_processing – total series count
-                    start_processing  – current entry count
+            //         Pass the full output of parse_devotional_text as input:
+            //         rows              – devotional_rows from parse step
+            //         flush_tmp         – flush flag from parse step (copies series tmp rows to main table)
+            //         series_processing – total series count
+            //         start_processing  – current entry count
 
-                    Non-series rows (series_id == 0) go directly to tbl_devotional.
-                    Series rows (series_id > 0) go to tbl_devotional_tmp first; when flush_tmp is true
-                    they are copied to tbl_devotional and the tmp staging rows are purged.
-                    Duplicate detection is by devotional_date (existing dates are updated, not duplicated).
-                    DESC,
-                'inputSchema' => [
-                    'type' => 'object',
-                    'required' => ['rows', 'user_id'],
-                    'properties' => [
-                        'rows' => ['type' => 'array', 'description' => 'devotional_rows from parse_devotional_text.', 'items' => ['type' => 'object']],
-                        'user_id' => ['type' => 'integer'],
-                        'series_processing' => ['type' => 'integer', 'description' => 'Total entries in series (0 = non-series).'],
-                        'start_processing' => ['type' => 'integer', 'description' => 'Current count. Flush happens when equal to series_processing.'],
-                        'flush_tmp' => ['type' => 'boolean', 'description' => 'Set to true on the last batch entry to move tmp rows to main table.'],
-                    ],
-                ],
-            ],
+            //         Non-series rows (series_id == 0) go directly to tbl_devotional.
+            //         Series rows (series_id > 0) go to tbl_devotional_tmp first; when flush_tmp is true
+            //         they are copied to tbl_devotional and the tmp staging rows are purged.
+            //         Duplicate detection is by devotional_date (existing dates are updated, not duplicated).
+            //         DESC,
+            //     'inputSchema' => [
+            //         'type' => 'object',
+            //         'required' => ['rows', 'user_id'],
+            //         'properties' => [
+            //             'rows' => ['type' => 'array', 'description' => 'devotional_rows from parse_devotional_text.', 'items' => ['type' => 'object']],
+            //             'user_id' => ['type' => 'integer'],
+            //             'series_processing' => ['type' => 'integer', 'description' => 'Total entries in series (0 = non-series).'],
+            //             'start_processing' => ['type' => 'integer', 'description' => 'Current count. Flush happens when equal to series_processing.'],
+            //             'flush_tmp' => ['type' => 'boolean', 'description' => 'Set to true on the last batch entry to move tmp rows to main table.'],
+            //         ],
+            //     ],
+            // ],
         ];
     }
 
