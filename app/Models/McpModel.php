@@ -95,12 +95,16 @@ class McpModel extends Model
             ->update($data);
     }
 
-    public function listtags(): array
+    public function listtags(array $input): array
     {
+        $limit = min((int) ($input['limit'] ?? 10), 100);
+        $offset = (int) ($input['offset'] ?? 0);
+        
         return $this->db->table('tbl_tags')
-            ->select('id, title, tag_type')
-            ->orderBy('tag_type')
+            ->select('id, title, type')
+            ->orderBy('type')
             ->orderBy('title')
+            ->limit($limit, $offset)
             ->get()
             ->getResultArray();
     }
@@ -650,7 +654,7 @@ class McpModel extends Model
 
         // Load all tags once
         $allTags = $this->db->table('tbl_tags')
-            ->select('id, title, tag_type')
+            ->select('id, title, type')
             ->get()
             ->getResultArray();
 
@@ -694,7 +698,7 @@ class McpModel extends Model
             if (!$matched) {
                 continue;
             }
-            $type = strtolower($matched['tag_type'] ?? '');
+            $type = strtolower($matched['type'] ?? '');
             $id   = (int)$matched['id'];
             if ($type === 'book') {
                 $bookIds[$id] = $id;
@@ -711,7 +715,7 @@ class McpModel extends Model
             if (!$matched) {
                 continue;
             }
-            $type = strtolower($matched['tag_type'] ?? '');
+            $type = strtolower($matched['type'] ?? '');
             $id   = (int)$matched['id'];
             if ($type === 'author') {
                 $authorIds[$id] = $id;
@@ -734,7 +738,7 @@ class McpModel extends Model
                 if (!$matched) {
                     continue;
                 }
-                $t  = strtolower($matched['tag_type'] ?? '');
+                $t  = strtolower($matched['type'] ?? '');
                 $id = (int)$matched['id'];
                 if ($t === 'book') { $dBookIds[$id]   = $id; }
                 elseif ($t === 'author') { $dAuthorIds[$id] = $id; }
@@ -746,7 +750,7 @@ class McpModel extends Model
                 if (!$matched) {
                     continue;
                 }
-                $t  = strtolower($matched['tag_type'] ?? '');
+                $t  = strtolower($matched['type'] ?? '');
                 $id = (int)$matched['id'];
                 if ($t === 'author') { $dAuthorIds[$id] = $id; }
                 elseif ($t === 'book') { $dBookIds[$id]   = $id; }
